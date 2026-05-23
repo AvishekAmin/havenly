@@ -11,7 +11,7 @@ const geocodingClient = mbxGeocoding({
 
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
-const mongo_url = "mongodb://127.0.0.1:27017/havenly";
+const dbUrl = process.env.ATLASDB_URL;
 
 main()
     .then(() => {
@@ -22,7 +22,7 @@ main()
     });
 
 async function main() {
-    await mongoose.connect(mongo_url);
+    await mongoose.connect(dbUrl);
 }
 
 const initDB = async () => {
