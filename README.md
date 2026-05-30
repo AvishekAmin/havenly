@@ -1,58 +1,128 @@
-Havenly 🏡
+# 🏡 Havenly
 
-A full-stack Airbnb-inspired vacation rental web application where users can explore listings, 
-add properties, upload images, review stays, and view locations on an interactive map.
+### A Full-Stack Travel & Accommodation Booking Platform
 
-Live Demo
+Havenly is a modern Airbnb-inspired web application that enables users to discover unique stays, list their own properties, share reviews, and explore locations through interactive maps.
 
-https://havenly-z7ym.onrender.com/listings
+Built using the MERN ecosystem and modern web technologies, Havenly provides a seamless booking and property management experience.
 
-Features ✨
+---
 
-User Authentication (Signup/Login/Logout), 
-Add, Edit, and Delete Listings, 
-Upload Listing Images using Cloudinary, 
-Interactive Maps using Mapbox, 
-Review & Rating System, 
-Responsive UI with Bootstrap, 
-MongoDB Atlas Database, 
-Session Management with Mongo Store, 
-Flash Messages & Form Validation, 
+## 🌐 Live Demo
 
-Tech Stack 🚀
+🔗 **Website:** https://havenly-z7ym.onrender.com/listings
 
-Frontend
+---
 
-HTML,
-CSS,
-Bootstrap,
-EJS,
-JavaScript
+## ✨ Features
 
-Backend
+### 🔐 Authentication & Security
 
-Node.js,
-Express.js
+* User Registration & Login
+* Secure Authentication with Passport.js
+* Session Management using Mongo Store
+* Protected Routes & Authorization
 
-Database
+### 🏡 Property Listings
 
-MongoDB Atlas,
-Mongoose
+* Create New Listings
+* Edit Existing Listings
+* Delete Listings
+* View Detailed Property Information
+* Responsive Property Cards
 
-Authentication & Storage
+### 🖼️ Media Management
 
-Passport.js,
-Cloudinary,
-Multer,
-Connect-Mongo
+* Upload Property Images
+* Cloudinary Cloud Storage Integration
+* Optimized Image Delivery
 
-APIs
+### 🗺️ Maps & Location Services
 
-Mapbox Geocoding API,
-Mapbox GL JS
+* Interactive Maps using Mapbox
+* Automatic Location Geocoding
+* Property Location Visualization
 
-Author 👨‍💻
+### ⭐ Reviews & Ratings
 
-Avishek Amin
-GitHub: https://github.com/AvishekAmin
-LinkedIn: https://www.linkedin.com/in/avishekamin
+* Add Reviews
+* Property Rating System
+* Review Management
+
+### 💻 User Experience
+
+* Responsive Design
+* Mobile-Friendly Interface
+* Bootstrap-Powered UI
+* Flash Messages & Notifications
+* Server-Side Validation
+
+---
+
+## 🚀 Tech Stack
+
+### ✒ Frontend
+
+* HTML5
+* CSS3
+* Bootstrap
+* EJS
+* JavaScript
+
+### ⚙️ Backend
+
+* Node.js
+* Express.js
+
+### 🗄️ Database
+
+* MongoDB Atlas
+* Mongoose ODM
+
+### 🔐 Authentication & Storage
+
+* Passport.js
+* Cloudinary
+* Multer
+* Connect-Mongo
+
+### 🗺️ APIs & Integrations
+
+* Mapbox Geocoding API
+* Mapbox GL JS
+
+---
+
+## 📂 Project Highlights
+
+✅ Full-Stack Web Application
+
+✅ Authentication & Authorization
+
+✅ Cloud-Based Image Storage
+
+✅ Interactive Maps Integration
+
+✅ CRUD Operations
+
+✅ RESTful Architecture
+
+✅ Responsive Design
+
+---
+
+## 👨‍💻 Author
+
+### Avishek Amin
+
+🔗 LinkedIn: https://www.linkedin.com/in/avishekamin
+
+🔗 Email: avishekamin207@gmail.com
+
+🔗 GitHub: https://github.com/AvishekAmin
+
+---
+
+### ⭐ If you like this project, consider giving it a star!
+
+---
