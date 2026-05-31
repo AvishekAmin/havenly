@@ -35,7 +35,7 @@ const initDB = async () => {
                 limit: 1,
             })
             .send();
-        obj.owner = "6a07e6cadb9872e2899ddbe4";
+        obj.owner = "6a114ca740e5b59b5d582da6";
         obj.geometry = response.body.features[0].geometry;
     }
     await Listing.insertMany(initData.data);
