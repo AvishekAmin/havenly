@@ -1,0 +1,429 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- ============ CONTACT US ============ -->
+<style>
+  .contact-hero {
+    text-align: center;
+    padding: 100px 20px 60px;
+    background: linear-gradient(180deg, rgba(0, 216, 255, 0.07) 0%, transparent 70%);
+    position: relative;
+  }
+  .contact-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0, 216, 255, 0.10) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .contact-hero .hero-icon {
+    font-size: 3rem;
+    color: var(--accent, #00D8FF);
+    margin-bottom: 18px;
+    filter: drop-shadow(0 0 18px rgba(0, 216, 255, 0.35));
+  }
+  .contact-hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 14px;
+    letter-spacing: -0.5px;
+  }
+  .contact-hero p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.15rem;
+    color: rgba(244, 248, 255, 0.68);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .contact-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .contact-glass-card {
+    background: rgba(13, 20, 45, 0.72);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(0, 216, 255, 0.09);
+    border-radius: 18px;
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+    padding: 40px;
+    margin-bottom: 32px;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .contact-glass-card:hover {
+    border-color: rgba(0, 216, 255, 0.18);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45), 0 0 30px rgba(0, 216, 255, 0.04);
+    transform: translateY(-2px);
+  }
+  .contact-glass-card h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.65rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .contact-glass-card h2 i {
+    color: var(--accent, #00D8FF);
+    font-size: 1.3rem;
+  }
+  .contact-glass-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.02rem;
+    color: rgba(244, 248, 255, 0.68);
+    line-height: 1.75;
+    margin: 0 0 16px;
+  }
+  .contact-glass-card p:last-child { margin-bottom: 0; }
+
+  /* Contact Methods Grid */
+  .contact-methods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .contact-method-card {
+    background: rgba(13, 20, 45, 0.72);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(0, 216, 255, 0.09);
+    border-radius: 18px;
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+    padding: 36px 28px;
+    text-align: center;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-method-card::after {
+    content: '';
+    position: absolute;
+    top: -40%; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(0, 216, 255, 0.10) 0%, transparent 70%);
+    pointer-events: none;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .contact-method-card:hover {
+    border-color: rgba(0, 216, 255, 0.22);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45), 0 0 40px rgba(0, 216, 255, 0.06);
+  }
+  .contact-method-card:hover::after {
+    opacity: 1.5;
+    width: 160px; height: 160px;
+  }
+  .contact-method-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: rgba(0, 216, 255, 0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 1.4rem;
+    color: var(--accent, #00D8FF);
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .contact-method-card:hover .contact-method-icon {
+    background: rgba(0, 216, 255, 0.14);
+    box-shadow: 0 0 20px rgba(0, 216, 255, 0.12);
+  }
+  .contact-method-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 8px;
+  }
+  .contact-method-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: rgba(244, 248, 255, 0.58);
+    line-height: 1.55;
+    margin: 0;
+  }
+  .contact-method-card a {
+    color: var(--accent, #00D8FF);
+    text-decoration: none;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .contact-method-card a:hover {
+    color: #f4f8ff;
+    text-shadow: 0 0 8px rgba(0, 216, 255, 0.30);
+  }
+
+  /* Contact Form */
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .contact-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .contact-form label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(244, 248, 255, 0.78);
+    display: block;
+    margin-bottom: 8px;
+  }
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    color: #f4f8ff;
+    padding: 12px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-sizing: border-box;
+  }
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder {
+    color: rgba(244, 248, 255, 0.30);
+  }
+  .contact-form input:focus,
+  .contact-form select:focus,
+  .contact-form textarea:focus {
+    border-color: var(--accent, #00D8FF);
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 0 16px rgba(0, 216, 255, 0.08);
+  }
+  .contact-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='rgba(244,248,255,0.5)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+    cursor: pointer;
+  }
+  .contact-form select option {
+    background: #0d142d;
+    color: #f4f8ff;
+  }
+  .contact-form textarea {
+    min-height: 140px;
+    resize: vertical;
+  }
+  .contact-submit-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #00D8FF, #0070F3);
+    border: none;
+    border-radius: 50px;
+    padding: 14px 40px;
+    color: #050816;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    align-self: flex-start;
+  }
+  .contact-submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 216, 255, 0.30);
+  }
+
+  /* Office Info */
+  .contact-office-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 8px;
+  }
+  .contact-office-info h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .contact-office-info h3 i {
+    color: var(--accent, #00D8FF);
+    font-size: 1rem;
+  }
+  .contact-office-info p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: rgba(244, 248, 255, 0.62);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* Social Links */
+  .contact-social-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .contact-social-links h2 {
+    justify-content: center;
+  }
+  .contact-social-link {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    background: rgba(0, 216, 255, 0.06);
+    border: 1px solid rgba(0, 216, 255, 0.10);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: rgba(244, 248, 255, 0.60);
+    text-decoration: none;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .contact-social-link:hover {
+    background: rgba(0, 216, 255, 0.14);
+    border-color: rgba(0, 216, 255, 0.25);
+    color: var(--accent, #00D8FF);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 216, 255, 0.12);
+  }
+
+  @media (max-width: 600px) {
+    .contact-glass-card { padding: 28px 20px; }
+    .contact-method-card { padding: 28px 18px; }
+    .contact-form-row { grid-template-columns: 1fr; }
+    .contact-office-info { grid-template-columns: 1fr; gap: 24px; }
+  }
+</style>
+
+<!-- Hero -->
+<section class="contact-hero">
+  <div class="hero-icon">
+    <i class="fa-solid fa-envelope"></i>
+  </div>
+  <h1>Get in Touch</h1>
+  <p>Have a question, feedback, or partnership inquiry? We'd love to hear from you. Reach out and our team will respond promptly.</p>
+</section>
+
+<!-- Main Content -->
+<div class="contact-container">
+
+  <!-- Contact Methods Grid -->
+  <div class="contact-methods-grid">
+    <div class="contact-method-card">
+      <div class="contact-method-icon"><i class="fa-solid fa-envelope"></i></div>
+      <h3>Email Us</h3>
+      <p><a href="mailto:avishekamin207@gmail.com">avishekamin207@gmail.com</a></p>
+      <p style="margin-top: 8px; font-size: 0.85rem;">Typically respond within 2–4 hours</p>
+    </div>
+    <div class="contact-method-card">
+      <div class="contact-method-icon"><i class="fa-solid fa-phone"></i></div>
+      <h3>Call Us</h3>
+      <p><a href="tel:+919876543210">+91 98765 43210</a></p>
+      <p style="margin-top: 8px; font-size: 0.85rem;">Mon–Sat, 9:00 AM – 8:00 PM IST</p>
+    </div>
+    <div class="contact-method-card">
+      <div class="contact-method-icon"><i class="fa-solid fa-comments"></i></div>
+      <h3>Live Chat</h3>
+      <p>Available 24/7</p>
+      <p style="margin-top: 8px; font-size: 0.85rem;">Instant support from our AI + human agents</p>
+    </div>
+  </div>
+
+  <!-- Contact Form -->
+  <div class="contact-glass-card">
+    <h2><i class="fa-solid fa-paper-plane"></i> Send Us a Message</h2>
+    <form class="contact-form" action="/contact" method="POST">
+      <div class="contact-form-row">
+        <div>
+          <label for="contact-name">Full Name</label>
+          <input type="text" id="contact-name" name="name" placeholder="Enter your full name" required>
+        </div>
+        <div>
+          <label for="contact-email">Email Address</label>
+          <input type="email" id="contact-email" name="email" placeholder="Enter your email address" required>
+        </div>
+      </div>
+      <div>
+        <label for="contact-subject">Subject</label>
+        <select id="contact-subject" name="subject" required>
+          <option value="" disabled selected>Select a topic</option>
+          <option value="General Inquiry">General Inquiry</option>
+          <option value="Booking Issue">Booking Issue</option>
+          <option value="Property Listing">Property Listing</option>
+          <option value="Partnership">Partnership</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label for="contact-message">Message</label>
+        <textarea id="contact-message" name="message" placeholder="Tell us how we can help you..." required></textarea>
+      </div>
+      <button type="submit" class="contact-submit-btn">
+        <i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i> Send Message
+      </button>
+    </form>
+  </div>
+
+  <!-- Our Office -->
+  <div class="contact-glass-card">
+    <h2><i class="fa-solid fa-building"></i> Our Office</h2>
+    <div class="contact-office-info">
+      <div>
+        <h3><i class="fa-solid fa-location-dot"></i> Address</h3>
+        <p>
+          Havenly Technologies Pvt. Ltd.<br>
+          123 Innovation Drive, 4th Floor<br>
+          Koramangala, Bengaluru<br>
+          Karnataka 560001, India
+        </p>
+      </div>
+      <div>
+        <h3><i class="fa-solid fa-clock"></i> Operating Hours</h3>
+        <p>
+          <strong style="color: var(--text-primary, #f4f8ff);">Monday – Friday:</strong> 9:00 AM – 7:00 PM IST<br>
+          <strong style="color: var(--text-primary, #f4f8ff);">Saturday:</strong> 10:00 AM – 5:00 PM IST<br>
+          <strong style="color: var(--text-primary, #f4f8ff);">Sunday:</strong> Closed<br><br>
+          <em style="font-size: 0.88rem;">Online support is available 24/7 via chat and email.</em>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Social Media -->
+  <div class="contact-glass-card" style="text-align: center;">
+    <h2 style="justify-content: center;"><i class="fa-solid fa-share-nodes"></i> Connect With Us</h2>
+    <p>Follow us on social media for travel inspiration, exclusive deals, and community stories from around the world.</p>
+    <div class="contact-social-links">
+      <a href="https://www.facebook.com/avishek207" target="_blank" rel="noopener noreferrer" class="contact-social-link" aria-label="Facebook">
+        <i class="fa-brands fa-facebook-f"></i>
+      </a>
+      <a href="https://www.instagram.com/avishek.______" target="_blank" rel="noopener noreferrer" class="contact-social-link" aria-label="Instagram">
+        <i class="fa-brands fa-instagram"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/avishekamin" target="_blank" rel="noopener noreferrer" class="contact-social-link" aria-label="LinkedIn">
+        <i class="fa-brands fa-linkedin-in"></i>
+      </a>
+      <a href="https://x.com/avishek______" target="_blank" rel="noopener noreferrer" class="contact-social-link" aria-label="Twitter">
+        <i class="fa-brands fa-x-twitter"></i>
+      </a>
+      <a href="https://www.youtube.com/@Avishekkk" target="_blank" rel="noopener noreferrer" class="contact-social-link" aria-label="YouTube">
+        <i class="fa-brands fa-youtube"></i>
+      </a>
+    </div>
+  </div>
+
+</div>

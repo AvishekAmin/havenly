@@ -1,0 +1,323 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- ============ TERMS & PRIVACY ============ -->
+<style>
+  .legal-hero {
+    text-align: center;
+    padding: 100px 20px 60px;
+    background: linear-gradient(180deg, rgba(0, 216, 255, 0.07) 0%, transparent 70%);
+    position: relative;
+  }
+  .legal-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0, 216, 255, 0.10) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .legal-hero .hero-icon {
+    font-size: 3rem;
+    color: var(--accent, #00D8FF);
+    margin-bottom: 18px;
+    filter: drop-shadow(0 0 18px rgba(0, 216, 255, 0.35));
+  }
+  .legal-hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 14px;
+    letter-spacing: -0.5px;
+  }
+  .legal-hero p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.15rem;
+    color: rgba(244, 248, 255, 0.68);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .legal-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .glass-card {
+    background: rgba(13, 20, 45, 0.72);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(0, 216, 255, 0.09);
+    border-radius: 18px;
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+    padding: 40px;
+    margin-bottom: 32px;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .glass-card:hover {
+    border-color: rgba(0, 216, 255, 0.18);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45), 0 0 30px rgba(0, 216, 255, 0.04);
+    transform: translateY(-2px);
+  }
+  .glass-card h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.65rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .glass-card h2 i {
+    color: var(--accent, #00D8FF);
+    font-size: 1.3rem;
+  }
+  .glass-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.02rem;
+    color: rgba(244, 248, 255, 0.68);
+    line-height: 1.75;
+    margin: 0 0 16px;
+  }
+  .glass-card p:last-child { margin-bottom: 0; }
+
+  /* Visual Tab Bar */
+  .legal-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .legal-tab {
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 0.92rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    background: rgba(0, 216, 255, 0.08);
+    color: var(--accent, #00D8FF);
+    border: 1px solid rgba(0, 216, 255, 0.15);
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: default;
+    user-select: none;
+  }
+  .legal-tab:hover {
+    background: rgba(0, 216, 255, 0.14);
+    border-color: rgba(0, 216, 255, 0.28);
+  }
+
+  /* Numbered Sections */
+  .legal-section {
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(0, 216, 255, 0.05);
+  }
+  .legal-section:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .legal-section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .legal-section-number {
+    width: 28px;
+    height: 28px;
+    background: var(--accent, #00D8FF);
+    color: #050816;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.8rem;
+    font-family: 'Poppins', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+  .legal-section-header h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0;
+    font-weight: 600;
+    display: inline;
+  }
+  .legal-section p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.98rem;
+    color: rgba(244, 248, 255, 0.62);
+    line-height: 1.78;
+    margin: 0 0 12px;
+    padding-left: 40px;
+  }
+  .legal-section p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Last Updated */
+  .legal-updated {
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    color: rgba(244, 248, 255, 0.38);
+    margin-bottom: 32px;
+  }
+
+  /* CTA Card */
+  .legal-cta-card {
+    text-align: center;
+  }
+  .legal-cta-card p {
+    max-width: 540px;
+    margin: 0 auto 24px;
+  }
+  .legal-cta-btn {
+    display: inline-block;
+    padding: 14px 38px;
+    background: var(--accent, #00D8FF);
+    color: #050816;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 4px 20px rgba(0, 216, 255, 0.25);
+  }
+  .legal-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 216, 255, 0.35);
+    background: #2ae4ff;
+  }
+
+  @media (max-width: 600px) {
+    .glass-card { padding: 28px 20px; }
+    .legal-section p { padding-left: 0; margin-top: 10px; }
+    .legal-tabs { justify-content: center; }
+  }
+</style>
+
+<!-- Hero -->
+<section class="legal-hero">
+  <div class="hero-icon">
+    <i class="fa-solid fa-scale-balanced"></i>
+  </div>
+  <h1>Terms &amp; Privacy</h1>
+  <p>We believe in full transparency. Understand your rights, our commitments, and how we protect your data every step of the way.</p>
+</section>
+
+<!-- Main Content -->
+<div class="legal-container">
+
+  <!-- Visual Tab Bar -->
+  <div class="legal-tabs">
+    <span class="legal-tab"><i class="fa-solid fa-file-contract" style="margin-right: 8px;"></i>Terms of Service</span>
+    <span class="legal-tab"><i class="fa-solid fa-shield-halved" style="margin-right: 8px;"></i>Privacy Policy</span>
+  </div>
+
+  <!-- Terms of Service -->
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-file-contract"></i> Terms of Service</h2>
+
+    <div class="legal-section">
+      <div class="legal-section-header">
+        <span class="legal-section-number">1</span>
+        <h3>Acceptance of Terms</h3>
+      </div>
+      <p>
+        By accessing or using the Havenly platform, including our website, mobile applications, and any associated services, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. These terms constitute a legally binding agreement between you and Havenly Technologies, Inc. If you do not agree with any part of these terms, you must discontinue use of our services immediately. We reserve the right to update these terms at any time, and continued use of the platform after changes constitutes acceptance of the revised terms. Users will be notified of material changes via email or in-app notification at least 30 days prior to the effective date.
+      </p>
+    </div>
+
+    <div class="legal-section">
+      <div class="legal-section-header">
+        <span class="legal-section-number">2</span>
+        <h3>User Accounts</h3>
+      </div>
+      <p>
+        To access certain features of Havenly, you must create an account by providing accurate, current, and complete information. You are solely responsible for maintaining the confidentiality of your login credentials and for all activities that occur under your account. Each individual may maintain only one personal account, and accounts are non-transferable. Hosts must complete additional verification steps, including identity verification and property ownership documentation. Havenly reserves the right to suspend or terminate accounts that violate these terms, engage in fraudulent activity, or remain inactive for more than 24 consecutive months. You must promptly notify us of any unauthorized use of your account.
+      </p>
+    </div>
+
+    <div class="legal-section">
+      <div class="legal-section-header">
+        <span class="legal-section-number">3</span>
+        <h3>Booking &amp; Payment Terms</h3>
+      </div>
+      <p>
+        All bookings made through Havenly are subject to property availability and host confirmation. Guests agree to pay the total booking amount, including nightly rates, cleaning fees, service fees, and applicable taxes, at the time of reservation. Havenly uses secure, PCI-compliant payment processing and holds funds in escrow until 24 hours after check-in to protect both parties. Cancellation policies vary by property and are clearly displayed before booking. Our Havenly Guarantee covers up to $25,000 in damages for hosts and provides guests with full refund protection if a property does not match its listing description, subject to the terms of our resolution center process.
+      </p>
+    </div>
+
+    <div class="legal-section">
+      <div class="legal-section-header">
+        <span class="legal-section-number">4</span>
+        <h3>Content &amp; Conduct Policy</h3>
+      </div>
+      <p>
+        Users are responsible for all content they post on Havenly, including property descriptions, photographs, reviews, and messages. All content must be accurate, non-misleading, and free of offensive, discriminatory, or illegal material. Havenly retains a non-exclusive license to display and distribute user-generated content in connection with the platform's operation. Reviews must reflect genuine experiences and may not be incentivized, coerced, or fabricated. We employ both automated systems and human moderation to enforce these standards. Violations may result in content removal, account suspension, or permanent ban at Havenly's sole discretion. Users must also comply with all applicable local, national, and international laws when using our services.
+      </p>
+    </div>
+  </div>
+
+  <!-- Privacy Policy -->
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-shield-halved"></i> Privacy Policy</h2>
+
+    <div class="legal-section">
+      <div class="legal-section-header">
+        <span class="legal-section-number">5</span>
+        <h3>Information We Collect</h3>
+      </div>
+      <p>
+        Havenly collects information that you provide directly, such as your name, email address, phone number, payment details, and government-issued identification for verification purposes. We also collect information automatically when you use our platform, including device information (browser type, operating system, device identifiers), IP address, location data, and interaction data such as pages visited, search queries, and booking history. For hosts, we may collect additional information including property details, tax identification numbers, and banking information for payout processing. We may also receive information from third-party services you connect to your account, such as social media profiles or identity verification providers.
+      </p>
+    </div>
+
+    <div class="legal-section">
+      <div class="legal-section-header">
+        <span class="legal-section-number">6</span>
+        <h3>How We Use Your Data</h3>
+      </div>
+      <p>
+        We use collected information to provide, personalize, and improve the Havenly platform. This includes processing bookings and payments, verifying user identities, facilitating communication between guests and hosts, and delivering our AI-powered property recommendation engine. Your data helps us detect and prevent fraud, enforce our terms, and maintain platform security. We may use anonymized and aggregated data for analytics, market research, and product development. Havenly may send you transactional communications (booking confirmations, receipts) and, with your consent, marketing communications about new features, promotions, and travel inspiration. We will never sell your personal information to third parties for their independent marketing purposes.
+      </p>
+    </div>
+
+    <div class="legal-section">
+      <div class="legal-section-header">
+        <span class="legal-section-number">7</span>
+        <h3>Cookies &amp; Tracking</h3>
+      </div>
+      <p>
+        Havenly uses cookies, pixels, and similar tracking technologies to enhance your experience, remember your preferences, and analyze platform usage. Essential cookies are required for core platform functionality, including authentication, security, and payment processing. Performance cookies help us understand how users interact with our platform so we can identify issues and optimize the experience. Marketing cookies enable us to deliver relevant advertisements and measure campaign effectiveness through trusted advertising partners. You can manage your cookie preferences at any time through our Cookie Settings panel accessible from the footer of every page. Please note that disabling certain cookies may limit your ability to use some features of the platform.
+      </p>
+    </div>
+
+    <div class="legal-section">
+      <div class="legal-section-header">
+        <span class="legal-section-number">8</span>
+        <h3>Your Rights &amp; Choices</h3>
+      </div>
+      <p>
+        Depending on your jurisdiction, you may have the right to access, correct, delete, or port your personal data, as well as the right to restrict or object to certain processing activities. Havenly complies with the European General Data Protection Regulation (GDPR), the California Consumer Privacy Act (CCPA), and other applicable data protection laws worldwide. To exercise your rights, visit your Account Settings or contact our Data Protection Officer at privacy@havenly.com. We will respond to verified requests within 30 days. You may opt out of marketing emails at any time using the unsubscribe link in any promotional message. We retain your data only as long as necessary to fulfill the purposes described in this policy or as required by law.
+      </p>
+    </div>
+  </div>
+
+  <!-- Last Updated -->
+  <p class="legal-updated">Last Updated: July 2026</p>
+
+  <!-- CTA Card -->
+  <div class="glass-card legal-cta-card">
+    <h2 style="justify-content: center;"><i class="fa-solid fa-circle-question"></i> Questions About Our Policies?</h2>
+    <p>
+      If you have any questions, concerns, or feedback about our Terms of Service or Privacy Policy, our legal and compliance team is here to help. We're committed to protecting your rights and ensuring complete transparency in how we handle your information.
+    </p>
+    <a href="/contact" class="legal-cta-btn">Contact Us</a>
+  </div>
+
+</div>

@@ -1,0 +1,297 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- ============ SAFETY ============ -->
+<style>
+  .safety-hero {
+    text-align: center;
+    padding: 100px 20px 60px;
+    background: linear-gradient(180deg, rgba(0, 216, 255, 0.07) 0%, transparent 70%);
+    position: relative;
+  }
+  .safety-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0, 216, 255, 0.10) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .safety-hero .hero-icon {
+    font-size: 3rem;
+    color: var(--accent, #00D8FF);
+    margin-bottom: 18px;
+    filter: drop-shadow(0 0 18px rgba(0, 216, 255, 0.35));
+  }
+  .safety-hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 14px;
+    letter-spacing: -0.5px;
+  }
+  .safety-hero p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.15rem;
+    color: rgba(244, 248, 255, 0.68);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .safety-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .safety-glass-card {
+    background: rgba(13, 20, 45, 0.72);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(0, 216, 255, 0.09);
+    border-radius: 18px;
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+    padding: 40px;
+    margin-bottom: 32px;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .safety-glass-card:hover {
+    border-color: rgba(0, 216, 255, 0.18);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45), 0 0 30px rgba(0, 216, 255, 0.04);
+    transform: translateY(-2px);
+  }
+  .safety-glass-card h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.65rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .safety-glass-card h2 i {
+    color: var(--accent, #00D8FF);
+    font-size: 1.3rem;
+  }
+  .safety-glass-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.02rem;
+    color: rgba(244, 248, 255, 0.68);
+    line-height: 1.75;
+    margin: 0 0 16px;
+  }
+  .safety-glass-card p:last-child { margin-bottom: 0; }
+
+  /* Feature Grid */
+  .safety-features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .safety-feature-card {
+    background: rgba(13, 20, 45, 0.55);
+    border: 1px solid rgba(0, 216, 255, 0.07);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .safety-feature-card:hover {
+    border-color: rgba(0, 216, 255, 0.18);
+    transform: translateY(-3px);
+    background: rgba(13, 20, 45, 0.68);
+  }
+  .safety-feature-card .safety-feature-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: rgba(0, 216, 255, 0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 1.4rem;
+    color: var(--accent, #00D8FF);
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .safety-feature-card:hover .safety-feature-icon {
+    background: rgba(0, 216, 255, 0.14);
+    box-shadow: 0 0 20px rgba(0, 216, 255, 0.12);
+  }
+  .safety-feature-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 10px;
+  }
+  .safety-feature-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    color: rgba(244, 248, 255, 0.58);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* Safety Tips */
+  .safety-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+  }
+  .safety-tip:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .safety-tip-number {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 50%;
+    background: var(--accent, #00D8FF);
+    color: #050816;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .safety-tip:hover .safety-tip-number {
+    box-shadow: 0 0 16px rgba(0, 216, 255, 0.30);
+  }
+  .safety-tip-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.02rem;
+    color: rgba(244, 248, 255, 0.68);
+    line-height: 1.75;
+  }
+  .safety-tip-text strong {
+    color: var(--text-primary, #f4f8ff);
+  }
+
+  /* CTA */
+  .safety-cta-text {
+    text-align: center;
+  }
+  .safety-cta-text h2 {
+    justify-content: center;
+  }
+  .safety-cta-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #00D8FF, #0070F3);
+    border: none;
+    border-radius: 50px;
+    padding: 12px 32px;
+    color: #050816;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    margin-top: 8px;
+  }
+  .safety-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 216, 255, 0.30);
+    color: #050816;
+  }
+
+  @media (max-width: 600px) {
+    .safety-glass-card { padding: 28px 20px; }
+    .safety-feature-card { padding: 24px 18px; }
+    .safety-tip { gap: 12px; }
+  }
+</style>
+
+<!-- Hero -->
+<section class="safety-hero">
+  <div class="hero-icon">
+    <i class="fa-solid fa-shield-halved"></i>
+  </div>
+  <h1>Your Safety Matters</h1>
+  <p>At Havenly, your safety and security are at the foundation of everything we build. We're committed to keeping every stay protected.</p>
+</section>
+
+<!-- Main Content -->
+<div class="safety-container">
+
+  <!-- Our Safety Promise -->
+  <div class="safety-glass-card">
+    <h2><i class="fa-solid fa-handshake"></i> Our Safety Promise</h2>
+    <p>
+      Safety at Havenly is not an afterthought — it's the bedrock upon which our entire platform is built. From the moment a property owner applies to list their home on Havenly, our trust and safety team initiates a comprehensive vetting process that includes identity verification, property documentation checks, and in-person inspections by our certified hospitality experts. We employ advanced fraud detection algorithms that continuously monitor transactions, reviews, and messaging patterns to proactively identify and prevent suspicious activity before it ever impacts our community.
+    </p>
+    <p>
+      Every booking on Havenly is backed by our industry-leading Guest Protection Guarantee, which covers up to ₹25,00,000 in property damage, provides rebooking assistance if a listing doesn't match its description, and offers 24/7 emergency support through our dedicated Safety Line. We partner with leading cybersecurity firms to ensure your personal and financial data is encrypted with bank-grade 256-bit SSL technology, and we never share your information with third parties without your explicit consent. Your trust is the currency we value most.
+    </p>
+  </div>
+
+  <!-- Safety Features Grid -->
+  <div class="safety-features-grid">
+    <div class="safety-feature-card">
+      <div class="safety-feature-icon"><i class="fa-solid fa-user-check"></i></div>
+      <h3>Verified Hosts</h3>
+      <p>Every host undergoes rigorous identity verification, background screening, and property documentation checks before their listing goes live. We verify government-issued IDs, cross-reference public records, and require proof of property ownership or management authorization.</p>
+    </div>
+    <div class="safety-feature-card">
+      <div class="safety-feature-icon"><i class="fa-solid fa-lock"></i></div>
+      <h3>Secure Payments</h3>
+      <p>All financial transactions on Havenly are protected by 256-bit SSL encryption and processed through PCI DSS Level 1 compliant payment gateways. Your card details are never stored on our servers — we use tokenization to ensure your financial data remains completely secure.</p>
+    </div>
+    <div class="safety-feature-card">
+      <div class="safety-feature-icon"><i class="fa-solid fa-headset"></i></div>
+      <h3>24/7 Support</h3>
+      <p>Our multilingual support team is available around the clock, 365 days a year. Whether you encounter an issue at midnight or during a holiday weekend, you can reach us instantly via in-app chat, phone, or email for immediate assistance with any concern.</p>
+    </div>
+    <div class="safety-feature-card">
+      <div class="safety-feature-icon"><i class="fa-solid fa-kit-medical"></i></div>
+      <h3>Emergency Assistance</h3>
+      <p>In urgent situations, our dedicated Emergency Response Team can coordinate with local authorities, medical services, and emergency contacts on your behalf. Every listing includes local emergency numbers and nearby hospital information for your peace of mind.</p>
+    </div>
+  </div>
+
+  <!-- Safety Tips for Guests -->
+  <div class="safety-glass-card">
+    <h2><i class="fa-solid fa-lightbulb"></i> Safety Tips for Guests</h2>
+
+    <div class="safety-tip">
+      <div class="safety-tip-number">1</div>
+      <div class="safety-tip-text"><strong>Always communicate through Havenly.</strong> Keep all conversations with your host on the Havenly platform. Our messaging system is monitored for fraud indicators and provides a documented record of all agreements. Never share personal contact information, banking details, or arrange payments outside the platform — this protects you under our Guest Protection Guarantee.</div>
+    </div>
+
+    <div class="safety-tip">
+      <div class="safety-tip-number">2</div>
+      <div class="safety-tip-text"><strong>Verify the listing before arrival.</strong> Review the property photos, description, and guest reviews carefully before booking. If anything seems unclear, message the host directly to clarify. Upon arrival, do a quick walkthrough to ensure the property matches its listing — if it doesn't, contact our support team immediately for rebooking assistance.</div>
+    </div>
+
+    <div class="safety-tip">
+      <div class="safety-tip-number">3</div>
+      <div class="safety-tip-text"><strong>Share your itinerary with someone you trust.</strong> Before your trip, share your booking confirmation, property address, and travel dates with a family member or close friend. This simple step ensures someone always knows your whereabouts and can reach you in case of an unexpected situation.</div>
+    </div>
+
+    <div class="safety-tip">
+      <div class="safety-tip-number">4</div>
+      <div class="safety-tip-text"><strong>Familiarize yourself with emergency exits and local services.</strong> Upon arriving at your accommodation, locate all emergency exits, fire extinguishers, and first-aid kits. Save the local emergency number (112 in India, 911 in the US) and note the address of the nearest hospital. Every Havenly listing includes a "Local Safety Info" section with this data.</div>
+    </div>
+
+    <div class="safety-tip">
+      <div class="safety-tip-number">5</div>
+      <div class="safety-tip-text"><strong>Secure the property during your stay.</strong> Always lock all doors and windows when leaving the property or going to sleep. Use the safe provided for valuables such as passports, electronics, and jewelry. If you notice any security concerns — broken locks, malfunctioning alarms, or unauthorized access — report them immediately through the app or by calling our 24/7 Safety Line.</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="safety-glass-card safety-cta-text">
+    <h2><i class="fa-solid fa-flag"></i> Report a Concern</h2>
+    <p>If you've encountered a safety issue, suspicious listing, or any situation that made you feel uncomfortable, please don't hesitate to report it. Our Trust & Safety team investigates every report thoroughly and takes swift action to protect our community.</p>
+    <a href="/contact" class="safety-cta-btn">Report Now</a>
+  </div>
+
+</div>

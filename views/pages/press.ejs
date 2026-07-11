@@ -1,0 +1,380 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- ============ PRESS & MEDIA ============ -->
+<style>
+  .press-hero {
+    text-align: center;
+    padding: 100px 20px 60px;
+    background: linear-gradient(180deg, rgba(0, 216, 255, 0.07) 0%, transparent 70%);
+    position: relative;
+  }
+  .press-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0, 216, 255, 0.10) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .press-hero .hero-icon {
+    font-size: 3rem;
+    color: var(--accent, #00D8FF);
+    margin-bottom: 18px;
+    filter: drop-shadow(0 0 18px rgba(0, 216, 255, 0.35));
+  }
+  .press-hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 14px;
+    letter-spacing: -0.5px;
+  }
+  .press-hero p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.15rem;
+    color: rgba(244, 248, 255, 0.68);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .press-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .glass-card {
+    background: rgba(13, 20, 45, 0.72);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(0, 216, 255, 0.09);
+    border-radius: 18px;
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+    padding: 40px;
+    margin-bottom: 32px;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .glass-card:hover {
+    border-color: rgba(0, 216, 255, 0.18);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45), 0 0 30px rgba(0, 216, 255, 0.04);
+    transform: translateY(-2px);
+  }
+  .glass-card h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.65rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .glass-card h2 i {
+    color: var(--accent, #00D8FF);
+    font-size: 1.3rem;
+  }
+  .glass-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.02rem;
+    color: rgba(244, 248, 255, 0.68);
+    line-height: 1.75;
+    margin: 0 0 16px;
+  }
+  .glass-card p:last-child { margin-bottom: 0; }
+
+  /* Press Mention Items */
+  .press-mention {
+    padding: 28px 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+  }
+  .press-mention:first-of-type {
+    padding-top: 8px;
+  }
+  .press-mention:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .press-mention h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: var(--accent, #00D8FF);
+    margin: 0 0 4px;
+    font-weight: 600;
+  }
+  .press-mention .press-date {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    color: rgba(244, 248, 255, 0.40);
+    margin-bottom: 10px;
+    display: block;
+  }
+  .press-mention h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 10px;
+    font-weight: 600;
+  }
+  .press-mention p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: rgba(244, 248, 255, 0.58);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* Press Kit Grid */
+  .press-kit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .press-kit-card {
+    background: rgba(13, 20, 45, 0.55);
+    border: 1px solid rgba(0, 216, 255, 0.07);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .press-kit-card:hover {
+    border-color: rgba(0, 216, 255, 0.18);
+    transform: translateY(-3px);
+    background: rgba(13, 20, 45, 0.68);
+  }
+  .press-kit-card .value-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: rgba(0, 216, 255, 0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 1.4rem;
+    color: var(--accent, #00D8FF);
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .press-kit-card:hover .value-icon {
+    background: rgba(0, 216, 255, 0.14);
+    box-shadow: 0 0 20px rgba(0, 216, 255, 0.12);
+  }
+  .press-kit-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 10px;
+  }
+  .press-kit-card .press-download-link {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    color: var(--accent, #00D8FF);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .press-kit-card .press-download-link:hover {
+    color: #fff;
+    text-shadow: 0 0 12px rgba(0, 216, 255, 0.3);
+  }
+
+  /* Press Contact Details */
+  .press-contact-detail {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(0, 216, 255, 0.06);
+  }
+  .press-contact-detail:last-of-type {
+    border-bottom: none;
+  }
+  .press-contact-detail i {
+    color: var(--accent, #00D8FF);
+    font-size: 1.1rem;
+    width: 24px;
+    text-align: center;
+  }
+  .press-contact-detail span {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: rgba(244, 248, 255, 0.78);
+  }
+  .press-contact-detail a {
+    color: var(--accent, #00D8FF);
+    text-decoration: none;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .press-contact-detail a:hover {
+    color: #fff;
+  }
+  .press-response-note {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    color: rgba(244, 248, 255, 0.45);
+    margin-top: 18px;
+    font-style: italic;
+  }
+
+  /* Awards Grid */
+  .press-awards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-top: 8px;
+  }
+  .press-award-card {
+    background: rgba(13, 20, 45, 0.55);
+    border: 1px solid rgba(0, 216, 255, 0.07);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .press-award-card:hover {
+    border-color: rgba(0, 216, 255, 0.18);
+    transform: translateY(-3px);
+    background: rgba(13, 20, 45, 0.68);
+  }
+  .press-award-card .value-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: rgba(0, 216, 255, 0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 1.4rem;
+    color: var(--accent, #00D8FF);
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .press-award-card:hover .value-icon {
+    background: rgba(0, 216, 255, 0.14);
+    box-shadow: 0 0 20px rgba(0, 216, 255, 0.12);
+  }
+  .press-award-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 6px;
+  }
+  .press-award-card span {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    color: rgba(244, 248, 255, 0.50);
+  }
+
+  @media (max-width: 600px) {
+    .glass-card { padding: 28px 20px; }
+    .press-mention { padding: 20px 0; }
+  }
+</style>
+
+<!-- Hero -->
+<section class="press-hero">
+  <div class="hero-icon">
+    <i class="fa-solid fa-newspaper"></i>
+  </div>
+  <h1>Press &amp; Media</h1>
+  <p>Stay up to date with the latest Havenly news, media resources, and coverage from top publications around the world.</p>
+</section>
+
+<!-- Main Content -->
+<div class="press-container">
+
+  <!-- In the News -->
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-bullhorn"></i> In the News</h2>
+
+    <div class="press-mention">
+      <h3>TechCrunch</h3>
+      <small class="press-date">March 15, 2026</small>
+      <h4>Havenly Raises $120M Series C to Expand AI-Powered Luxury Travel Platform</h4>
+      <p>Havenly, the luxury vacation rental marketplace, has secured $120 million in Series C funding led by Sequoia Capital. The company plans to use the investment to expand its AI-driven property matching engine and accelerate growth in the Asia-Pacific region, where demand for premium short-term rentals has surged 340% year-over-year. CEO Arjun Mehta called the round "a validation of our thesis that luxury travel is ready for a technology-first approach."</p>
+    </div>
+
+    <div class="press-mention">
+      <h3>Forbes Travel</h3>
+      <small class="press-date">January 8, 2026</small>
+      <h4>How Havenly Is Redefining What Travelers Expect From Vacation Rentals</h4>
+      <p>Forbes Travel spotlighted Havenly in its annual "Future of Hospitality" feature, praising the platform's rigorous 87-point quality inspection process and its innovative virtual tour technology. The article highlighted how Havenly's curated approach — accepting only the top 5% of property applications — has created a trust-first marketplace that commands premium booking rates while maintaining a 4.9-star average guest rating across over 10,000 properties worldwide.</p>
+    </div>
+
+    <div class="press-mention">
+      <h3>Bloomberg</h3>
+      <small class="press-date">November 22, 2025</small>
+      <h4>The Rise of Curated Travel: Inside Havenly's Strategy to Win Affluent Millennials</h4>
+      <p>Bloomberg's deep-dive analysis explored how Havenly has tapped into a growing segment of affluent millennial and Gen-Z travelers who prioritize experience over price. The report noted that Havenly's average booking value of $4,200 per stay is nearly 3x the industry average, driven by the platform's focus on unique, design-forward properties and its concierge-level guest services that handle everything from private chef bookings to helicopter transfers.</p>
+    </div>
+  </div>
+
+  <!-- Press Kit -->
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-folder-open"></i> Press Kit</h2>
+    <p>Download our official brand assets for use in media coverage, articles, and editorial features. All assets are available in high-resolution formats suitable for both print and digital use. Please refer to our brand guidelines for proper usage of the Havenly logo, color palette, and typography.</p>
+
+    <div class="press-kit-grid">
+      <div class="press-kit-card">
+        <div class="value-icon"><i class="fa-solid fa-palette"></i></div>
+        <h3>Logo Pack</h3>
+        <a href="#" class="press-download-link"><i class="fa-solid fa-download" style="margin-right: 6px;"></i>Download</a>
+      </div>
+      <div class="press-kit-card">
+        <div class="value-icon"><i class="fa-solid fa-book"></i></div>
+        <h3>Brand Guidelines</h3>
+        <a href="#" class="press-download-link"><i class="fa-solid fa-download" style="margin-right: 6px;"></i>Download</a>
+      </div>
+      <div class="press-kit-card">
+        <div class="value-icon"><i class="fa-solid fa-images"></i></div>
+        <h3>Media Assets</h3>
+        <a href="#" class="press-download-link"><i class="fa-solid fa-download" style="margin-right: 6px;"></i>Download</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Press Contact -->
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-address-card"></i> Press Contact</h2>
+    <p>For media inquiries, interview requests, and press-related questions, please reach out to our communications team using the contact details below. We're happy to provide executive quotes, company data, and high-resolution imagery for your coverage.</p>
+
+    <div class="press-contact-detail">
+      <i class="fa-solid fa-envelope"></i>
+      <span><a href="mailto:press@havenly.com">press@havenly.com</a></span>
+    </div>
+    <div class="press-contact-detail">
+      <i class="fa-solid fa-phone"></i>
+      <span>+91 95476 81235</span>
+    </div>
+    <div class="press-contact-detail">
+      <i class="fa-solid fa-clock"></i>
+      <span>Available Monday – Friday, 9:00 AM – 6:00 PM IST</span>
+    </div>
+
+    <p class="press-response-note"><i class="fa-solid fa-circle-info" style="margin-right: 6px;"></i>Our communications team typically responds to media inquiries within 24 hours on business days. For urgent or time-sensitive requests, please mark your email as high priority.</p>
+  </div>
+
+  <!-- Awards & Recognition -->
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-award"></i> Awards &amp; Recognition</h2>
+    <p style="margin-bottom: 24px;">We're honored to be recognized by leading industry organizations for our commitment to innovation, customer excellence, and redefining the luxury travel experience.</p>
+
+    <div class="press-awards-grid">
+      <div class="press-award-card">
+        <div class="value-icon"><i class="fa-solid fa-trophy"></i></div>
+        <h3>Best Travel Platform 2025</h3>
+        <span>World Travel Tech Awards</span>
+      </div>
+      <div class="press-award-card">
+        <div class="value-icon"><i class="fa-solid fa-lightbulb"></i></div>
+        <h3>Innovation Award 2025</h3>
+        <span>Phocuswright Conference</span>
+      </div>
+      <div class="press-award-card">
+        <div class="value-icon"><i class="fa-solid fa-star"></i></div>
+        <h3>Customer Excellence 2026</h3>
+        <span>Hospitality Net Global Forum</span>
+      </div>
+    </div>
+  </div>
+
+</div>

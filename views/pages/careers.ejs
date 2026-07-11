@@ -1,0 +1,375 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- ============ CAREERS ============ -->
+<style>
+  .careers-hero {
+    text-align: center;
+    padding: 100px 20px 60px;
+    background: linear-gradient(180deg, rgba(0, 216, 255, 0.07) 0%, transparent 70%);
+    position: relative;
+  }
+  .careers-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0, 216, 255, 0.10) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .careers-hero .hero-icon {
+    font-size: 3rem;
+    color: var(--accent, #00D8FF);
+    margin-bottom: 18px;
+    filter: drop-shadow(0 0 18px rgba(0, 216, 255, 0.35));
+  }
+  .careers-hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 14px;
+    letter-spacing: -0.5px;
+  }
+  .careers-hero p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.15rem;
+    color: rgba(244, 248, 255, 0.68);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .careers-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .glass-card {
+    background: rgba(13, 20, 45, 0.72);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(0, 216, 255, 0.09);
+    border-radius: 18px;
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+    padding: 40px;
+    margin-bottom: 32px;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .glass-card:hover {
+    border-color: rgba(0, 216, 255, 0.18);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45), 0 0 30px rgba(0, 216, 255, 0.04);
+    transform: translateY(-2px);
+  }
+  .glass-card h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.65rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .glass-card h2 i {
+    color: var(--accent, #00D8FF);
+    font-size: 1.3rem;
+  }
+  .glass-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.02rem;
+    color: rgba(244, 248, 255, 0.68);
+    line-height: 1.75;
+    margin: 0 0 16px;
+  }
+  .glass-card p:last-child { margin-bottom: 0; }
+
+  /* Benefits / Value-Card Grid */
+  .careers-benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+  }
+  .careers-value-card {
+    background: rgba(13, 20, 45, 0.55);
+    border: 1px solid rgba(0, 216, 255, 0.07);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .careers-value-card:hover {
+    border-color: rgba(0, 216, 255, 0.18);
+    transform: translateY(-3px);
+    background: rgba(13, 20, 45, 0.68);
+  }
+  .careers-value-card .value-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: rgba(0, 216, 255, 0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 1.4rem;
+    color: var(--accent, #00D8FF);
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .careers-value-card:hover .value-icon {
+    background: rgba(0, 216, 255, 0.14);
+    box-shadow: 0 0 20px rgba(0, 216, 255, 0.12);
+  }
+  .careers-value-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 10px;
+  }
+  .careers-value-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    color: rgba(244, 248, 255, 0.58);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* Job Listing Rows */
+  .careers-job-row {
+    padding: 24px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .careers-job-row:last-child {
+    border-bottom: none;
+  }
+  .careers-job-row:hover {
+    background: rgba(0, 216, 255, 0.03);
+    border-radius: 12px;
+  }
+  .careers-job-info {
+    flex: 1;
+    min-width: 200px;
+  }
+  .careers-job-info h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 8px;
+    font-weight: 600;
+  }
+  .careers-job-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .careers-dept-badge {
+    background: rgba(0, 216, 255, 0.08);
+    color: var(--accent, #00D8FF);
+    border-radius: 50px;
+    padding: 4px 14px;
+    font-size: 0.78rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+  }
+  .careers-job-detail {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    color: rgba(244, 248, 255, 0.55);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .careers-job-detail i {
+    color: rgba(244, 248, 255, 0.35);
+    font-size: 0.82rem;
+  }
+  .careers-view-link {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    color: var(--accent, #00D8FF);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    white-space: nowrap;
+  }
+  .careers-view-link:hover {
+    color: #fff;
+    text-shadow: 0 0 12px rgba(0, 216, 255, 0.3);
+  }
+
+  /* CTA Card */
+  .careers-cta-card {
+    text-align: center;
+  }
+  .careers-cta-card p {
+    max-width: 540px;
+    margin: 0 auto 24px;
+  }
+  .careers-cta-btn {
+    display: inline-block;
+    padding: 14px 38px;
+    background: var(--accent, #00D8FF);
+    color: #050816;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 4px 20px rgba(0, 216, 255, 0.25);
+  }
+  .careers-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 216, 255, 0.35);
+    background: #2ae4ff;
+  }
+
+  @media (max-width: 600px) {
+    .glass-card { padding: 28px 20px; }
+    .careers-job-row { padding: 18px 12px; flex-direction: column; align-items: flex-start; }
+    .careers-view-link { align-self: flex-end; }
+  }
+</style>
+
+<!-- Hero -->
+<section class="careers-hero">
+  <div class="hero-icon">
+    <i class="fa-solid fa-briefcase"></i>
+  </div>
+  <h1>Join Our Team</h1>
+  <p>Help us build the future of luxury travel. We're looking for passionate people who want to redefine how the world explores extraordinary destinations.</p>
+</section>
+
+<!-- Main Content -->
+<div class="careers-container">
+
+  <!-- Why Havenly? -->
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-sparkles"></i> Why Havenly?</h2>
+    <p>
+      At Havenly, we're not just building a travel platform — we're crafting the next generation of unforgettable experiences for millions of travelers worldwide. Our team operates at the intersection of hospitality, technology, and design, tackling complex challenges that push the boundaries of what's possible in the travel industry. Every team member has a direct impact on the product and the travelers who rely on us to deliver extraordinary stays around the globe.
+    </p>
+    <p>
+      We believe that great work happens when talented people are trusted, supported, and inspired. That's why we've built a culture that prioritizes autonomy, creative freedom, and continuous growth. From our engineering team in Berlin to our design studio in Lisbon, Havenly is a truly global company where diverse perspectives fuel innovation. If you're looking for a place where your work genuinely matters and where ambition meets purpose, you've found it.
+    </p>
+    <div class="careers-benefits-grid">
+      <div class="careers-value-card">
+        <div class="value-icon"><i class="fa-solid fa-globe"></i></div>
+        <h3>Remote-First Culture</h3>
+        <p>Work from anywhere in the world. Our distributed team spans 18 countries, and we provide premium home-office stipends plus co-working space access in major cities.</p>
+      </div>
+      <div class="careers-value-card">
+        <div class="value-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+        <h3>Competitive Compensation</h3>
+        <p>Top-of-market salaries benchmarked quarterly, meaningful equity grants, annual performance bonuses, and a comprehensive benefits package that covers you and your family.</p>
+      </div>
+      <div class="careers-value-card">
+        <div class="value-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <h3>Growth &amp; Learning</h3>
+        <p>$5,000 annual learning budget for courses, conferences, and books. Dedicated mentorship programs, internal mobility paths, and quarterly hackathons to explore new ideas.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Open Positions -->
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-clipboard-list"></i> Open Positions</h2>
+    <p style="margin-bottom: 28px;">We're growing fast and looking for exceptional talent to join our mission. Explore our current openings below and find the role that's right for you.</p>
+
+    <div class="careers-job-row">
+      <div class="careers-job-info">
+        <h3>Senior Frontend Developer</h3>
+        <div class="careers-job-meta">
+          <span class="careers-dept-badge">Engineering</span>
+          <span class="careers-job-detail"><i class="fa-solid fa-location-dot"></i> Remote</span>
+          <span class="careers-job-detail"><i class="fa-solid fa-clock"></i> Full-time</span>
+        </div>
+      </div>
+      <a href="#" class="careers-view-link">View Details →</a>
+    </div>
+
+    <div class="careers-job-row">
+      <div class="careers-job-info">
+        <h3>Product Designer</h3>
+        <div class="careers-job-meta">
+          <span class="careers-dept-badge">Design</span>
+          <span class="careers-job-detail"><i class="fa-solid fa-location-dot"></i> Remote</span>
+          <span class="careers-job-detail"><i class="fa-solid fa-clock"></i> Full-time</span>
+        </div>
+      </div>
+      <a href="#" class="careers-view-link">View Details →</a>
+    </div>
+
+    <div class="careers-job-row">
+      <div class="careers-job-info">
+        <h3>Data Engineer</h3>
+        <div class="careers-job-meta">
+          <span class="careers-dept-badge">Engineering</span>
+          <span class="careers-job-detail"><i class="fa-solid fa-location-dot"></i> Remote</span>
+          <span class="careers-job-detail"><i class="fa-solid fa-clock"></i> Full-time</span>
+        </div>
+      </div>
+      <a href="#" class="careers-view-link">View Details →</a>
+    </div>
+
+    <div class="careers-job-row">
+      <div class="careers-job-info">
+        <h3>Community Manager</h3>
+        <div class="careers-job-meta">
+          <span class="careers-dept-badge">Operations</span>
+          <span class="careers-job-detail"><i class="fa-solid fa-location-dot"></i> Remote</span>
+          <span class="careers-job-detail"><i class="fa-solid fa-clock"></i> Full-time</span>
+        </div>
+      </div>
+      <a href="#" class="careers-view-link">View Details →</a>
+    </div>
+  </div>
+
+  <!-- Our Culture -->
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-hand-holding-heart"></i> Our Culture</h2>
+    <p>
+      Culture isn't just a buzzword at Havenly — it's the foundation of everything we build. We foster an environment where curiosity is celebrated, transparency is the default, and every voice carries weight regardless of title or tenure. Our quarterly all-hands retreats bring the entire company together in destinations we curate on our own platform, because we believe in living the experiences we create. From surfing sessions in Bali to wine tastings in Tuscany, our team retreats are legendary for a reason.
+    </p>
+    <p style="margin-bottom: 28px;">
+      We also believe that sustainable performance requires balance. That's why we've built our benefits around the whole person — not just the employee. Whether it's taking a mental health day, using your wellness stipend for a yoga retreat, or diving into a new skill with your learning budget, we want you to thrive both inside and outside of work.
+    </p>
+    <div class="careers-benefits-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+      <div class="careers-value-card">
+        <div class="value-icon"><i class="fa-solid fa-umbrella-beach"></i></div>
+        <h3>Unlimited PTO</h3>
+        <p>Take the time you need to recharge. We trust our team to manage their own schedules and deliver exceptional results.</p>
+      </div>
+      <div class="careers-value-card">
+        <div class="value-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+        <h3>Health &amp; Wellness</h3>
+        <p>Comprehensive medical, dental, and vision coverage plus a $1,200 annual wellness stipend for gym, therapy, or fitness.</p>
+      </div>
+      <div class="careers-value-card">
+        <div class="value-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h3>Learning Budget</h3>
+        <p>$5,000 per year for courses, conferences, certifications, and books. Invest in your growth on us — no approvals needed.</p>
+      </div>
+      <div class="careers-value-card">
+        <div class="value-icon"><i class="fa-solid fa-plane"></i></div>
+        <h3>Team Retreats</h3>
+        <p>Quarterly company retreats at Havenly-curated destinations worldwide. Connect, collaborate, and create memories together.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA: Don't See Your Role? -->
+  <div class="glass-card careers-cta-card">
+    <h2 style="justify-content: center;"><i class="fa-solid fa-envelope-open-text"></i> Don't See Your Role?</h2>
+    <p>
+      We're always looking for exceptional people who share our passion for travel and technology. If you don't see a position that fits your skill set, we'd still love to hear from you. Send your resume and a brief introduction to <strong style="color: var(--accent, #00D8FF);">careers@havenly.com</strong> and tell us how you'd make an impact at Havenly. Our talent team reviews every submission personally and will reach out if there's a match.
+    </p>
+    <a href="/contact" class="careers-cta-btn">Get in Touch</a>
+  </div>
+
+</div>

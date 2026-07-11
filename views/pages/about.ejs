@@ -1,0 +1,359 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- ============ ABOUT US ============ -->
+<style>
+  .about-hero {
+    text-align: center;
+    padding: 100px 20px 60px;
+    background: linear-gradient(180deg, rgba(0, 216, 255, 0.07) 0%, transparent 70%);
+    position: relative;
+  }
+  .about-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0, 216, 255, 0.10) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .about-hero .hero-icon {
+    font-size: 3rem;
+    color: var(--accent, #00D8FF);
+    margin-bottom: 18px;
+    filter: drop-shadow(0 0 18px rgba(0, 216, 255, 0.35));
+  }
+  .about-hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 14px;
+    letter-spacing: -0.5px;
+  }
+  .about-hero p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.15rem;
+    color: rgba(244, 248, 255, 0.68);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .glass-card {
+    background: rgba(13, 20, 45, 0.72);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(0, 216, 255, 0.09);
+    border-radius: 18px;
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+    padding: 40px;
+    margin-bottom: 32px;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .glass-card:hover {
+    border-color: rgba(0, 216, 255, 0.18);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45), 0 0 30px rgba(0, 216, 255, 0.04);
+    transform: translateY(-2px);
+  }
+  .glass-card h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.65rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .glass-card h2 i {
+    color: var(--accent, #00D8FF);
+    font-size: 1.3rem;
+  }
+  .glass-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.02rem;
+    color: rgba(244, 248, 255, 0.68);
+    line-height: 1.75;
+    margin: 0 0 16px;
+  }
+  .glass-card p:last-child { margin-bottom: 0; }
+
+  /* Stats Row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .stat-card {
+    background: rgba(13, 20, 45, 0.72);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(0, 216, 255, 0.09);
+    border-radius: 18px;
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+    padding: 36px 28px;
+    text-align: center;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    top: -40%; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 120px;
+    background: radial-gradient(circle, rgba(0, 216, 255, 0.10) 0%, transparent 70%);
+    pointer-events: none;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .stat-card:hover {
+    border-color: rgba(0, 216, 255, 0.22);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45), 0 0 40px rgba(0, 216, 255, 0.06);
+  }
+  .stat-card:hover::after {
+    opacity: 1.5;
+    width: 160px; height: 160px;
+  }
+  .stat-number {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--accent, #00D8FF);
+    display: block;
+    margin-bottom: 8px;
+    text-shadow: 0 0 28px rgba(0, 216, 255, 0.25);
+  }
+  .stat-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.97rem;
+    color: rgba(244, 248, 255, 0.68);
+    letter-spacing: 0.3px;
+  }
+
+  /* Values Grid */
+  .values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+  }
+  .value-card {
+    background: rgba(13, 20, 45, 0.55);
+    border: 1px solid rgba(0, 216, 255, 0.07);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .value-card:hover {
+    border-color: rgba(0, 216, 255, 0.18);
+    transform: translateY(-3px);
+    background: rgba(13, 20, 45, 0.68);
+  }
+  .value-card .value-icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    background: rgba(0, 216, 255, 0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 1.4rem;
+    color: var(--accent, #00D8FF);
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .value-card:hover .value-icon {
+    background: rgba(0, 216, 255, 0.14);
+    box-shadow: 0 0 20px rgba(0, 216, 255, 0.12);
+  }
+  .value-card h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 10px;
+  }
+  .value-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    color: rgba(244, 248, 255, 0.58);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* Team Section */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 28px;
+    margin-top: 24px;
+  }
+  .team-member {
+    text-align: center;
+    padding: 28px 16px;
+    border-radius: 16px;
+    background: rgba(0, 216, 255, 0.03);
+    border: 1px solid rgba(0, 216, 255, 0.06);
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .team-member:hover {
+    border-color: rgba(0, 216, 255, 0.15);
+    background: rgba(0, 216, 255, 0.06);
+    transform: translateY(-2px);
+  }
+  .team-avatar {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0, 216, 255, 0.18), rgba(0, 216, 255, 0.06));
+    border: 2px solid rgba(0, 216, 255, 0.20);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--accent, #00D8FF);
+    margin-bottom: 14px;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .team-member:hover .team-avatar {
+    border-color: rgba(0, 216, 255, 0.40);
+    box-shadow: 0 0 24px rgba(0, 216, 255, 0.15);
+  }
+  .team-member h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 4px;
+  }
+  .team-member span {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    color: rgba(244, 248, 255, 0.50);
+  }
+
+  @media (max-width: 600px) {
+    .glass-card { padding: 28px 20px; }
+    .stat-card { padding: 28px 18px; }
+    .stat-number { font-size: 2rem; }
+  }
+</style>
+
+<!-- Hero -->
+<section class="about-hero">
+  <div class="hero-icon">
+    <i class="fa-solid fa-building"></i>
+  </div>
+  <h1>About Havenly</h1>
+  <p>Redefining luxury travel with handpicked vacation rentals across the globe. Your perfect escape, curated with care.</p>
+</section>
+
+<!-- Main Content -->
+<div class="about-container">
+
+  <!-- Our Story -->
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-book-open"></i> Our Story</h2>
+    <p>
+      Havenly was founded in 2019 with a simple yet bold vision: to transform the way discerning travelers discover and
+      book vacation rentals. Our founders — a group of avid travelers and technology entrepreneurs — grew frustrated with
+      the fragmented landscape of luxury accommodations. They saw an opportunity to build a platform that marries the warmth
+      of a personal concierge with the power of cutting-edge technology, creating a seamless bridge between exceptional
+      property owners and guests who demand nothing less than perfection.
+    </p>
+    <p>
+      What began as a curated collection of 200 handpicked villas along the Mediterranean coast has evolved into a global
+      marketplace spanning over 50 countries and 10,000 properties. From clifftop retreats in Santorini to secluded
+      rainforest lodges in Costa Rica, every listing on Havenly undergoes a rigorous 87-point quality inspection. We don't
+      just list properties — we guarantee experiences. Our dedicated team of hospitality experts personally visits each
+      property, ensuring that every detail, from thread count to sunset views, meets the exacting standards our guests
+      have come to expect.
+    </p>
+  </div>
+
+  <!-- Our Mission -->
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-bullseye"></i> Our Mission</h2>
+    <p>
+      Our mission is to make extraordinary travel accessible to every adventurer. We believe that the world's most
+      remarkable stays shouldn't be hidden behind exclusivity or complexity. Havenly exists to democratize luxury —
+      connecting travelers with one-of-a-kind properties through a transparent, trusted, and beautifully intuitive
+      platform. We empower property owners to share their spaces with confidence, and we promise our guests that every
+      booking on Havenly will exceed their expectations. Travel should be transformative, and we're here to make sure it is.
+    </p>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-number">10,000+</span>
+      <span class="stat-label">Premium Properties</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number">50+</span>
+      <span class="stat-label">Countries Worldwide</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-number">1M+</span>
+      <span class="stat-label">Happy Guests</span>
+    </div>
+  </div>
+
+  <!-- Our Values -->
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-heart"></i> Our Values</h2>
+    <p style="margin-bottom: 28px;">
+      Everything we build is guided by the principles that define who we are.
+    </p>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3>Trust &amp; Safety</h3>
+        <p>Every property is verified, every transaction is protected, and every guest is covered by our comprehensive Havenly Guarantee. Your peace of mind is our priority.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"><i class="fa-solid fa-gem"></i></div>
+        <h3>Quality</h3>
+        <p>We maintain an uncompromising 87-point inspection standard. Only the top 5% of applicant properties earn a place on our platform, ensuring consistent excellence.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"><i class="fa-solid fa-people-group"></i></div>
+        <h3>Community</h3>
+        <p>We foster genuine connections between hosts and guests, building a global community united by a shared love of authentic travel and cultural exchange.</p>
+      </div>
+      <div class="value-card">
+        <div class="value-icon"><i class="fa-solid fa-rocket"></i></div>
+        <h3>Innovation</h3>
+        <p>From AI-powered property matching to immersive virtual tours, we continuously push the boundaries of what a travel platform can offer.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Meet the Team -->
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-users"></i> Meet the Team</h2>
+    <p>The passionate minds behind Havenly's vision and growth.</p>
+    <div class="team-grid">
+      <div class="team-member">
+        <div class="team-avatar">A</div>
+        <h4>Avishek Amin</h4>
+        <span>Co-Founder &amp; CEO</span>
+      </div>
+      <div class="team-member">
+        <div class="team-avatar">P</div>
+        <h4>Priyansh Agarwal</h4>
+        <span>Chief Product Officer</span>
+      </div>
+      <div class="team-member">
+        <div class="team-avatar">S</div>
+        <h4>Sandeep Pathak</h4>
+        <span>Head of Engineering</span>
+      </div>
+    </div>
+  </div>
+
+</div>

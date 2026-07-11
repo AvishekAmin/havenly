@@ -1,0 +1,348 @@
+<% layout("/layouts/boilerplate") %>
+
+<!-- ============ CANCELLATION OPTIONS ============ -->
+<style>
+  .cancel-hero {
+    text-align: center;
+    padding: 100px 20px 60px;
+    background: linear-gradient(180deg, rgba(0, 216, 255, 0.07) 0%, transparent 70%);
+    position: relative;
+  }
+  .cancel-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0, 216, 255, 0.10) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .cancel-hero .hero-icon {
+    font-size: 3rem;
+    color: var(--accent, #00D8FF);
+    margin-bottom: 18px;
+    filter: drop-shadow(0 0 18px rgba(0, 216, 255, 0.35));
+  }
+  .cancel-hero h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 14px;
+    letter-spacing: -0.5px;
+  }
+  .cancel-hero p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.15rem;
+    color: rgba(244, 248, 255, 0.68);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .cancel-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .cancel-glass-card {
+    background: rgba(13, 20, 45, 0.72);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(0, 216, 255, 0.09);
+    border-radius: 18px;
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+    padding: 40px;
+    margin-bottom: 32px;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .cancel-glass-card:hover {
+    border-color: rgba(0, 216, 255, 0.18);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45), 0 0 30px rgba(0, 216, 255, 0.04);
+    transform: translateY(-2px);
+  }
+  .cancel-glass-card h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.65rem;
+    color: var(--text-primary, #f4f8ff);
+    margin: 0 0 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cancel-glass-card h2 i {
+    color: var(--accent, #00D8FF);
+    font-size: 1.3rem;
+  }
+  .cancel-glass-card p {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.02rem;
+    color: rgba(244, 248, 255, 0.68);
+    line-height: 1.75;
+    margin: 0 0 16px;
+  }
+  .cancel-glass-card p:last-child { margin-bottom: 0; }
+
+  /* Cancellation Policies Grid */
+  .cancel-policies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+  .cancel-policy-card {
+    background: rgba(13, 20, 45, 0.72);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border-radius: 18px;
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+    padding: 36px 28px;
+    text-align: center;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(0, 216, 255, 0.09);
+    border-left: 1px solid rgba(0, 216, 255, 0.09);
+    border-right: 1px solid rgba(0, 216, 255, 0.09);
+  }
+  .cancel-policy-card.flexible-policy {
+    border-top: 4px solid var(--success, #2ed573);
+  }
+  .cancel-policy-card.moderate-policy {
+    border-top: 4px solid var(--warning, #ffa502);
+  }
+  .cancel-policy-card.strict-policy {
+    border-top: 4px solid var(--danger, #ff4757);
+  }
+  .cancel-policy-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45), 0 0 40px rgba(0, 216, 255, 0.05);
+  }
+  .cancel-policy-card.flexible-policy:hover {
+    border-color: rgba(46, 213, 115, 0.3);
+    border-top: 4px solid var(--success, #2ed573);
+  }
+  .cancel-policy-card.moderate-policy:hover {
+    border-color: rgba(255, 165, 2, 0.3);
+    border-top: 4px solid var(--warning, #ffa502);
+  }
+  .cancel-policy-card.strict-policy:hover {
+    border-color: rgba(255, 71, 87, 0.3);
+    border-top: 4px solid var(--danger, #ff4757);
+  }
+  .cancel-policy-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+  }
+  .flexible-policy .cancel-policy-badge {
+    background: rgba(46, 213, 115, 0.1);
+    color: var(--success, #2ed573);
+  }
+  .moderate-policy .cancel-policy-badge {
+    background: rgba(255, 165, 2, 0.1);
+    color: var(--warning, #ffa502);
+  }
+  .strict-policy .cancel-policy-badge {
+    background: rgba(255, 71, 87, 0.1);
+    color: var(--danger, #ff4757);
+  }
+  .cancel-refund-stat {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .flexible-policy .cancel-refund-stat {
+    color: var(--success, #2ed573);
+    text-shadow: 0 0 28px rgba(46, 213, 115, 0.2);
+  }
+  .moderate-policy .cancel-refund-stat {
+    color: var(--warning, #ffa502);
+    text-shadow: 0 0 28px rgba(255, 165, 2, 0.2);
+  }
+  .strict-policy .cancel-refund-stat {
+    color: var(--danger, #ff4757);
+    text-shadow: 0 0 28px rgba(255, 71, 87, 0.2);
+  }
+  .cancel-policy-timeline {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05rem;
+    color: var(--text-primary, #f4f8ff);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .cancel-policy-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.92rem;
+    color: rgba(244, 248, 255, 0.58);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* Steps List */
+  .cancel-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+  }
+  .cancel-step:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  .cancel-step-number {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 50%;
+    background: var(--accent, #00D8FF);
+    color: #050816;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+  .cancel-step:hover .cancel-step-number {
+    box-shadow: 0 0 16px rgba(0, 216, 255, 0.30);
+  }
+  .cancel-step-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.02rem;
+    color: rgba(244, 248, 255, 0.68);
+    line-height: 1.75;
+  }
+  .cancel-step-text strong {
+    color: var(--text-primary, #f4f8ff);
+  }
+
+  /* CTA */
+  .cancel-cta-text {
+    text-align: center;
+  }
+  .cancel-cta-text h2 {
+    justify-content: center;
+  }
+  .cancel-cta-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #00D8FF, #0070F3);
+    border: none;
+    border-radius: 50px;
+    padding: 12px 32px;
+    color: #050816;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    margin-top: 8px;
+  }
+  .cancel-cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 216, 255, 0.30);
+    color: #050816;
+  }
+
+  @media (max-width: 600px) {
+    .cancel-glass-card { padding: 28px 20px; }
+    .cancel-policy-card { padding: 28px 20px; }
+    .cancel-step { gap: 12px; }
+  }
+</style>
+
+<!-- Hero -->
+<section class="cancel-hero">
+  <div class="hero-icon">
+    <i class="fa-solid fa-calendar-xmark"></i>
+  </div>
+  <h1>Cancellation Policies</h1>
+  <p>Learn about our guest-friendly cancellation options and how we provide peace of mind when travel plans change unexpectedly.</p>
+</section>
+
+<!-- Main Content -->
+<div class="cancel-container">
+
+  <!-- Overview -->
+  <div class="cancel-glass-card">
+    <h2><i class="fa-solid fa-circle-info"></i> Policy Overview</h2>
+    <p>
+      We understand that plans can change, and flexibility is key to a stress-free travel experience. To balance the needs of both our guests and our dedicated property hosts, Havenly offers three standard cancellation policy tiers: **Flexible**, **Moderate**, and **Strict**. The specific policy tier is set by the host of each property and is clearly displayed on the listing page and in your checkout breakdown before you complete a booking.
+    </p>
+    <p>
+      All refund timelines are calculated based on the local check-in time of the property (typically 3:00 PM unless otherwise specified in the property rules). In the event of unforeseen global events, natural disasters, or severe government travel restrictions, our **Extenuating Circumstances Policy** may supersede the property's standard policy, allowing for full refunds or travel credits.
+    </p>
+  </div>
+
+  <!-- Tiers Grid -->
+  <div class="cancel-policies-grid">
+    <!-- Flexible -->
+    <div class="cancel-policy-card flexible-policy">
+      <span class="cancel-policy-badge">Flexible</span>
+      <span class="cancel-refund-stat">100%</span>
+      <p class="cancel-policy-timeline">Refund up to 24h prior</p>
+      <p class="cancel-policy-desc">Cancel at least 24 hours before check-in for a full refund of the accommodation fees. Cancellations made within 24 hours of check-in are non-refundable for the first night, with remaining nights refunded at 50%.</p>
+    </div>
+
+    <!-- Moderate -->
+    <div class="cancel-policy-card moderate-policy">
+      <span class="cancel-policy-badge">Moderate</span>
+      <span class="cancel-refund-stat">100%</span>
+      <p class="cancel-policy-timeline">Refund up to 5 days prior</p>
+      <p class="cancel-policy-desc">Cancel at least 5 full days before local check-in time to receive a 100% refund. Cancellations made within 5 days of check-in are non-refundable for the first 3 nights, with remaining nights refunded at 50%.</p>
+    </div>
+
+    <!-- Strict -->
+    <div class="cancel-policy-card strict-policy">
+      <span class="cancel-policy-badge">Strict</span>
+      <span class="cancel-refund-stat">50%</span>
+      <p class="cancel-policy-timeline">Refund up to 14 days prior</p>
+      <p class="cancel-policy-desc">Cancel at least 14 days before check-in to receive a 50% refund. Cancellations made less than 14 days before check-in, or after check-in has occurred, are completely non-refundable.</p>
+    </div>
+  </div>
+
+  <!-- How to Cancel -->
+  <div class="cancel-glass-card">
+    <h2><i class="fa-solid fa-list-check"></i> How to Cancel a Booking</h2>
+
+    <div class="cancel-step">
+      <div class="cancel-step-number">1</div>
+      <div class="cancel-step-text"><strong>Navigate to your dashboard.</strong> Log in to your Havenly account, click on your profile picture in the top-right corner, and select "Trips" from the dropdown menu to view all your upcoming, active, and past reservations.</div>
+    </div>
+
+    <div class="cancel-step">
+      <div class="cancel-step-number">2</div>
+      <div class="cancel-step-text"><strong>Select the reservation.</strong> Find the booking you wish to cancel and click "Manage Reservation" or "View details" to open the booking page. Scroll down to the "Cancellation Policy" section to review the refund breakdown for your specific cancellation date.</div>
+    </div>
+
+    <div class="cancel-step">
+      <div class="cancel-step-number">3</div>
+      <div class="cancel-step-text"><strong>Initiate cancellation.</strong> Click the "Cancel Booking" button. You will be prompted to select a reason for your cancellation (this helps us improve our platform and coordinate with the host) and review the final refund amount.</div>
+    </div>
+
+    <div class="cancel-step">
+      <div class="cancel-step-number">4</div>
+      <div class="cancel-step-text"><strong>Confirm and receive your refund.</strong> Click "Confirm Cancellation" to finalize. Your reservation will be updated immediately, and our payment system will process your refund back to your original payment method. Depending on your bank, refunds usually arrive in 5–10 business days.</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cancel-glass-card cancel-cta-text">
+    <h2><i class="fa-solid fa-circle-question"></i> Need Assistance?</h2>
+    <p>If you're facing extenuating circumstances, visa delays, medical emergencies, or have a dispute regarding a cancellation, our customer support team is here to help you navigate your options. We're available 24/7 to ensure a fair resolution.</p>
+    <a href="/contact" class="cancel-cta-btn">Contact Support Team</a>
+  </div>
+
+</div>
