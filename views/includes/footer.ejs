@@ -1,15 +1,115 @@
-<footer class="mt-auto">
-    <div class="f-info">
-        <div class="f-info-socials">
-            <i class="fa-brands fa-square-facebook"></i>
-            <i class="fa-brands fa-square-instagram"></i>
-            <i class="fa-brands fa-square-linkedin"></i>
+<footer class="site-footer mt-auto">
+    <div class="container footer-main">
+
+        <!-- Footer Grid -->
+        <div class="row gy-4 pb-4">
+
+            <!-- Column 1: Brand -->
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-brand">
+                    <h3 class="footer-logo">
+                        <i class="fa-solid fa-house-chimney me-2" style="color: var(--accent); filter: drop-shadow(0 0 6px rgba(0, 216, 255, 0.45));"></i>Havenly
+                    </h3>
+                    <p class="footer-tagline mb-3">
+                        Discover extraordinary places to stay around the world. Handpicked luxury rentals for unforgettable getaways.
+                    </p>
+                    <!-- Social Icons -->
+                    <div class="footer-socials">
+                        <a href="https://www.facebook.com/avishek207" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/avishek.______" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/avishekamin" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://x.com/avishek______" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Twitter">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@Avishekkk" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="mailto:avishekamin207@gmail.com" class="social-icon" aria-label="Email">
+                            <i class="fa-solid fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 2: Explore -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <h6 class="footer-heading">Explore</h6>
+                <ul class="footer-links">
+                    <li><a href="/listings">Explore</a></li>
+                    <li><a href="/listings/new">Add Your Home</a></li>
+                    <li><a href="/listings">Destinations</a></li>
+                    <li><a href="/listings">Collections</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 3: Support -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <h6 class="footer-heading">Support</h6>
+                <ul class="footer-links">
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Safety</a></li>
+                    <li><a href="#">Cancellation Options</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 4: Company -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <h6 class="footer-heading">Company</h6>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Terms & Privacy</a></li>
+                </ul>
+            </div>
+
+            <!-- Column 5: Newsletter -->
+            <div class="col-lg-3 col-md-12">
+                <h6 class="footer-heading">Stay in the loop</h6>
+                <p class="footer-tagline mb-3 text-secondary-custom">
+                    Get exclusive travel deals, destination inspiration, and updates.
+                </p>
+                <form id="newsletter-form" class="newsletter-form">
+                    <div class="input-group">
+                        <input 
+                            type="email" 
+                            id="newsletter-email"
+                            class="form-control newsletter-input" 
+                            placeholder="Your email address" 
+                            aria-label="Your email address"
+                            required
+                        >
+                        <button class="btn btn-subscribe" type="submit">Subscribe</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="f-info-brand">&copy; Havenly Private Limited</div>
-        <div class="f-info-links">
-            <a href="/privacy">Privacy</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="/terms">Terms</a>
+
+        <hr class="footer-divider">
+
+        <!-- Bottom Bar -->
+        <div class="footer-bottom">
+            <!-- Copyright -->
+            <p class="footer-copyright">
+                &copy; <%= new Date().getFullYear() %> Havenly. All rights reserved.
+            </p>
+
+            <!-- Bottom Links -->
+            <div class="footer-bottom-links">
+                <a href="#">Privacy Policy</a>
+                <span class="divider-dot">&bull;</span>
+                <a href="#">Terms of Service</a>
+                <span class="divider-dot">&bull;</span>
+                <a href="#">Cookie Policy</a>
+            </div>
         </div>
+
     </div>
 </footer>

@@ -1,137 +1,375 @@
 <% layout("layouts/boilerplate") %>
 
+<!-- ===== FILTER BAR ===== -->
 <div id="filters">
     <div class="filter">
-        <div>
-            <i class="fa-solid fa-fire"></i>
-        </div>
+        <i class="fa-solid fa-fire"></i>
         <p>Trending</p>
     </div>
-
     <div class="filter">
-        <div>
-            <i class="fa-solid fa-bed"></i>
-        </div>
+        <i class="fa-solid fa-bed"></i>
         <p>Rooms</p>
     </div>
-
     <div class="filter">
-        <div>
-            <i class="fa-solid fa-mountain-city"></i>
-        </div>
+        <i class="fa-solid fa-mountain-city"></i>
         <p>Cities</p>
     </div>
-
     <div class="filter">
-        <div>
-            <i class="fa-solid fa-mountain"></i>
-        </div>
+        <i class="fa-solid fa-mountain"></i>
         <p>Mountains</p>
     </div>
-
     <div class="filter">
-        <div>
-            <i class="fa-brands fa-fort-awesome"></i>
-        </div>
+        <i class="fa-brands fa-fort-awesome"></i>
         <p>Castles</p>
     </div>
-
     <div class="filter">
-        <div>
-            <i class="fa-solid fa-person-swimming"></i>
-        </div>
+        <i class="fa-solid fa-person-swimming"></i>
         <p>Pools</p>
     </div>
-
     <div class="filter">
-        <div>
-            <i class="fa-solid fa-campground"></i>
-        </div>
+        <i class="fa-solid fa-campground"></i>
         <p>Camping</p>
     </div>
-
     <div class="filter">
-        <div>
-            <i class="fa-solid fa-cow"></i>
-        </div>
+        <i class="fa-solid fa-cow"></i>
         <p>Farms</p>
     </div>
-
     <div class="filter">
-        <div>
-            <i class="fa-solid fa-snowflake"></i>
-        </div>
+        <i class="fa-solid fa-snowflake"></i>
         <p>Arctic</p>
     </div>
-
     <div class="filter">
-        <div>
-            <i class="fa-solid fa-umbrella-beach"></i>
-        </div>
+        <i class="fa-solid fa-umbrella-beach"></i>
         <p>Beach</p>
     </div>
-
     <div class="filter">
-        <div>
-            <i class="fa-solid fa-tree"></i>
-        </div>
+        <i class="fa-solid fa-tree"></i>
         <p>Treehouse</p>
     </div>
-
     <div class="filter">
-        <div>
-            <i class="fa-solid fa-igloo"></i>
-        </div>
+        <i class="fa-solid fa-igloo"></i>
         <p>Domes</p>
     </div>
-
     <div class="filter">
-        <div>
-            <i class="fa-solid fa-sailboat"></i>
-        </div>
+        <i class="fa-solid fa-sailboat"></i>
         <p>Boats</p>
     </div>
-
-    <div class="tax-switch">
-        <div class="form-check-reverse form-switch">
-            <input 
-                class="form-check-input" 
-                type="checkbox" 
-                role="switch" 
-                id="switchCheckDefault"
-            >
-            <label 
-                class="form-check-label" 
-                for="switchCheckDefault"
-            >
-            Display total after taxes
-            </label>
-        </div>
+    <div class="filter">
+        <i class="fa-solid fa-hotel"></i>
+        <p>Villa</p>
+    </div>
+    <div class="filter">
+        <i class="fa-solid fa-cable-car"></i>
+        <p>Cable-Car</p>
     </div>
 </div>
-<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 mt-2">
+
+<!-- ===== PREMIUM SEARCH & FILTERS BAR ===== -->
+<div class="premium-search-wrapper reveal">
+    <div class="premium-search-container">
+        <!-- Section 1: Where to -->
+        <div class="search-section" id="search-dest-section">
+            <div class="search-icon-circle">
+                <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div class="search-section-info">
+                <span class="search-section-label">Where to?</span>
+                <span class="search-section-val" id="val-destination">Search destinations</span>
+            </div>
+        </div>
+
+        <div class="search-section-divider"></div>
+
+        <!-- Section 2: Dates -->
+        <div class="search-section" id="search-dates-section">
+            <div class="search-icon-circle">
+                <i class="fa-solid fa-calendar-days"></i>
+            </div>
+            <div class="search-section-info">
+                <span class="search-section-label">Check in – Check out</span>
+                <span class="search-section-val" id="val-dates">Add dates</span>
+            </div>
+        </div>
+
+        <div class="search-section-divider"></div>
+
+        <!-- Section 3: Guests -->
+        <div class="search-section" id="search-guests-section">
+            <div class="search-icon-circle">
+                <i class="fa-solid fa-user-group"></i>
+            </div>
+            <div class="search-section-info">
+                <span class="search-section-label">Guests</span>
+                <span class="search-section-val" id="val-guests">Add guests</span>
+            </div>
+        </div>
+
+        <!-- Search Submit Button -->
+        <button class="search-submit-btn" id="search-bar-submit" aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+    </div>
+
+    <!-- ===== DROPDOWN PANELS ===== -->
+    <!-- Destination Dropdown -->
+    <div class="search-panel destination-panel" id="panel-destination">
+        <div class="destination-search-box">
+            <i class="fa-solid fa-magnifying-glass search-box-icon"></i>
+            <input type="text" id="dest-input" placeholder="Search destinations, cities, places..." autocomplete="off">
+        </div>
+        <div class="popular-destinations-title">Popular destinations</div>
+        <div class="popular-destinations-list">
+            <div class="popular-dest-item" data-value="Goa, India">
+                <img src="https://images.unsplash.com/photo-1496566084516-c5b96fcbd5c8?w=120&auto=format&fit=crop&q=80" alt="Goa" class="dest-thumb">
+                <div class="dest-item-info">
+                    <span class="dest-item-name">Goa, India</span>
+                    <span class="dest-item-desc">Beaches, villas & more</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square dest-item-arrow"></i>
+            </div>
+            <div class="popular-dest-item" data-value="Manali, Himachal Pradesh">
+                <img src="https://images.unsplash.com/photo-1597167231350-d057a45dc868?w=120&auto=format&fit=crop&q=80" alt="Manali" class="dest-thumb">
+                <div class="dest-item-info">
+                    <span class="dest-item-name">Manali, Himachal Pradesh</span>
+                    <span class="dest-item-desc">Mountains, nature & adventure</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square dest-item-arrow"></i>
+            </div>
+            <div class="popular-dest-item" data-value="Udaipur, Rajasthan">
+                <img src="https://images.unsplash.com/photo-1589901164570-f9de6556e1c1?w=120&auto=format&fit=crop&q=80" alt="Udaipur" class="dest-thumb">
+                <div class="dest-item-info">
+                    <span class="dest-item-name">Udaipur, Rajasthan</span>
+                    <span class="dest-item-desc">Lakes, palaces & heritage</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square dest-item-arrow"></i>
+            </div>
+            <div class="popular-dest-item" data-value="Coorg, Karnataka">
+                <img src="https://images.unsplash.com/photo-1655128629694-3f94cc94b544?w=120&auto=format&fit=crop&q=80" alt="Coorg" class="dest-thumb">
+                <div class="dest-item-info">
+                    <span class="dest-item-name">Coorg, Karnataka</span>
+                    <span class="dest-item-desc">Coffee estates & greenery</span>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square dest-item-arrow"></i>
+            </div>
+        </div>
+        <div class="explore-all-dest" id="explore-all-btn">
+            <i class="fa-solid fa-compass"></i> Explore all destinations
+        </div>
+    </div>
+
+    <!-- Dates Calendar -->
+    <div class="search-panel dates-panel" id="panel-dates">
+        <div class="dates-panel-header">
+            <div class="date-header-col">
+                <span class="date-header-label">Check in</span>
+                <span class="date-header-val" id="cal-checkin-val">7 Jul 2026</span>
+            </div>
+            <i class="fa-solid fa-arrow-right date-arrow-icon"></i>
+            <div class="date-header-col">
+                <span class="date-header-label">Check out</span>
+                <span class="date-header-val" id="cal-checkout-val">18 Jul 2026</span>
+            </div>
+        </div>
+
+        <div class="calendar-wrapper">
+            <div class="calendar-nav">
+                <span class="calendar-month-title">July 2026</span>
+                <div class="cal-nav-buttons">
+                    <button class="cal-nav-btn prev" id="cal-prev" type="button"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="cal-nav-btn next" id="cal-next" type="button"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="calendar-grid">
+                <div class="calendar-day-label">Sun</div>
+                <div class="calendar-day-label">Mon</div>
+                <div class="calendar-day-label">Tue</div>
+                <div class="calendar-day-label">Wed</div>
+                <div class="calendar-day-label">Thu</div>
+                <div class="calendar-day-label">Fri</div>
+                <div class="calendar-day-label">Sat</div>
+
+                <div class="calendar-day empty">29</div>
+                <div class="calendar-day empty">30</div>
+                <div class="calendar-day" data-day="1">1</div>
+                <div class="calendar-day" data-day="2">2</div>
+                <div class="calendar-day" data-day="3">3</div>
+                <div class="calendar-day" data-day="4">4</div>
+                <div class="calendar-day" data-day="5">5</div>
+
+                <div class="calendar-day" data-day="6">6</div>
+                <div class="calendar-day range-start selected" data-day="7">7</div>
+                <div class="calendar-day range-between" data-day="8">8</div>
+                <div class="calendar-day range-between" data-day="9">9</div>
+                <div class="calendar-day range-between" data-day="10">10</div>
+                <div class="calendar-day range-between" data-day="11">11</div>
+                <div class="calendar-day range-between" data-day="12">12</div>
+
+                <div class="calendar-day range-between" data-day="13">13</div>
+                <div class="calendar-day range-between" data-day="14">14</div>
+                <div class="calendar-day range-between" data-day="15">15</div>
+                <div class="calendar-day range-between" data-day="16">16</div>
+                <div class="calendar-day range-between" data-day="17">17</div>
+                <div class="calendar-day range-end selected" data-day="18">18</div>
+                <div class="calendar-day" data-day="19">19</div>
+
+                <div class="calendar-day" data-day="20">20</div>
+                <div class="calendar-day" data-day="21">21</div>
+                <div class="calendar-day" data-day="22">22</div>
+                <div class="calendar-day" data-day="23">23</div>
+                <div class="calendar-day" data-day="24">24</div>
+                <div class="calendar-day" data-day="25">25</div>
+                <div class="calendar-day" data-day="26">26</div>
+
+                <div class="calendar-day" data-day="27">27</div>
+                <div class="calendar-day" data-day="28">28</div>
+                <div class="calendar-day" data-day="29">29</div>
+                <div class="calendar-day" data-day="30">30</div>
+                <div class="calendar-day" data-day="31">31</div>
+                <div class="calendar-day empty">1</div>
+                <div class="calendar-day empty">2</div>
+            </div>
+        </div>
+
+        <div class="flexible-dates-row">
+            <div class="flexible-dates-info">
+                <i class="fa-solid fa-calendar-plus flexible-icon"></i>
+                <div class="flexible-text-info">
+                    <span class="flexible-title">Flexible dates?</span>
+                    <span class="flexible-desc">Find stays with flexible cancellation</span>
+                </div>
+            </div>
+            <div class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexibleSwitch">
+            </div>
+        </div>
+    </div>
+
+    <!-- Guests Panel -->
+    <div class="search-panel guests-panel" id="panel-guests">
+        <div class="guests-title">Who's coming?</div>
+        
+        <!-- Adults -->
+        <div class="guest-counter-row">
+            <div class="guest-counter-info">
+                <i class="fa-solid fa-user counter-icon"></i>
+                <div class="guest-text-info">
+                    <span class="guest-type">Adults</span>
+                    <span class="guest-desc">Ages 13 or above</span>
+                </div>
+            </div>
+            <div class="counter-control">
+                <button class="counter-btn minus" data-type="adults" type="button" disabled><i class="fa-solid fa-minus"></i></button>
+                <span class="counter-val" id="count-adults">1</span>
+                <button class="counter-btn plus" data-type="adults" type="button"><i class="fa-solid fa-plus"></i></button>
+            </div>
+        </div>
+
+        <!-- Children -->
+        <div class="guest-counter-row">
+            <div class="guest-counter-info">
+                <i class="fa-solid fa-child counter-icon"></i>
+                <div class="guest-text-info">
+                    <span class="guest-type">Children</span>
+                    <span class="guest-desc">Ages 2-12</span>
+                </div>
+            </div>
+            <div class="counter-control">
+                <button class="counter-btn minus" data-type="children" type="button" disabled><i class="fa-solid fa-minus"></i></button>
+                <span class="counter-val" id="count-children">0</span>
+                <button class="counter-btn plus" data-type="children" type="button"><i class="fa-solid fa-plus"></i></button>
+            </div>
+        </div>
+
+        <!-- Infants -->
+        <div class="guest-counter-row">
+            <div class="guest-counter-info">
+                <i class="fa-solid fa-baby counter-icon"></i>
+                <div class="guest-text-info">
+                    <span class="guest-type">Infants</span>
+                    <span class="guest-desc">Under 2</span>
+                </div>
+            </div>
+            <div class="counter-control">
+                <button class="counter-btn minus" data-type="infants" type="button" disabled><i class="fa-solid fa-minus"></i></button>
+                <span class="counter-val" id="count-infants">0</span>
+                <button class="counter-btn plus" data-type="infants" type="button"><i class="fa-solid fa-plus"></i></button>
+            </div>
+        </div>
+
+        <!-- Pets -->
+        <div class="guest-counter-row">
+            <div class="guest-counter-info">
+                <i class="fa-solid fa-paw counter-icon"></i>
+                <div class="guest-text-info">
+                    <span class="guest-type">Pets</span>
+                    <span class="guest-desc">Bringing a pet?</span>
+                </div>
+            </div>
+            <div class="counter-control">
+                <button class="counter-btn minus" data-type="pets" type="button" disabled><i class="fa-solid fa-minus"></i></button>
+                <span class="counter-val" id="count-pets">0</span>
+                <button class="counter-btn plus" data-type="pets" type="button"><i class="fa-solid fa-plus"></i></button>
+            </div>
+        </div>
+
+        <button class="btn btn-guests-done" id="guests-done-btn" type="button">Done</button>
+    </div>
+</div>
+
+<!-- ===== SECTION HEADER ===== -->
+<div class="section-header reveal">
+    <h2 class="section-title">Find Your <span class="gradient-text">Perfect Stay</span></h2>
+    <p class="section-subtitle">Discover handpicked luxury homes</p>
+</div>
+
+<!-- ===== EMPTY STATE ===== -->
+<% if(allListings.length === 0) { %>
+<div class="empty-state reveal">
+    <div class="empty-state-icon"><i class="fa-solid fa-compass"></i></div>
+    <h3 class="empty-state-title">No Destinations Found</h3>
+    <p class="empty-state-text">Be the first to share an amazing place with the world.</p>
+    <a href="/listings/new" class="btn btn-primary-glow">Add Your Property</a>
+</div>
+<% } %>
+
+<!-- ===== LISTING CARDS GRID ===== -->
+<% if(allListings.length > 0) { %>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-0 listings-grid">
     <% for (let listing of allListings) { %>
-        <div class="col">
-            <a 
-                href="/listings/<%= listing._id %>" 
-                class="listing-link text-decoration-none text-dark">
-                <div class="card listing-card h-100">
-                    <img 
-                        src="<%= listing.image.url %>" 
-                        class="card-img-top listing-img" 
-                        alt="listing_image" 
+    <div class="col reveal">
+        <a href="/listings/<%= listing._id %>" class="listing-link text-decoration-none">
+            <div class="card listing-card h-100">
+                <div class="card-img-wrapper">
+                    <img
+                        src="<%= listing.image.url.replace('/upload/', '/upload/f_auto,q_auto:good,w_900/') %>"
+                        class="card-img-top listing-img"
+                        alt="<%= listing.title %>"
+                        loading="lazy"
                     >
                     <div class="card-img-overlay"></div>
-                    <div class="card-body">
-                        <p class="card-text">
-                            <b><%= listing.title %></b>
-                            <br>
-                            &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
-                            <i class="tax-info"> &nbsp; &nbsp; +18% GST </i>
-                        </p>
+                    <div class="price-badge">&#8377; <%= listing.price.toLocaleString("en-IN") %></div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title-text"><%= listing.title %></h5>
+                    <p class="card-text">
+                        <span class="card-price-text">&#8377; <%= listing.price.toLocaleString("en-IN") %> / night</span>
+                        <i class="tax-info"> &nbsp; &nbsp; +18% GST </i>
+                    </p>
+                    <div class="card-meta-row">
+                        <div class="location-badge">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <span><%= listing.location || 'Premium Location' %></span>
+                        </div>
+                        <div class="card-rating">
+                            <i class="fa-solid fa-star"></i>
+                            <span><%= (4 + Math.random()).toFixed(1) %></span>
+                        </div>
                     </div>
                 </div>
-            </a>
-        </div>
+            </div>
+        </a>
+    </div>
     <% } %>
 </div>
+<% } %>

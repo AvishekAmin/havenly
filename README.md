@@ -147,7 +147,7 @@ Interactive Map View
 
 ---
 
-## Installation
+## 🔑 Installation
 
 ```bash
 git clone https://github.com/AvishekAmin/havenly.git
@@ -158,7 +158,7 @@ nodemon app.js
 
 ---
 
-## Environment Variables
+## 🧩 Environment Variables
 
 Create a `.env` file in the root directory:
 
@@ -176,7 +176,7 @@ MAP_TOKEN=your_mapbox_access_token
 
 ---
 
-## Project Structure
+## 📂 Project Structure
 
 ```text
 havenly/

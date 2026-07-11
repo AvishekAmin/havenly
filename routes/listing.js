@@ -21,6 +21,12 @@ router
 // New Route
 router.get("/new", isLoggedIn, listingController.renderNewForm);
 
+// Payment Route
+router.get("/:id/payment", isLoggedIn, wrapAsync(async (req, res) => {
+    const listing = await Listing.findById(req.params.id).populate("owner");
+    res.render("listings/payment.ejs", { listing });
+}));
+
 router
     .route("/:id")
     .get (wrapAsync (listingController.showListing))    // Show Route

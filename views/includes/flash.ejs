@@ -1,13 +1,19 @@
-<% if(success && success.length) { %>
-    <div class="alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
-        <%= success %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-<% } %>
+<div id="notification-container">
+    <% if (success && success.length) { %>
+        <div class="toast-notification server-toast" data-type="success">
+            <div class="toast-content">
+                <i class="fa-solid fa-circle-check toast-icon"></i>
+                <span class="toast-message"><%= success %></span>
+            </div>
+        </div>
+    <% } %>
 
-<% if(error && error.length) { %>
-    <div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
-        <%= error %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-<% } %>
+    <% if (error && error.length) { %>
+        <div class="toast-notification server-toast error-toast" data-type="error">
+            <div class="toast-content">
+                <i class="fa-solid fa-circle-exclamation toast-icon toast-icon-error"></i>
+                <span class="toast-message"><%= error %></span>
+            </div>
+        </div>
+    <% } %>
+</div>
