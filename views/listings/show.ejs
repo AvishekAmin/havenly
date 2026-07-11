@@ -1,4 +1,60 @@
 <% layout("/layouts/boilerplate") %>
+<%
+const allAmenities = (listing.amenities && listing.amenities.length > 0) ? listing.amenities : [
+  "Self check-in",
+  "Building staff",
+  "Free WiFi",
+  "Dedicated workspace",
+  "Kitchen",
+  "Refrigerator",
+  "Microwave",
+  "Air conditioning",
+  "TV with standard cable",
+  "Free parking on premises",
+  "Pets allowed",
+  "Ocean view",
+  "Private pool",
+  "Gym",
+  "Hot tub",
+  "BBQ grill",
+  "Fireplace",
+  "Crib"
+];
+
+const categories = {
+  "Property Essentials": ["Self check-in", "Pets allowed", "Building staff"],
+  "Internet & Workspace": ["Free WiFi", "Dedicated workspace"],
+  "Kitchen & Dining": ["Kitchen", "Refrigerator", "Microwave"],
+  "Entertainment": ["TV with standard cable", "Private pool", "Gym"],
+  "Comfort": ["Air conditioning", "Hot tub", "Fireplace"],
+  "Parking": ["Free parking on premises"],
+  "Additional Amenities": []
+};
+
+const groupedAmenities = {
+  "Property Essentials": [],
+  "Internet & Workspace": [],
+  "Kitchen & Dining": [],
+  "Entertainment": [],
+  "Comfort": [],
+  "Parking": [],
+  "Additional Amenities": []
+};
+
+for (const amenity of allAmenities) {
+  let matched = false;
+  for (const catName in categories) {
+    if (catName !== "Additional Amenities" && categories[catName].includes(amenity)) {
+      groupedAmenities[catName].push(amenity);
+      matched = true;
+      break;
+    }
+  }
+  if (!matched) {
+    groupedAmenities["Additional Amenities"].push(amenity);
+  }
+}
+%>
 <script>
     const mapToken = "<%= process.env.MAP_TOKEN %>";
     const listing = <%- JSON.stringify(listing) %>;
@@ -7,296 +63,307 @@
 <!-- ===== MAIN CONTENT ===== -->
 <div class="show-layout mt-4">
     
-    <div class="row g-4">
-        <!-- ===== LEFT COLUMN (50% Width) ===== -->
-        <div class="col-md-6">
-            
-            <!-- Title & Location Card -->
-            <div class="show-info-card title-card reveal mb-4">
-                <h1 class="show-title"><%= listing.title %></h1>
-                <div class="show-location">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span><%= listing.location %>, <%= listing.country %></span>
-                    <span class="rating-span ms-3"><i class="fa-solid fa-star" style="color: #FFD700;"></i> 4.8 (<%= listing.reviews.length %> reviews)</span>
-                </div>
+    <div class="show-grid-container">
+        
+        <!-- 1. Property Details Card (Row 1 Left) -->
+        <div class="show-info-card title-card reveal grid-area-details">
+            <h1 class="show-title"><%= listing.title %></h1>
+            <div class="show-location">
+                <i class="fa-solid fa-location-dot"></i>
+                <span><%= listing.location %>, <%= listing.country %></span>
+                <span class="rating-span ms-3"><i class="fa-solid fa-star" style="color: #FFD700;"></i> 4.8 (<%= listing.reviews.length %> reviews)</span>
+            </div>
 
-                <!-- Description -->
-                <div class="show-description mt-3">
-                    <h4><i class="fa-solid fa-scroll"></i> About This Property</h4>
-                    <p class="mb-0"><%= listing.description %></p>
-                </div>
+            <!-- Description -->
+            <div class="show-description mt-3">
+                <h4><i class="fa-solid fa-scroll"></i> About This Property</h4>
+                <p class="mb-0"><%= listing.description %></p>
+            </div>
 
-                <!-- Owner -->
-                <div class="owner-section mt-4 pt-3 border-top border-secondary" style="border-top-style: dashed !important;">
+            <!-- Owner & Actions -->
+            <div class="owner-section mt-4 pt-3 border-top border-secondary d-flex justify-content-between align-items-center" style="border-top-style: dashed !important;">
+                <div class="d-flex align-items-center">
                     <div class="owner-avatar"><%= listing.owner.username.charAt(0).toUpperCase() %></div>
-                    <div class="owner-info">
+                    <div class="owner-info ms-3">
                         <span class="owner-label">Hosted by</span>
                         <span class="owner-name">@<%= listing.owner.username %></span>
                     </div>
                 </div>
-            </div>
-
-            <!-- Edit/Delete Buttons (if owner) -->
-            <% if(currUser && listing.owner._id.equals(currUser._id)) { %>
-            <div class="btns reveal mb-4">
-                <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary-glow">Edit</a>
-                <form method="post" action="/listings/<%= listing._id %>?_method=delete" class="d-inline">
-                    <button class="btn btn-danger-glow">Delete</button>
-                </form>
-            </div>
-            <% } %>
-
-            <!-- Amenities Card -->
-            <div class="show-info-card amenities-card reveal mb-4">
-                <h4 class="mb-4"><i class="fa-solid fa-hand-holding-heart" style="color: #00D8FF;"></i> What this place offers</h4>
-                <div class="amenities-grid">
-                    <div class="amenity-item">
-                        <i class="fa-solid fa-water"></i>
-                        <span>Ocean view</span>
-                    </div>
-                    <div class="amenity-item">
-                        <i class="fa-solid fa-kitchen-set"></i>
-                        <span>Kitchen</span>
-                    </div>
-                    <div class="amenity-item">
-                        <i class="fa-solid fa-snowflake"></i>
-                        <span>Air conditioning</span>
-                    </div>
-                    <div class="amenity-item">
-                        <i class="fa-solid fa-wifi"></i>
-                        <span>Free WiFi</span>
-                    </div>
-                    <div class="amenity-item">
-                        <i class="fa-solid fa-briefcase"></i>
-                        <span>Dedicated workspace</span>
-                    </div>
-                    <div class="amenity-item">
-                        <i class="fa-solid fa-car"></i>
-                        <span>Free parking on premises</span>
-                    </div>
-                    <div class="amenity-item">
-                        <i class="fa-solid fa-tv"></i>
-                        <span>TV with standard cable</span>
-                    </div>
-                    <div class="amenity-item">
-                        <i class="fa-solid fa-paw"></i>
-                        <span>Pets allowed</span>
-                    </div>
+                <% if(currUser && listing.owner._id.equals(currUser._id)) { %>
+                <div class="d-flex gap-2">
+                    <a href="/listings/<%= listing._id %>/edit" class="btn btn-primary-glow btn-sm" style="padding: 0.35rem 1rem;">Edit</a>
+                    <form method="post" action="/listings/<%= listing._id %>?_method=delete" class="m-0">
+                        <button class="btn btn-danger-glow btn-sm" style="padding: 0.35rem 1rem;">Delete</button>
+                    </form>
                 </div>
-                <button class="btn btn-glass btn-sm" type="button">Show all 18 amenities</button>
+                <% } %>
             </div>
-
-            <!-- Review Form -->
-            <% if(currUser) { %>
-            <div class="show-info-card review-form-card reveal mb-4">
-                <h4><i class="fa-solid fa-pen-to-square" style="color: #00D8FF;"></i> Leave a Review</h4>
-                <form action="/listings/<%= listing.id %>/reviews" method="post" novalidate class="needs-validation mt-3">
-                    <div class="mb-3">
-                        <label for="rating" class="form-label">Rating</label>
-                        <fieldset class="starability-coinFlip">
-                            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
-                            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-                            <label for="first-rate1" title="Terrible">1 star</label>
-                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-                            <label for="first-rate2" title="Not good">2 stars</label>
-                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-                            <label for="first-rate3" title="Average">3 stars</label>
-                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-                            <label for="first-rate4" title="Very good">4 stars</label>
-                            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-                            <label for="first-rate5" title="Amazing">5 stars</label>
-                        </fieldset>
-                    </div>
-                    <div class="mb-3">
-                        <label for="comment" class="form-label">Comments</label>
-                        <textarea name="review[comment]" id="comment" cols="30" rows="4" class="form-control" required></textarea>
-                        <div class="invalid-feedback">Write some comments for review</div>
-                    </div>
-                    <button class="btn btn-primary-glow">Submit Review</button>
-                </form>
-            </div>
-            <% } %>
         </div>
 
-        <!-- ===== RIGHT COLUMN (50% Width) ===== -->
-        <div class="col-md-6">
+        <!-- 2. Listing Image (Row 1 Right) -->
+        <div class="show-image-card reveal grid-area-image">
+            <div class="show-right-img-wrapper h-100" style="aspect-ratio: auto;">
+                <img src="<%= listing.image.url %>" class="show-right-img w-100 h-100" style="object-fit: cover;" alt="<%= listing.title %>" loading="lazy">
+            </div>
+        </div>
+
+        <!-- 3. Amenities Card (Row 2 Left) -->
+        <div class="show-info-card amenities-card reveal grid-area-amenities">
+            <h4 class="mb-4"><i class="fa-solid fa-hand-holding-heart" style="color: #00D8FF;"></i> What this place offers</h4>
+            <div class="amenities-grid">
+                <% if(allAmenities.includes("Self check-in")) { %>
+                <div class="amenity-item">
+                    <i class="fa-solid fa-key"></i>
+                    <span>Self check-in</span>
+                </div>
+                <% } %>
+                <% if(allAmenities.includes("Free WiFi")) { %>
+                <div class="amenity-item">
+                    <i class="fa-solid fa-wifi"></i>
+                    <span>Free WiFi</span>
+                </div>
+                <% } %>
+                <% if(allAmenities.includes("Air conditioning")) { %>
+                <div class="amenity-item">
+                    <i class="fa-solid fa-snowflake"></i>
+                    <span>Air conditioning</span>
+                </div>
+                <% } %>
+                <% if(allAmenities.includes("TV with standard cable")) { %>
+                <div class="amenity-item">
+                    <i class="fa-solid fa-tv"></i>
+                    <span>TV with standard cable</span>
+                </div>
+                <% } %>
+                <% if(allAmenities.includes("Kitchen")) { %>
+                <div class="amenity-item">
+                    <i class="fa-solid fa-kitchen-set"></i>
+                    <span>Kitchen</span>
+                </div>
+                <% } %>
+                <% if(allAmenities.includes("Dedicated workspace")) { %>
+                <div class="amenity-item">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>Dedicated workspace</span>
+                </div>
+                <% } %>
+                <% if(allAmenities.includes("Free parking on premises")) { %>
+                <div class="amenity-item">
+                    <i class="fa-solid fa-car"></i>
+                    <span>Free parking on premises</span>
+                </div>
+                <% } %>
+                <% if(allAmenities.includes("Pets allowed")) { %>
+                <div class="amenity-item">
+                    <i class="fa-solid fa-paw"></i>
+                    <span>Pets allowed</span>
+                </div>
+                <% } %>
+            </div>
+            <div class="d-flex mt-4">
+                <button class="btn show-all-reviews-btn" type="button" data-bs-toggle="modal" data-bs-target="#allAmenitiesModal">
+                    Show all <%= allAmenities.length %> amenities
+                </button>
+            </div>
+        </div>
+
+        <!-- 4. Booking / Reserve Card (Row 2 Right) -->
+        <div class="show-info-card price-card grid-area-booking" id="booking-price-card">
+            <div class="price-amount">&#8377; <%= listing.price.toLocaleString("en-IN") %><span class="price-period"> / night <span class="gst-text">+18% GST</span></span></div>
             
-            <!-- Property Photo -->
-            <div class="show-image-card reveal mb-3">
-                <div class="show-right-img-wrapper" style="aspect-ratio: auto;">
-                    <img src="<%= listing.image.url %>" class="show-right-img h-100 w-100" style="object-fit: cover;" alt="<%= listing.title %>" loading="lazy">
+            <!-- Calculated nights and total (Hidden until range selected) -->
+            <div class="booking-total-display mt-2" id="booking-total-section" style="display: none;">
+                <span class="total-nights-label" id="total-nights-text">Total for 0 nights</span>
+                <div class="total-price-amount" id="total-price-text">&#8377; 0</div>
+            </div>
+
+            <div class="price-divider"></div>
+
+            <!-- Airbnb style Check-in Check-out Date & Guests selection box -->
+            <div class="booking-inputs-container mb-3">
+                <div class="booking-dates-box" id="booking-dates-trigger">
+                    <div class="booking-date-input check-in-col">
+                        <span class="input-lbl">Check-in</span>
+                        <span class="input-val" id="book-checkin-val">Select date</span>
+                    </div>
+                    <div class="booking-dates-divider"></div>
+                    <div class="booking-date-input check-out-col">
+                        <span class="input-lbl">Check-out</span>
+                        <span class="input-val" id="book-checkout-val">Select date</span>
+                    </div>
+                </div>
+                <div class="booking-guests-box" id="booking-guests-trigger">
+                    <div class="guests-lbl-col">
+                        <span class="input-lbl">Guests</span>
+                        <span class="input-val" id="book-guests-val">1 guest</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-down caret-icon"></i>
                 </div>
             </div>
 
-            <!-- Booking / Price Card (Sticky) -->
-            <div class="show-info-card price-card mb-4" id="booking-price-card">
-                <div class="price-amount">&#8377; <%= listing.price.toLocaleString("en-IN") %><span class="price-period"> / night <span class="gst-text">+18% GST</span></span></div>
-                
-                <!-- Calculated nights and total (Hidden until range selected) -->
-                <div class="booking-total-display mt-2" id="booking-total-section" style="display: none;">
-                    <span class="total-nights-label" id="total-nights-text">Total for 0 nights</span>
-                    <div class="total-price-amount" id="total-price-text">&#8377; 0</div>
-                </div>
+            <!-- Reserve Button -->
+            <button class="btn btn-reserve-glow w-100 mb-2" id="reserve-btn">Reserve</button>
+            <div class="text-center text-muted" style="font-size: 0.76rem;">You won't be charged yet</div>
 
-                <div class="price-divider"></div>
-
-                <!-- Airbnb style Check-in Check-out Date & Guests selection box -->
-                <div class="booking-inputs-container mb-3">
-                    <div class="booking-dates-box" id="booking-dates-trigger">
-                        <div class="booking-date-input check-in-col">
-                            <span class="input-lbl">Check-in</span>
-                            <span class="input-val" id="book-checkin-val">Select date</span>
-                        </div>
-                        <div class="booking-dates-divider"></div>
-                        <div class="booking-date-input check-out-col">
-                            <span class="input-lbl">Check-out</span>
-                            <span class="input-val" id="book-checkout-val">Select date</span>
+            <!-- Floating Calendar Panel -->
+            <div class="booking-dropdown-panel dates-dropdown" id="booking-dates-panel">
+                <div class="calendar-wrapper">
+                    <div class="calendar-nav">
+                        <span class="calendar-month-title">July 2026</span>
+                        <div class="cal-nav-buttons">
+                            <button class="cal-nav-btn prev" type="button"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button class="cal-nav-btn next" type="button"><i class="fa-solid fa-chevron-right"></i></button>
                         </div>
                     </div>
-                    <div class="booking-guests-box" id="booking-guests-trigger">
-                        <div class="guests-lbl-col">
-                            <span class="input-lbl">Guests</span>
-                            <span class="input-val" id="book-guests-val">1 guest</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-down caret-icon"></i>
+
+                    <div class="calendar-grid">
+                        <div class="calendar-day-label">Sun</div>
+                        <div class="calendar-day-label">Mon</div>
+                        <div class="calendar-day-label">Tue</div>
+                        <div class="calendar-day-label">Wed</div>
+                        <div class="calendar-day-label">Thu</div>
+                        <div class="calendar-day-label">Fri</div>
+                        <div class="calendar-day-label">Sat</div>
+
+                        <div class="calendar-day empty">29</div>
+                        <div class="calendar-day empty">30</div>
+                        <div class="calendar-day" data-day="1">1</div>
+                        <div class="calendar-day" data-day="2">2</div>
+                        <div class="calendar-day" data-day="3">3</div>
+                        <div class="calendar-day" data-day="4">4</div>
+                        <div class="calendar-day" data-day="5">5</div>
+
+                        <div class="calendar-day" data-day="6">6</div>
+                        <div class="calendar-day" data-day="7">7</div>
+                        <div class="calendar-day" data-day="8">8</div>
+                        <div class="calendar-day" data-day="9">9</div>
+                        <div class="calendar-day" data-day="10">10</div>
+                        <div class="calendar-day" data-day="11">11</div>
+                        <div class="calendar-day" data-day="12">12</div>
+
+                        <div class="calendar-day" data-day="13">13</div>
+                        <div class="calendar-day" data-day="14">14</div>
+                        <div class="calendar-day" data-day="15">15</div>
+                        <div class="calendar-day" data-day="16">16</div>
+                        <div class="calendar-day" data-day="17">17</div>
+                        <div class="calendar-day" data-day="18">18</div>
+                        <div class="calendar-day" data-day="19">19</div>
+
+                        <div class="calendar-day" data-day="20">20</div>
+                        <div class="calendar-day" data-day="21">21</div>
+                        <div class="calendar-day" data-day="22">22</div>
+                        <div class="calendar-day" data-day="23">23</div>
+                        <div class="calendar-day" data-day="24">24</div>
+                        <div class="calendar-day" data-day="25">25</div>
+                        <div class="calendar-day" data-day="26">26</div>
+
+                        <div class="calendar-day" data-day="27">27</div>
+                        <div class="calendar-day" data-day="28">28</div>
+                        <div class="calendar-day" data-day="29">29</div>
+                        <div class="calendar-day" data-day="30">30</div>
+                        <div class="calendar-day" data-day="31">31</div>
+                        <div class="calendar-day empty">1</div>
+                        <div class="calendar-day empty">2</div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Reserve Button -->
-                <button class="btn btn-reserve-glow w-100 mb-2" id="reserve-btn">Reserve</button>
-                <div class="text-center text-muted" style="font-size: 0.76rem;">You won't be charged yet</div>
-
-                <!-- Floating Calendar Panel -->
-                <div class="booking-dropdown-panel dates-dropdown" id="booking-dates-panel">
-                    <div class="calendar-wrapper">
-                        <div class="calendar-nav">
-                            <span class="calendar-month-title">July 2026</span>
-                            <div class="cal-nav-buttons">
-                                <button class="cal-nav-btn prev" type="button"><i class="fa-solid fa-chevron-left"></i></button>
-                                <button class="cal-nav-btn next" type="button"><i class="fa-solid fa-chevron-right"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="calendar-grid">
-                            <div class="calendar-day-label">Sun</div>
-                            <div class="calendar-day-label">Mon</div>
-                            <div class="calendar-day-label">Tue</div>
-                            <div class="calendar-day-label">Wed</div>
-                            <div class="calendar-day-label">Thu</div>
-                            <div class="calendar-day-label">Fri</div>
-                            <div class="calendar-day-label">Sat</div>
-
-                            <div class="calendar-day empty">29</div>
-                            <div class="calendar-day empty">30</div>
-                            <div class="calendar-day" data-day="1">1</div>
-                            <div class="calendar-day" data-day="2">2</div>
-                            <div class="calendar-day" data-day="3">3</div>
-                            <div class="calendar-day" data-day="4">4</div>
-                            <div class="calendar-day" data-day="5">5</div>
-
-                            <div class="calendar-day" data-day="6">6</div>
-                            <div class="calendar-day" data-day="7">7</div>
-                            <div class="calendar-day" data-day="8">8</div>
-                            <div class="calendar-day" data-day="9">9</div>
-                            <div class="calendar-day" data-day="10">10</div>
-                            <div class="calendar-day" data-day="11">11</div>
-                            <div class="calendar-day" data-day="12">12</div>
-
-                            <div class="calendar-day" data-day="13">13</div>
-                            <div class="calendar-day" data-day="14">14</div>
-                            <div class="calendar-day" data-day="15">15</div>
-                            <div class="calendar-day" data-day="16">16</div>
-                            <div class="calendar-day" data-day="17">17</div>
-                            <div class="calendar-day" data-day="18">18</div>
-                            <div class="calendar-day" data-day="19">19</div>
-
-                            <div class="calendar-day" data-day="20">20</div>
-                            <div class="calendar-day" data-day="21">21</div>
-                            <div class="calendar-day" data-day="22">22</div>
-                            <div class="calendar-day" data-day="23">23</div>
-                            <div class="calendar-day" data-day="24">24</div>
-                            <div class="calendar-day" data-day="25">25</div>
-                            <div class="calendar-day" data-day="26">26</div>
-
-                            <div class="calendar-day" data-day="27">27</div>
-                            <div class="calendar-day" data-day="28">28</div>
-                            <div class="calendar-day" data-day="29">29</div>
-                            <div class="calendar-day" data-day="30">30</div>
-                            <div class="calendar-day" data-day="31">31</div>
-                            <div class="calendar-day empty">1</div>
-                            <div class="calendar-day empty">2</div>
-                        </div>
+            <!-- Floating Guests Panel -->
+            <div class="booking-dropdown-panel guests-dropdown" id="booking-guests-panel">
+                <!-- Adults -->
+                <div class="guest-counter-row d-flex align-items-center justify-content-between mb-3">
+                    <div class="guest-counter-info">
+                        <span class="guest-type fw-bold d-block" style="font-size: 0.88rem; color: var(--text-primary);">Adults</span>
+                        <span class="guest-desc text-muted" style="font-size: 0.72rem;">Ages 13 or above</span>
+                    </div>
+                    <div class="counter-control d-flex align-items-center gap-3">
+                        <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn minus" data-type="adults" type="button" disabled style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-minus" style="font-size: 0.7rem;"></i></button>
+                        <span class="counter-val fw-bold" id="book-count-adults" style="font-size: 0.9rem; color: var(--text-primary);">1</span>
+                        <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn plus" data-type="adults" type="button" style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-plus" style="font-size: 0.7rem;"></i></button>
                     </div>
                 </div>
 
-                <!-- Floating Guests Panel -->
-                <div class="booking-dropdown-panel guests-dropdown" id="booking-guests-panel">
-                    <!-- Adults -->
-                    <div class="guest-counter-row d-flex align-items-center justify-content-between mb-3">
-                        <div class="guest-counter-info">
-                            <span class="guest-type fw-bold d-block" style="font-size: 0.88rem; color: var(--text-primary);">Adults</span>
-                            <span class="guest-desc text-muted" style="font-size: 0.72rem;">Ages 13 or above</span>
-                        </div>
-                        <div class="counter-control d-flex align-items-center gap-3">
-                            <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn minus" data-type="adults" type="button" disabled style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-minus" style="font-size: 0.7rem;"></i></button>
-                            <span class="counter-val fw-bold" id="book-count-adults" style="font-size: 0.9rem; color: var(--text-primary);">1</span>
-                            <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn plus" data-type="adults" type="button" style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-plus" style="font-size: 0.7rem;"></i></button>
-                        </div>
+                <!-- Children -->
+                <div class="guest-counter-row d-flex align-items-center justify-content-between mb-3">
+                    <div class="guest-counter-info">
+                        <span class="guest-type fw-bold d-block" style="font-size: 0.88rem; color: var(--text-primary);">Children</span>
+                        <span class="guest-desc text-muted" style="font-size: 0.72rem;">Ages 2-12</span>
                     </div>
-
-                    <!-- Children -->
-                    <div class="guest-counter-row d-flex align-items-center justify-content-between mb-3">
-                        <div class="guest-counter-info">
-                            <span class="guest-type fw-bold d-block" style="font-size: 0.88rem; color: var(--text-primary);">Children</span>
-                            <span class="guest-desc text-muted" style="font-size: 0.72rem;">Ages 2-12</span>
-                        </div>
-                        <div class="counter-control d-flex align-items-center gap-3">
-                            <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn minus" data-type="children" type="button" disabled style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-minus" style="font-size: 0.7rem;"></i></button>
-                            <span class="counter-val fw-bold" id="book-count-children" style="font-size: 0.9rem; color: var(--text-primary);">0</span>
-                            <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn plus" data-type="children" type="button" style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-plus" style="font-size: 0.7rem;"></i></button>
-                        </div>
+                    <div class="counter-control d-flex align-items-center gap-3">
+                        <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn minus" data-type="children" type="button" disabled style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-minus" style="font-size: 0.7rem;"></i></button>
+                        <span class="counter-val fw-bold" id="book-count-children" style="font-size: 0.9rem; color: var(--text-primary);">0</span>
+                        <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn plus" data-type="children" type="button" style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-plus" style="font-size: 0.7rem;"></i></button>
                     </div>
-
-                    <!-- Infants -->
-                    <div class="guest-counter-row d-flex align-items-center justify-content-between mb-3">
-                        <div class="guest-counter-info">
-                            <span class="guest-type fw-bold d-block" style="font-size: 0.88rem; color: var(--text-primary);">Infants</span>
-                            <span class="guest-desc text-muted" style="font-size: 0.72rem;">Under 2</span>
-                        </div>
-                        <div class="counter-control d-flex align-items-center gap-3">
-                            <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn minus" data-type="infants" type="button" disabled style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-minus" style="font-size: 0.7rem;"></i></button>
-                            <span class="counter-val fw-bold" id="book-count-infants" style="font-size: 0.9rem; color: var(--text-primary);">0</span>
-                            <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn plus" data-type="infants" type="button" style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-plus" style="font-size: 0.7rem;"></i></button>
-                        </div>
-                    </div>
-
-                    <!-- Pets -->
-                    <div class="guest-counter-row d-flex align-items-center justify-content-between mb-3">
-                        <div class="guest-counter-info">
-                            <span class="guest-type fw-bold d-block" style="font-size: 0.88rem; color: var(--text-primary);">Pets</span>
-                            <span class="guest-desc text-muted" style="font-size: 0.72rem;">Bringing a pet?</span>
-                        </div>
-                        <div class="counter-control d-flex align-items-center gap-3">
-                            <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn minus" data-type="pets" type="button" disabled style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-minus" style="font-size: 0.7rem;"></i></button>
-                            <span class="counter-val fw-bold" id="book-count-pets" style="font-size: 0.9rem; color: var(--text-primary);">0</span>
-                            <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn plus" data-type="pets" type="button" style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-plus" style="font-size: 0.7rem;"></i></button>
-                        </div>
-                    </div>
-
-                    <button class="btn btn-primary-glow btn-sm w-100 mt-2" id="booking-guests-done-btn" type="button">Done</button>
                 </div>
+
+                <!-- Infants -->
+                <div class="guest-counter-row d-flex align-items-center justify-content-between mb-3">
+                    <div class="guest-counter-info">
+                        <span class="guest-type fw-bold d-block" style="font-size: 0.88rem; color: var(--text-primary);">Infants</span>
+                        <span class="guest-desc text-muted" style="font-size: 0.72rem;">Under 2</span>
+                    </div>
+                    <div class="counter-control d-flex align-items-center gap-3">
+                        <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn minus" data-type="infants" type="button" disabled style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-minus" style="font-size: 0.7rem;"></i></button>
+                        <span class="counter-val fw-bold" id="book-count-infants" style="font-size: 0.9rem; color: var(--text-primary);">0</span>
+                        <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn plus" data-type="infants" type="button" style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-plus" style="font-size: 0.7rem;"></i></button>
+                    </div>
+                </div>
+
+                <!-- Pets -->
+                <div class="guest-counter-row d-flex align-items-center justify-content-between mb-3">
+                    <div class="guest-counter-info">
+                        <span class="guest-type fw-bold d-block" style="font-size: 0.88rem; color: var(--text-primary);">Pets</span>
+                        <span class="guest-desc text-muted" style="font-size: 0.72rem;">Bringing a pet?</span>
+                    </div>
+                    <div class="counter-control d-flex align-items-center gap-3">
+                        <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn minus" data-type="pets" type="button" disabled style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-minus" style="font-size: 0.7rem;"></i></button>
+                        <span class="counter-val fw-bold" id="book-count-pets" style="font-size: 0.9rem; color: var(--text-primary);">0</span>
+                        <button class="btn btn-outline-secondary btn-sm rounded-circle counter-btn plus" data-type="pets" type="button" style="width:28px; height:28px; padding:0; line-height:28px;"><i class="fa-solid fa-plus" style="font-size: 0.7rem;"></i></button>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary-glow btn-sm w-100 mt-2" id="booking-guests-done-btn" type="button">Done</button>
             </div>
         </div>
-    </div>
 
-    <!-- ===== FULL WIDTH USER REVIEWS SECTION (100% Width) ===== -->
-    <% if(listing.reviews.length > 0) { %>
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="review-section reveal mb-4">
+        <!-- 5. Leave Review Card (Row 3 Left) -->
+        <% if(currUser) { %>
+        <div class="show-info-card review-form-card reveal grid-area-leavereview">
+            <h4><i class="fa-solid fa-pen-to-square" style="color: #00D8FF;"></i> Leave a Review</h4>
+            <form action="/listings/<%= listing.id %>/reviews" method="post" novalidate class="needs-validation mt-3">
+                <div class="mb-3">
+                    <label for="rating" class="form-label">Rating</label>
+                    <fieldset class="starability-coinFlip">
+                        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                        <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                        <label for="first-rate1" title="Terrible">1 star</label>
+                        <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                        <label for="first-rate2" title="Not good">2 stars</label>
+                        <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                        <label for="first-rate3" title="Average">3 stars</label>
+                        <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                        <label for="first-rate4" title="Very good">4 stars</label>
+                        <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                        <label for="first-rate5" title="Amazing">5 stars</label>
+                    </fieldset>
+                </div>
+                <div class="mb-3">
+                    <label for="comment" class="form-label">Comments</label>
+                    <textarea name="review[comment]" id="comment" cols="30" rows="4" class="form-control" required></textarea>
+                    <div class="invalid-feedback">Write some comments for review</div>
+                </div>
+                <button class="btn btn-primary-glow">Submit Review</button>
+            </form>
+        </div>
+        <% } %>
+
+        <!-- 6. Reviews Section (Row 4 Full Width) -->
+        <div class="grid-area-reviews">
+            <% if(listing.reviews.length > 0) { %>
+            <div class="review-section reveal">
                 <h4><i class="fa-solid fa-star" style="color: #00D8FF;"></i> Reviews (<%= listing.reviews.length %>)</h4>
                 <div class="reviews-grid mt-3">
-                    <% for(review of listing.reviews) { %>
+                    <% for(review of listing.reviews.slice(0, 4)) { %>
                     <div class="review-card">
                         <div class="review-header">
                             <div class="review-avatar"><%= review.author.username.charAt(0).toUpperCase() %></div>
@@ -314,25 +381,125 @@
                     </div>
                     <% } %>
                 </div>
+                
+                <% if(listing.reviews.length > 4) { %>
+                <div class="d-flex mt-4">
+                    <button class="btn show-all-reviews-btn" type="button" data-bs-toggle="modal" data-bs-target="#allReviewsModal">
+                        Show all <%= listing.reviews.length %> reviews
+                    </button>
+                </div>
+                <% } %>
             </div>
-        </div>
-    </div>
-    <% } else { %>
-    <div class="row mt-4">
-        <div class="col-12">
-            <div class="empty-state empty-state-left reveal mb-4" style="margin-top: 1rem;">
+            <% } else { %>
+            <div class="empty-state empty-state-left reveal" style="margin-top: 1rem;">
                 <div class="empty-state-icon"><i class="fa-regular fa-comment-dots"></i></div>
                 <h3 class="empty-state-title">No Reviews Yet</h3>
                 <p class="empty-state-text text-muted">Be the first to share your experience at this property.</p>
             </div>
+            <% } %>
+        </div>
+
+        <!-- 7. Map Section (Row 5 Full Width) -->
+        <div class="map-section reveal grid-area-map mt-0">
+            <h3><i class="fa-solid fa-map-location-dot"></i> Where You'll Be</h3>
+            <div id="map"></div>
+        </div>
+        
+    </div>
+</div>
+
+<!-- ===== ALL REVIEWS MODAL ===== -->
+<% if(listing.reviews.length > 4) { %>
+<div class="modal fade custom-modal" id="allReviewsModal" tabindex="-1" aria-labelledby="allReviewsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content glass-modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header border-bottom-0 pb-3 d-flex justify-content-between align-items-center px-4 pt-4">
+                <h5 class="modal-title" id="allReviewsModalLabel" style="font-weight: 700; font-size: 1.4rem; margin: 0;">
+                    <i class="fa-solid fa-star" style="color: #00D8FF; margin-right: 0.5rem;"></i>All <%= listing.reviews.length %> Reviews
+                </h5>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="dropdown">
+                        <button class="btn btn-glass btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); color: var(--text-secondary); font-size: 0.8rem; border-radius: var(--radius-sm);">
+                            Most Recent ▼
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end glass-dropdown" style="background: rgba(10, 16, 38, 0.95); border: 1px solid rgba(0, 216, 255, 0.15); box-shadow: var(--shadow-lg);">
+                            <li><a class="dropdown-item text-secondary" href="#" style="font-size: 0.8rem; padding: 0.5rem 1rem;">Most Recent</a></li>
+                            <li><a class="dropdown-item text-secondary" href="#" style="font-size: 0.8rem; padding: 0.5rem 1rem;">Highest Rating</a></li>
+                            <li><a class="dropdown-item text-secondary" href="#" style="font-size: 0.8rem; padding: 0.5rem 1rem;">Lowest Rating</a></li>
+                        </ul>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white m-0" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1) grayscale(1) brightness(2);"></button>
+                </div>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body modal-reviews-body px-4 py-3">
+                <div class="modal-reviews-list">
+                    <% for(review of listing.reviews) { %>
+                    <div class="modal-review-item py-3 border-bottom border-secondary" style="border-bottom-style: dashed !important; border-bottom-color: rgba(255,255,255,0.1) !important;">
+                        <div class="review-header d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="review-avatar" style="width: 40px; height: 40px; font-size: 0.95rem; line-height: 40px;"><%= review.author.username.charAt(0).toUpperCase() %></div>
+                                <div>
+                                    <div class="review-author" style="font-weight: 600; font-size: 0.95rem; color: var(--text-primary);">@<%= review.author.username %></div>
+                                    <div class="review-date text-muted" style="font-size: 0.76rem;">
+                                        <%= new Date(review.createdAt).toLocaleDateString("en-US", { month: "long", year: "numeric" }) %>
+                                    </div>
+                                </div>
+                            </div>
+                            <% if(currUser && review.author._id.equals(currUser._id)) { %>
+                            <form class="m-0" method="post" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=delete">
+                                <button class="btn btn-link text-danger p-0" style="font-size: 0.85rem; text-decoration: none;"><i class="fa-solid fa-trash"></i></button>
+                            </form>
+                            <% } %>
+                        </div>
+                        <p class="starability-result mt-2" data-rating="<%= review.rating %>" style="transform: scale(0.8); transform-origin: left;"></p>
+                        <p class="review-text text-muted mb-0 mt-2" style="font-size: 0.88rem; line-height: 1.5;"><%= review.comment %></p>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
         </div>
     </div>
-    <% } %>
+</div>
+<% } %>
 
-    <!-- ===== MAP SECTION ===== -->
-    <div class="map-section reveal mt-4">
-        <h3><i class="fa-solid fa-map-location-dot"></i> Where You'll Be</h3>
-        <div id="map"></div>
+<!-- ===== ALL AMENITIES MODAL ===== -->
+<div class="modal fade custom-modal" id="allAmenitiesModal" tabindex="-1" aria-labelledby="allAmenitiesModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content glass-modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header border-bottom-0 pb-3 d-flex justify-content-between align-items-center px-4 pt-4">
+                <h5 class="modal-title" id="allAmenitiesModalLabel" style="font-weight: 700; font-size: 1.4rem; margin: 0;">
+                    <i class="fa-solid fa-hand-holding-heart" style="color: #00D8FF; margin-right: 0.5rem;"></i>All <%= allAmenities.length %> Amenities
+                </h5>
+                <button type="button" class="btn-close btn-close-white m-0" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1) grayscale(1) brightness(2);"></button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body modal-reviews-body px-4 py-3">
+                <div class="modal-amenities-list">
+                    <% for(const catName in groupedAmenities) { %>
+                        <% if(groupedAmenities[catName].length > 0) { %>
+                            <div class="amenity-category-block mb-4">
+                                <h6 class="text-primary fw-bold mb-2 pb-1 border-bottom" style="font-size: 1.1rem; border-color: rgba(255,255,255,0.08) !important; color: #00D8FF !important;">
+                                    <%= catName %>
+                                </h6>
+                                <div class="row">
+                                    <% for(const amenity of groupedAmenities[catName]) { %>
+                                        <div class="col-sm-6 py-2 d-flex align-items-center gap-2" style="font-size: 0.95rem; color: var(--text-secondary);">
+                                            <span style="color: #00D8FF;">✔</span>
+                                            <span><%= amenity %></span>
+                                        </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% } %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -582,20 +749,5 @@
             }, 400);
         }, 3000);
     }
-
-    // Height Matching Logic for Title Card and Image Wrapper
-    function matchHeights() {
-        const titleCard = document.querySelector('.title-card');
-        const imgWrapper = document.querySelector('.show-right-img-wrapper');
-        if (titleCard && imgWrapper && window.innerWidth >= 768) {
-            imgWrapper.style.height = `${titleCard.offsetHeight}px`;
-        } else if (imgWrapper) {
-            imgWrapper.style.height = ''; // Reset on mobile
-        }
-    }
-    window.addEventListener('load', matchHeights);
-    window.addEventListener('resize', matchHeights);
-    document.fonts.ready.then(matchHeights);
-    setTimeout(matchHeights, 400);
 })();
 </script>
