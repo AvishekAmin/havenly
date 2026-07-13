@@ -15,7 +15,9 @@ module.exports.signup = async (req, res) => {
                 return next(err);
             }
             req.flash("success", "Welcome to Havenly!");
-            res.redirect("/listings");
+            let redirectUrl = res.locals.redirectUrl || "/listings";
+            delete req.session.redirectUrl;
+            res.redirect(redirectUrl);
         });
     } catch (err) {
         req.flash("error", err.message);
@@ -30,6 +32,7 @@ module.exports.renderLoginForm = (req, res) => {
 module.exports.login = async (req, res) => {
     req.flash("success", "Welcome back to Havenly!");
     let redirectUrl = res.locals.redirectUrl || "/listings";
+    delete req.session.redirectUrl;
     res.redirect(redirectUrl);
 };
 

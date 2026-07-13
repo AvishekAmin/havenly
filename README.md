@@ -10,8 +10,31 @@ Powered by the MERN stack and modern web technologies, Havenly offers a secure, 
 
 # 🌐 Live Demo
 
-🔗 Website:
-https://havenly-z7ym.onrender.com/listings
+🔗 **Website:** https://havenly-z7ym.onrender.com/listings
+
+---
+
+# 🎯 Key Features
+
+- 🔐 Secure Authentication (Passport.js)
+
+- 🏡 Property Listing & Management
+
+- ⭐ Ratings & Reviews
+
+- 🗺️ Interactive Mapbox Maps
+
+- ☁️ Cloudinary Image Uploads
+
+- 📱 Fully Responsive UI
+
+- 🔍 Smart Property Search
+
+- 💳 Reservation & Payment Flow
+
+- 🌱 Automated Review Seeder
+
+- 🚀 RESTful MVC Architecture
 
 ---
 
@@ -52,42 +75,78 @@ https://havenly-z7ym.onrender.com/listings
 
 - User Registration & Login
 - Secure Authentication with Passport.js
-- Session Management using Mongo Store
+- Session Management using Connect-Mongo
 - Protected Routes & Authorization
+- Flash Messages for User Feedback
 
 ## 🏡 Property Listings
 
-- Create New Listings
-- Edit Existing Listings
-- Delete Listings
+- Create, Edit & Delete Listings
 - View Detailed Property Information
-- Responsive Property Cards
+- Property Owner Authorization
+- Responsive Listing Cards
+- Premium Show Page Layout
+
+## 🔍 Search & Discovery
+
+- Search Properties by Destination
+- Modern Search Bar Interface
+- Interactive Booking Widget
+- Sticky Reservation Card
 
 ## 🖼️ Media Management
 
 - Upload Property Images
 - Cloudinary Cloud Storage Integration
 - Optimized Image Delivery
+- High-Quality Responsive Images
 
 ## 🗺️ Maps & Location Services
 
-- Interactive Maps using Mapbox
+- Interactive Maps using Mapbox GL JS
 - Automatic Location Geocoding
 - Property Location Visualization
 
 ## ⭐ Reviews & Ratings
 
-- Add Reviews
-- Property Rating System
-- Review Management
+- Add & Delete Reviews
+- Star Rating System
+- Realistic Demo Review Seeder
+- Review Modal with "Show All Reviews"
+
+## 🛏️ Property Amenities
+
+- Amenities Overview
+- "Show All Amenities" Modal
+- Premium Property Information Cards
+
+## 💳 Booking Experience
+
+- Check-in & Check-out Selection
+- Guest Selection
+- Reservation Summary
+- Payment Page Workflow
+
+## 📄 Informational Pages
+
+- About Us
+- Help Center
+- Safety Information
+- Cancellation Policy
+- Contact Us
+- Careers
+- Press
+- Terms & Privacy
 
 ## 💻 User Experience
 
-- Responsive Design
+- Fully Responsive Design
 - Mobile-Friendly Interface
-- Bootstrap-Powered UI
-- Flash Messages & Notifications
+- Modern Glassmorphism UI
+- Bootstrap 5 Components
+- Interactive Animations
 - Server-Side Validation
+- Clean MVC Architecture
 
 ---
 
@@ -127,19 +186,33 @@ https://havenly-z7ym.onrender.com/listings
 
 # 📁 Project Highlights
 
-✅ Full-Stack Web Application
+✅ Full-Stack MERN-Based Web Application
 
-✅ Authentication & Authorization
+✅ Secure Authentication & Authorization
 
-✅ Cloud-Based Image Storage
+✅ Complete CRUD Functionality
 
-✅ Interactive Maps Integration
+✅ Cloudinary Image Upload & Storage
 
-✅ CRUD Operations
+✅ Interactive Mapbox Maps & Geocoding
 
-✅ RESTful Architecture
+✅ Smart Property Search Experience
 
-✅ Responsive Design
+✅ Premium Property Detail Pages
+
+✅ Reservation & Booking Workflow
+
+✅ Reviews, Ratings & Amenities Management
+
+✅ Automated Demo Review Seeder
+
+✅ RESTful MVC Architecture
+
+✅ Responsive & Mobile-First Design
+
+✅ Session Management with MongoDB
+
+✅ Modern Glassmorphism UI/UX
 
 ---
 
@@ -147,10 +220,30 @@ https://havenly-z7ym.onrender.com/listings
 
 ```bash
 git clone https://github.com/AvishekAmin/havenly.git
+
 cd havenly
+
 npm install
-nodemon app.js
+
+npm run dev
 ```
+
+---
+
+## 🌱 Seed Demo Reviews
+
+Generate realistic demo reviews for all listings.
+
+```bash
+node init/seedReviews.js
+```
+
+This script:
+
+- Deletes all existing reviews
+- Clears review references from listings
+- Generates fresh realistic reviews
+- Automatically links reviews to their listings
 
 ---
 
@@ -184,7 +277,8 @@ havenly/
 │
 ├── init/
 │   ├── data.js
-│   └── index.js
+│   ├── index.js
+│   └── seedReviews.js
 │
 ├── models/
 │   ├── listing.js
@@ -201,6 +295,7 @@ havenly/
 │
 ├── routes/
 │   ├── listing.js
+│   ├── pages.js
 │   ├── review.js
 │   └── user.js
 │
@@ -210,19 +305,29 @@ havenly/
 │
 ├── views/
 │   ├── includes/
-│   │   ├── navbar.ejs
+│   │   ├── flash.ejs
 │   │   ├── footer.ejs
-│   │   └── flash.ejs
+│   │   └── navbar.ejs
 │   │
 │   ├── layouts/
 │   │   └── boilerplate.ejs
 │   │
 │   ├── listings/
-│   │   ├── index.ejs
-│   │   ├── show.ejs
-│   │   ├── new.ejs
 │   │   ├── edit.ejs
-│   │   └── payment.ejs
+│   │   ├── index.ejs
+│   │   ├── new.ejs
+│   │   ├── payment.ejs
+│   │   └── show.ejs
+│   │
+│   ├── pages/
+│   │   ├── about.ejs
+│   │   ├── cancellation.ejs
+│   │   ├── careers.ejs
+│   │   ├── contact.ejs
+│   │   ├── help.ejs
+│   │   ├── press.ejs
+│   │   ├── privacy.ejs
+│   │   └── safety.ejs
 │   │
 │   ├── users/
 │   │   ├── login.ejs
@@ -246,8 +351,8 @@ havenly/
 ├── app.js
 ├── cloudConfig.js
 ├── middleware.js
-├── package.json
 ├── package-lock.json
+├── package.json
 ├── README.md
 └── schema.js
 ```
@@ -258,14 +363,11 @@ havenly/
 
 ## Avishek Amin
 
-🔗 LinkedIn:
-https://www.linkedin.com/in/avishekamin
+🔗 **LinkedIn:** https://www.linkedin.com/in/avishekamin
 
-🔗 Email:
-avishekamin207@gmail.com
+🔗 **Email:** avishekamin207@gmail.com
 
-🔗 GitHub:
-https://github.com/AvishekAmin
+🔗 **GitHub:** https://github.com/AvishekAmin
 
 ---
 

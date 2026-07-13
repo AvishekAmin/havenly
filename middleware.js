@@ -5,8 +5,17 @@ const { listingSchema, reviewSchema } = require("./schema.js");
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
-        req.session.redirectUrl = req.originalUrl;
-        req.flash("error", "You must be logged in!");
+        let redirectUrl = req.originalUrl;
+        if (redirectUrl.includes("/reviews")) {
+            redirectUrl = redirectUrl.split("/reviews")[0];
+        }
+        req.session.redirectUrl = redirectUrl;
+
+        if (req.body && req.body.review) {
+            req.session.pendingReview = req.body.review;
+        }
+
+        req.flash("error", "You should log in or sign up first to submit a review.");
         return res.redirect("/login");
     }
     next();

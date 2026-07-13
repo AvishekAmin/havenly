@@ -9,8 +9,8 @@ const userController = require("../controllers/user.js");
 
 router
     .route("/signup")
-    .get(userController.renderSignupForm)
-    .post(wrapAsync(userController.signup));
+    .get(saveRedirectUrl, userController.renderSignupForm)
+    .post(saveRedirectUrl, wrapAsync(userController.signup));
 
 router
     .route("/login")

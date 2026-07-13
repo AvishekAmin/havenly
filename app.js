@@ -79,6 +79,8 @@ app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
   res.locals.currUser = req.user;
+  res.locals.pendingReview = req.session.pendingReview || null;
+  delete req.session.pendingReview;
 
   console.log("==========");
   console.log("req.user:", req.user);
