@@ -105,6 +105,10 @@ document.addEventListener('DOMContentLoaded', () => {
             filter.classList.add('active');
             // On mobile, scroll the active filter into view
             filter.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            
+            if (window.updateClearButtonVisibility) {
+                window.updateClearButtonVisibility();
+            }
         });
     });
 })();
@@ -283,7 +287,63 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     const valDates = document.getElementById('val-dates');
     const valGuests = document.getElementById('val-guests');
 
-    // State object
+    function showValidationToast(message) {
+        let container = document.getElementById('notification-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'notification-container';
+            document.body.appendChild(container);
+        }
+
+        const notification = document.createElement('div');
+        notification.className = 'toast-notification error-toast';
+        notification.innerHTML = `
+            <div class="toast-content">
+                <i class="fa-solid fa-circle-exclamation toast-icon"></i>
+                <span class="toast-message">${message}</span>
+            </div>
+        `;
+        container.appendChild(notification);
+
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+            notification.classList.add('hide');
+            setTimeout(() => {
+                notification.remove();
+            }, 400);
+        }, 3500);
+    }
+
+    function validateSearchInputs() {
+        const dest = searchState.destination.trim();
+        const hasDates = valDates && valDates.textContent !== "Add dates";
+        const hasGuests = valGuests && valGuests.textContent !== "Add guests";
+
+        if (!dest) {
+            showValidationToast("Please add a destination first.");
+            return false;
+        }
+
+        if (!hasDates && !hasGuests) {
+            showValidationToast("Please add check-in, check-out dates and guests.");
+            return false;
+        }
+        if (!hasDates) {
+            showValidationToast("Please add check-in and check-out dates.");
+            return false;
+        }
+        if (!hasGuests) {
+            showValidationToast("Please add guests.");
+            return false;
+        }
+
+        return true;
+    }
+
     const searchState = {
         destination: '',
         checkIn: '7 Jul 2026',
@@ -295,6 +355,97 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             pets: 0
         }
     };
+    window.premiumSearchState = searchState;
+
+    function resetDropdownSearchUI() {
+        searchState.destination = '';
+        searchState.checkIn = '7 Jul 2026';
+        searchState.checkOut = '18 Jul 2026';
+        searchState.guests = {
+            adults: 1,
+            children: 0,
+            infants: 0,
+            pets: 0
+        };
+
+        if (valDest) valDest.textContent = 'Search destinations';
+        if (valDates) valDates.textContent = 'Add dates';
+        if (valGuests) valGuests.textContent = 'Add guests';
+
+        const destInput = document.getElementById('dest-input');
+        if (destInput) destInput.value = '';
+
+        const calDays = wrapper.querySelectorAll('.calendar-day:not(.empty)');
+        calDays.forEach(d => d.classList.remove('selected', 'range-start', 'range-end', 'range-between'));
+
+        const calCheckinVal = document.getElementById('cal-checkin-val');
+        const calCheckoutVal = document.getElementById('cal-checkout-val');
+        if (calCheckinVal) calCheckinVal.textContent = '7 Jul 2026';
+        if (calCheckoutVal) calCheckoutVal.textContent = '18 Jul 2026';
+
+        const cntAdults = document.getElementById('count-adults');
+        const cntChildren = document.getElementById('count-children');
+        const cntInfants = document.getElementById('count-infants');
+        const cntPets = document.getElementById('count-pets');
+        if (cntAdults) cntAdults.textContent = '1';
+        if (cntChildren) cntChildren.textContent = '0';
+        if (cntInfants) cntInfants.textContent = '0';
+        if (cntPets) cntPets.textContent = '0';
+
+        const minusButtons = wrapper.querySelectorAll('.counter-control .minus');
+        minusButtons.forEach(btn => {
+            btn.disabled = true;
+        });
+    }
+    window.resetDropdownSearchUI = resetDropdownSearchUI;
+
+    function updateClearButtonVisibility() {
+        const clearBtn = document.getElementById('search-bar-clear');
+        if (!clearBtn) return;
+
+        const hasDest = searchState.destination.trim() !== "";
+        const hasDates = valDates && valDates.textContent !== "Add dates";
+        const hasGuests = valGuests && valGuests.textContent !== "Add guests";
+
+        if (hasDest || hasDates || hasGuests) {
+            clearBtn.classList.add('show');
+        } else {
+            clearBtn.classList.remove('show');
+        }
+    }
+    window.updateClearButtonVisibility = updateClearButtonVisibility;
+
+    const clearBtn = document.getElementById('search-bar-clear');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            resetDropdownSearchUI();
+
+            const navSearchInput = document.querySelector('form[role="search"] .search-inp');
+            if (navSearchInput) navSearchInput.value = '';
+
+            const filters = document.querySelectorAll('.filter');
+            filters.forEach(f => f.classList.remove('active'));
+
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            resetListingsFilter();
+
+            const sectionTitleEl = document.querySelector('.section-header .section-title');
+            const sectionSubtitleEl = document.querySelector('.section-header .section-subtitle');
+            if (sectionTitleEl) {
+                sectionTitleEl.innerHTML = 'Find Your <span class="gradient-text">Perfect Stay</span>';
+            }
+            if (sectionSubtitleEl) {
+                sectionSubtitleEl.textContent = 'Discover handpicked luxury homes';
+            }
+
+            clearBtn.classList.remove('show');
+        });
+    }
+
+    setTimeout(updateClearButtonVisibility, 200);
 
     // Helper: close all panels and remove active classes from sections
     function closeAllPanels() {
@@ -372,6 +523,19 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         item.addEventListener('click', () => {
             const val = item.getAttribute('data-value');
             setDestination(val);
+            if (!validateSearchInputs()) {
+                closeAllPanels();
+                // Open dates panel to prompt the user
+                const datesSection = document.getElementById('search-dates-section');
+                const datesPanel = document.getElementById('panel-dates');
+                if (datesSection && datesPanel) {
+                    datesPanel.classList.add('open');
+                    datesSection.classList.add('active');
+                    const container = wrapper.querySelector('.premium-search-container');
+                    if (container) container.classList.add('active');
+                }
+                return;
+            }
             closeAllPanels();
             filterListings();
         });
@@ -384,6 +548,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         destInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
+                if (!validateSearchInputs()) return;
                 closeAllPanels();
                 filterListings();
             }
@@ -527,12 +692,33 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
 
     function filterListings() {
-        const destination = searchState.destination.trim().toLowerCase();
+        // Clear navbar search input when performing dropdown search
+        const navSearchInput = document.querySelector('form[role="search"] .search-inp');
+        if (navSearchInput) navSearchInput.value = '';
+
+        const destination = searchState.destination.trim();
+        const sectionTitleEl = document.querySelector('.section-header .section-title');
+        const sectionSubtitleEl = document.querySelector('.section-header .section-subtitle');
+
         if (!destination) {
             resetListingsFilter();
+            if (sectionTitleEl) {
+                sectionTitleEl.innerHTML = 'Find Your <span class="gradient-text">Perfect Stay</span>';
+            }
+            if (sectionSubtitleEl) {
+                sectionSubtitleEl.textContent = 'Discover handpicked luxury homes';
+            }
             return;
         }
 
+        if (sectionTitleEl) {
+            sectionTitleEl.innerHTML = `${destination} <span class="gradient-text">Stays</span>`;
+        }
+        if (sectionSubtitleEl) {
+            sectionSubtitleEl.textContent = 'Discover our most popular stays';
+        }
+
+        const destinationLower = destination.toLowerCase();
         const listingCols = document.querySelectorAll('.listings-grid .col');
         const emptyState = document.querySelector('.empty-state');
         let matchedCount = 0;
@@ -544,7 +730,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             const titleText = titleEl ? titleEl.textContent.toLowerCase() : '';
             const locationText = locationEl ? locationEl.textContent.toLowerCase() : '';
 
-            if (titleText.includes(destination) || locationText.includes(destination)) {
+            if (titleText.includes(destinationLower) || locationText.includes(destinationLower)) {
                 col.classList.remove('d-none');
                 matchedCount++;
             } else {
@@ -601,11 +787,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 notification.remove();
             }, 400);
         }, 3000);
+        updateClearButtonVisibility();
     }
 
     if (submitBtn) {
         submitBtn.addEventListener('click', (e) => {
             e.preventDefault();
+            if (!validateSearchInputs()) return;
             closeAllPanels();
             filterListings();
         });
@@ -630,12 +818,34 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
     // Helper: Perform search/filter on listing cards
     function performSearch(query) {
-        const cleanQuery = query.trim().toLowerCase();
+        // Clear all dropdown search fields (destination, dates, guests) when performing navbar search
+        if (window.resetDropdownSearchUI) {
+            window.resetDropdownSearchUI();
+        }
+
+        const cleanQuery = query.trim();
+        const sectionTitleEl = document.querySelector('.section-header .section-title');
+        const sectionSubtitleEl = document.querySelector('.section-header .section-subtitle');
+
         if (!cleanQuery) {
             resetListings();
+            if (sectionTitleEl) {
+                sectionTitleEl.innerHTML = 'Find Your <span class="gradient-text">Perfect Stay</span>';
+            }
+            if (sectionSubtitleEl) {
+                sectionSubtitleEl.textContent = 'Discover handpicked luxury homes';
+            }
             return;
         }
 
+        if (sectionTitleEl) {
+            sectionTitleEl.innerHTML = `${cleanQuery} <span class="gradient-text">Stays</span>`;
+        }
+        if (sectionSubtitleEl) {
+            sectionSubtitleEl.textContent = 'Discover our most popular stays';
+        }
+
+        const cleanQueryLower = cleanQuery.toLowerCase();
         const listingCols = document.querySelectorAll('.listings-grid .col');
         const emptyState = document.querySelector('.empty-state');
         let matchedCount = 0;
@@ -647,7 +857,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             const titleText = titleEl ? titleEl.textContent.toLowerCase() : '';
             const locationText = locationEl ? locationEl.textContent.toLowerCase() : '';
 
-            if (titleText.includes(cleanQuery) || locationText.includes(cleanQuery)) {
+            if (titleText.includes(cleanQueryLower) || locationText.includes(cleanQueryLower)) {
                 col.classList.remove('d-none');
                 matchedCount++;
             } else {
@@ -670,6 +880,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
         // Show toast notification
         showSearchToast(`Found ${matchedCount} listings for "${query}"`);
+        if (window.updateClearButtonVisibility) {
+            window.updateClearButtonVisibility();
+        }
     }
 
     // Helper: Create and display a custom toast notification
@@ -703,6 +916,19 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             }, 400);
         }, 3000);
     }
+
+    // Clear search and restore listings when native 'x' is clicked or input is manually cleared
+    searchInput.addEventListener('search', () => {
+        if (searchInput.value.trim() === '') {
+            performSearch('');
+        }
+    });
+
+    searchInput.addEventListener('input', () => {
+        if (searchInput.value.trim() === '') {
+            performSearch('');
+        }
+    });
 
     // Handle form submission
     searchForm.addEventListener('submit', (e) => {
