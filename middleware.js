@@ -39,6 +39,9 @@ module.exports.isOwner = async (req, res, next) => {
 };
 
 module.exports.validateListing = (req, res, next) => {
+    if (req.body.listing && !req.body.listing.categories) {
+        req.body.listing.categories = [];
+    }
     let { error } = listingSchema.validate(req.body);
     if (error) {
         let errMsg = error.details.map((el) => el.message).join(",");

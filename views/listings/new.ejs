@@ -34,6 +34,145 @@
                     <div class="invalid-feedback">Enter a short description</div>
                 </div>
                 <div class="mb-3">
+                    <label class="form-label">Categories</label>
+                    <div class="categories-multiselect-container">
+                        <div class="categories-selected-chips" id="selected-chips-container">
+                            <span class="text-muted" style="font-size: 0.82rem; padding-left: 6px;" id="no-chips-placeholder">No categories selected</span>
+                        </div>
+                        <div class="categories-search-box">
+                            <input 
+                                type="text" 
+                                id="category-search-input" 
+                                class="form-control" 
+                                placeholder="Search & select categories..." 
+                                autocomplete="off"
+                            >
+                            <i class="fa-solid fa-chevron-down"></i>
+                        </div>
+                        <div class="categories-dropdown" id="categories-dropdown-menu">
+                            <% CATEGORIES.forEach(cat => { %>
+                                <div class="category-option-item" data-value="<%= cat %>">
+                                    <input type="checkbox" id="cat-check-<%= cat %>" value="<%= cat %>">
+                                    <span class="category-option-label"><%= cat %></span>
+                                </div>
+                            <% }) %>
+                            <div class="category-no-results d-none" id="no-results-msg">No categories found</div>
+                        </div>
+                        <div id="hidden-inputs-container"></div>
+                    </div>
+                </div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const container = document.querySelector(".categories-multiselect-container");
+                        if (!container) return;
+
+                        const searchInput = document.getElementById("category-search-input");
+                        const dropdown = document.getElementById("categories-dropdown-menu");
+                        const chipsContainer = document.getElementById("selected-chips-container");
+                        const placeholder = document.getElementById("no-chips-placeholder");
+                        const hiddenContainer = document.getElementById("hidden-inputs-container");
+                        const noResultsMsg = document.getElementById("no-results-msg");
+                        const optionItems = dropdown.querySelectorAll(".category-option-item");
+
+                        let selectedCategories = [];
+
+                        function updateSelection() {
+                            chipsContainer.innerHTML = "";
+                            hiddenContainer.innerHTML = "";
+
+                            if (selectedCategories.length === 0) {
+                                chipsContainer.appendChild(placeholder);
+                            } else {
+                                selectedCategories.forEach(cat => {
+                                    const chip = document.createElement("span");
+                                    chip.className = "category-chip";
+                                    chip.innerHTML = cat + ' <span class="category-chip-remove" data-val="' + cat + '"><i class="fa-solid fa-xmark"></i></span>';
+                                    chipsContainer.appendChild(chip);
+
+                                    const hiddenInput = document.createElement("input");
+                                    hiddenInput.type = "hidden";
+                                    hiddenInput.name = "listing[categories][]";
+                                    hiddenInput.value = cat;
+                                    hiddenContainer.appendChild(hiddenInput);
+                                });
+                            }
+
+                            optionItems.forEach(item => {
+                                const val = item.getAttribute("data-value");
+                                const checkbox = item.querySelector("input[type='checkbox']");
+                                if (selectedCategories.includes(val)) {
+                                    item.classList.add("selected");
+                                    checkbox.checked = true;
+                                } else {
+                                    item.classList.remove("selected");
+                                    checkbox.checked = false;
+                                }
+                            });
+                        }
+
+                        searchInput.addEventListener("focus", () => {
+                            dropdown.classList.add("open");
+                        });
+
+                        document.addEventListener("click", (e) => {
+                            if (!container.contains(e.target)) {
+                                dropdown.classList.remove("open");
+                            }
+                        });
+
+                        searchInput.addEventListener("input", () => {
+                            const query = searchInput.value.toLowerCase().trim();
+                            let matchedCount = 0;
+
+                            optionItems.forEach(item => {
+                                const label = item.querySelector(".category-option-label").textContent.toLowerCase();
+                                if (label.includes(query)) {
+                                    item.classList.remove("d-none");
+                                    matchedCount++;
+                                } else {
+                                    item.classList.add("d-none");
+                                }
+                            });
+
+                            if (matchedCount === 0) {
+                                noResultsMsg.classList.remove("d-none");
+                            } else {
+                                noResultsMsg.classList.add("d-none");
+                            }
+                        });
+
+                        optionItems.forEach(item => {
+                            item.addEventListener("click", (e) => {
+                                e.stopPropagation();
+                                const val = item.getAttribute("data-value");
+
+                                if (selectedCategories.includes(val)) {
+                                    selectedCategories = selectedCategories.filter(c => c !== val);
+                                } else {
+                                    selectedCategories.push(val);
+                                }
+
+                                updateSelection();
+                                searchInput.focus();
+                            });
+                        });
+
+                        chipsContainer.addEventListener("click", (e) => {
+                            const removeBtn = e.target.closest(".category-chip-remove");
+                            if (!removeBtn) return;
+                            
+                            e.stopPropagation();
+                            const val = removeBtn.getAttribute("data-val");
+                            selectedCategories = selectedCategories.filter(c => c !== val);
+                            updateSelection();
+                        });
+
+                        updateSelection();
+                    });
+                </script>
+
+                <div class="mb-3">
                     <label for="image" class="form-label">Upload Image</label>
                     <input 
                         name="listing[image]" 

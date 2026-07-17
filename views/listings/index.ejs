@@ -1,67 +1,38 @@
 <% layout("layouts/boilerplate") %>
 
 <!-- ===== FILTER BAR ===== -->
-<div id="filters">
-    <div class="filter">
-        <i class="fa-solid fa-fire"></i>
-        <p>Trending</p>
-    </div>
-    <div class="filter">
-        <i class="fa-solid fa-bed"></i>
-        <p>Rooms</p>
-    </div>
-    <div class="filter">
-        <i class="fa-solid fa-mountain-city"></i>
-        <p>Cities</p>
-    </div>
-    <div class="filter">
-        <i class="fa-solid fa-mountain"></i>
-        <p>Mountains</p>
-    </div>
-    <div class="filter">
-        <i class="fa-brands fa-fort-awesome"></i>
-        <p>Castles</p>
-    </div>
-    <div class="filter">
-        <i class="fa-solid fa-person-swimming"></i>
-        <p>Pools</p>
-    </div>
-    <div class="filter">
-        <i class="fa-solid fa-campground"></i>
-        <p>Camping</p>
-    </div>
-    <div class="filter">
-        <i class="fa-solid fa-cow"></i>
-        <p>Farms</p>
-    </div>
-    <div class="filter">
-        <i class="fa-solid fa-snowflake"></i>
-        <p>Arctic</p>
-    </div>
-    <div class="filter">
-        <i class="fa-solid fa-umbrella-beach"></i>
-        <p>Beach</p>
-    </div>
-    <div class="filter">
-        <i class="fa-solid fa-tree"></i>
-        <p>Treehouse</p>
-    </div>
-    <div class="filter">
-        <i class="fa-solid fa-igloo"></i>
-        <p>Domes</p>
-    </div>
-    <div class="filter">
-        <i class="fa-solid fa-sailboat"></i>
-        <p>Lakes</p>
-    </div>
-    <div class="filter">
-        <i class="fa-solid fa-hotel"></i>
-        <p>Villa</p>
-    </div>
-    <div class="filter">
-        <i class="fa-solid fa-cable-car"></i>
-        <p>Cable-Car</p>
-    </div>
+<div id="filters" class="<%= (typeof selectedCategory !== 'undefined' && selectedCategory) ? 'has-active-category' : '' %>">
+    <% 
+    const filterBarItems = [
+        { name: "Trending", icon: "fa-solid fa-fire" },
+        { name: "Rooms", icon: "fa-solid fa-bed" },
+        { name: "Cities", icon: "fa-solid fa-mountain-city" },
+        { name: "Mountains", icon: "fa-solid fa-mountain" },
+        { name: "Castles", icon: "fa-brands fa-fort-awesome" },
+        { name: "Pools", icon: "fa-solid fa-person-swimming" },
+        { name: "Camping", icon: "fa-solid fa-campground" },
+        { name: "Farms", icon: "fa-solid fa-cow" },
+        { name: "Arctic", icon: "fa-solid fa-snowflake" },
+        { name: "Beach", icon: "fa-solid fa-umbrella-beach" },
+        { name: "Treehouse", icon: "fa-solid fa-tree" },
+        { name: "Domes", icon: "fa-solid fa-igloo" },
+        { name: "Lakes", icon: "fa-solid fa-sailboat" },
+        { name: "Villa", icon: "fa-solid fa-hotel" },
+        { name: "Cable-Car", icon: "fa-solid fa-cable-car" }
+    ];
+    %>
+    <% filterBarItems.forEach(item => { %>
+        <% const isActive = typeof selectedCategory !== 'undefined' && selectedCategory === item.name; %>
+        <div class="filter<%= isActive ? ' active' : '' %>" data-category="<%= item.name %>" <%= isActive ? 'aria-selected="true"' : '' %>>
+            <i class="<%= item.icon %>"></i>
+            <p><%= item.name %></p>
+            <% if (isActive) { %>
+                <button class="filter-clear-btn" aria-label="Clear category filter">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            <% } %>
+        </div>
+    <% }) %>
 </div>
 
 <!-- ===== PREMIUM SEARCH & FILTERS BAR ===== -->
@@ -324,16 +295,21 @@
 
 <!-- ===== SECTION HEADER ===== -->
 <div class="section-header reveal">
-    <h2 class="section-title">Find Your <span class="gradient-text">Perfect Stay</span></h2>
-    <p class="section-subtitle">Discover handpicked luxury homes</p>
+    <h2 class="section-title"><%- hero.title %></h2>
+    <p class="section-subtitle"><%- hero.subtitle %></p>
 </div>
 
 <!-- ===== EMPTY STATE ===== -->
 <% if(allListings.length === 0) { %>
 <div class="empty-state reveal">
     <div class="empty-state-icon"><i class="fa-solid fa-compass"></i></div>
-    <h3 class="empty-state-title">No Destinations Found</h3>
-    <p class="empty-state-text">Be the first to share an amazing place with the world.</p>
+    <% if (selectedCategory) { %>
+        <h3 class="empty-state-title">No Listings Found</h3>
+        <p class="empty-state-text">No listings found for this category. Try another category.</p>
+    <% } else { %>
+        <h3 class="empty-state-title">No Destinations Found</h3>
+        <p class="empty-state-text">Be the first to share an amazing place with the world.</p>
+    <% } %>
     <a href="/listings/new" class="btn btn-primary-glow">Add Your Property</a>
 </div>
 <% } %>

@@ -947,8 +947,8 @@ textarea.form-control {
   text-align: center;
   padding: 0.62rem 0.60rem;
   border-radius: var(--radius-md);
-  background: transparent;
-  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
   transition: var(--transition);
   flex-shrink: 0;
@@ -3373,4 +3373,235 @@ img:not([loading]) { opacity: 1; }
   .glass-modal-content {
     border-radius: 16px !important;
   }
+}
+
+/* =================================================================
+   33. PROPERTY CATEGORIES & MULTISELECT COMPONENT
+   ================================================================= */
+.filter.active {
+  background: rgba(0, 216, 255, 0.08) !important;
+  border-color: var(--accent, #00D8FF) !important;
+  color: var(--accent, #00D8FF) !important;
+  box-shadow: 0 0 15px rgba(0, 216, 255, 0.25) !important;
+}
+
+.category-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(0, 216, 255, 0.06);
+  color: var(--accent, #00D8FF);
+  border: 1px solid rgba(0, 216, 255, 0.18);
+  border-radius: 50px;
+  padding: 0.35rem 0.95rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.category-pill:hover {
+  background: rgba(0, 216, 255, 0.12);
+  border-color: var(--accent, #00D8FF);
+  box-shadow: 0 0 10px rgba(0, 216, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.show-categories-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.categories-multiselect-container {
+  position: relative;
+  width: 100%;
+}
+
+.categories-selected-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+  min-height: 38px;
+  padding: 6px 8px;
+  border-radius: var(--radius-md, 12px);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  align-items: center;
+}
+
+.category-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 216, 255, 0.1);
+  border: 1px solid rgba(0, 216, 255, 0.2);
+  color: var(--accent, #00D8FF);
+  border-radius: 50px;
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.category-chip-remove {
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.15s;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+}
+
+.category-chip-remove:hover {
+  color: #ff4757;
+}
+
+.categories-search-box {
+  position: relative;
+}
+
+.categories-search-box input {
+  width: 100%;
+  padding-right: 32px;
+}
+
+.categories-search-box i {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  pointer-events: none;
+}
+
+.categories-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  background: rgba(10, 16, 38, 0.98);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 216, 255, 0.2);
+  border-radius: 12px;
+  margin-top: 6px;
+  z-index: 1000;
+  display: none;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 0 15px rgba(0, 216, 255, 0.1);
+  padding: 6px 0;
+}
+
+.categories-dropdown.open {
+  display: block;
+}
+
+.category-option-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+  user-select: none;
+}
+
+.category-option-item:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.category-option-item.selected {
+  background: rgba(0, 216, 255, 0.06);
+}
+
+.category-option-item input[type="checkbox"] {
+  margin-right: 12px;
+  cursor: pointer;
+  accent-color: var(--accent, #00D8FF);
+}
+
+.category-option-label {
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.category-no-results {
+  padding: 12px 16px;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  text-align: center;
+}
+
+/* Category Filter Clear Button (Floating Mini-Card) */
+.filter {
+  position: relative;
+}
+
+#filters.has-active-category {
+  padding-bottom: 3.2rem !important;
+}
+
+.filter-clear-btn {
+  position: absolute;
+  bottom: -42px;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  width: 100%;
+  height: 30px;
+  border-radius: 8px;
+  background: rgba(10, 16, 38, 0.94) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid var(--accent, #00D8FF) !important;
+  color: var(--accent, #00D8FF) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 216, 255, 0.25) !important;
+  padding: 0;
+  font-size: 0.8rem;
+  z-index: 100;
+  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+  opacity: 0;
+  line-height: 1 !important;
+  animation: filterClearBtnFadeIn 250ms forwards ease-out;
+}
+
+.filter-clear-btn i {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+}
+
+@keyframes filterClearBtnFadeIn {
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.filter-clear-btn:hover {
+  background: rgba(0, 216, 255, 0.08) !important;
+  border-color: rgba(0, 216, 255, 0.7) !important;
+  box-shadow: 0 0 15px rgba(0, 216, 255, 0.45) !important;
+  color: var(--accent, #00D8FF) !important;
+  transform: translateX(-50%) !important;
+}
+
+.filter-clear-btn:focus-visible {
+  outline: none;
+  border-color: var(--accent, #00D8FF) !important;
+  box-shadow: 0 0 15px rgba(0, 216, 255, 0.6) !important;
 }

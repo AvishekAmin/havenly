@@ -99,16 +99,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const filters = document.querySelectorAll('.filter');
     if (!filters.length) return;
 
+    // Scroll active filter into view on page load
+    const activeFilter = document.querySelector('.filter.active');
+    if (activeFilter) {
+        setTimeout(() => {
+            activeFilter.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }, 150);
+    }
+
     filters.forEach(filter => {
         filter.addEventListener('click', () => {
-            filters.forEach(f => f.classList.remove('active'));
-            filter.classList.add('active');
-            // On mobile, scroll the active filter into view
-            filter.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            const category = filter.getAttribute('data-category');
+            const isCurrentlyActive = filter.classList.contains('active');
             
-            if (window.updateClearButtonVisibility) {
-                window.updateClearButtonVisibility();
+            if (isCurrentlyActive) {
+                window.location.href = '/listings';
+            } else {
+                window.location.href = `/listings?category=${encodeURIComponent(category)}`;
             }
+        });
+    });
+
+    // Handle clear filter button clicks with stopPropagation
+    const clearBtns = document.querySelectorAll('.filter-clear-btn');
+    clearBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            window.location.href = '/listings';
         });
     });
 })();
@@ -518,6 +535,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         if (valDest) valDest.textContent = value || 'Search destinations';
         if (destInput) destInput.value = value;
     }
+    window.setPremiumSearchDestination = setDestination;
+    window.filterPremiumListings = filterListings;
 
     popularItems.forEach(item => {
         item.addEventListener('click', () => {
@@ -697,6 +716,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         if (navSearchInput) navSearchInput.value = '';
 
         const destination = searchState.destination.trim();
+
+        // Redirect if category filter is active to start fresh with all listings
+        const hasCategory = new URLSearchParams(window.location.search).has('category');
+        if (hasCategory && destination) {
+            window.location.href = `/listings?dest=${encodeURIComponent(destination)}`;
+            return;
+        }
         const sectionTitleEl = document.querySelector('.section-header .section-title');
         const sectionSubtitleEl = document.querySelector('.section-header .section-subtitle');
 
@@ -937,8 +963,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         
         // Check if we are on the homepage/listings page
         const isHomepage = window.location.pathname === '/' || window.location.pathname === '/listings';
+        const hasCategory = new URLSearchParams(window.location.search).has('category');
         
-        if (!isHomepage) {
+        if (!isHomepage || hasCategory) {
             // Redirect to home page with query parameter
             window.location.href = `/listings?q=${encodeURIComponent(query)}`;
         } else {
@@ -952,11 +979,26 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     if (isHomepage) {
         const urlParams = new URLSearchParams(window.location.search);
         const query = urlParams.get('q');
+        const dest = urlParams.get('dest');
         if (query) {
             searchInput.value = query;
             // Delay slightly to wait for scroll reveal transitions to complete
             setTimeout(() => {
                 performSearch(query);
+            }, 100);
+
+            // Clean query parameter from URL bar without reloading
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+        } else if (dest) {
+            // Populate and search dropdown
+            setTimeout(() => {
+                if (window.setPremiumSearchDestination) {
+                    window.setPremiumSearchDestination(dest);
+                }
+                if (window.filterPremiumListings) {
+                    window.filterPremiumListings();
+                }
             }, 100);
 
             // Clean query parameter from URL bar without reloading
