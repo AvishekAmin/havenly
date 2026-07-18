@@ -432,16 +432,30 @@ for (const amenity of allAmenities) {
                     <i class="fa-solid fa-star" style="color: #00D8FF; margin-right: 0.5rem;"></i>All <%= listing.reviews.length %> Reviews
                 </h5>
                 <div class="d-flex align-items-center gap-3">
+                    <% if (listing.reviews && listing.reviews.length > 1) { %>
                     <div class="dropdown">
-                        <button class="btn btn-glass btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.02); color: var(--text-secondary); font-size: 0.8rem; border-radius: var(--radius-sm);">
-                            Most Recent ▼
+                        <% 
+                        let activeText = "Most Recent";
+                        if (typeof sortOption !== "undefined") {
+                            if (sortOption === "highest") {
+                                activeText = "Highest Rating";
+                            } else if (sortOption === "lowest") {
+                                activeText = "Lowest Rating";
+                            }
+                        }
+                        %>
+                        <button class="btn btn-review-sort" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-arrow-down-wide-short" style="color: var(--accent, #00D8FF);"></i>
+                            <span><%= activeText %></span>
+                            <i class="fa-solid fa-chevron-down" style="font-size: 0.72rem; color: rgba(255, 255, 255, 0.6); margin-left: 0.2rem;"></i>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end glass-dropdown" style="background: rgba(10, 16, 38, 0.95); border: 1px solid rgba(0, 216, 255, 0.15); box-shadow: var(--shadow-lg);">
-                            <li><a class="dropdown-item text-secondary" href="#" style="font-size: 0.8rem; padding: 0.5rem 1rem;">Most Recent</a></li>
-                            <li><a class="dropdown-item text-secondary" href="#" style="font-size: 0.8rem; padding: 0.5rem 1rem;">Highest Rating</a></li>
-                            <li><a class="dropdown-item text-secondary" href="#" style="font-size: 0.8rem; padding: 0.5rem 1rem;">Lowest Rating</a></li>
+                        <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
+                            <li><a class="dropdown-item<%= (typeof sortOption !== 'undefined' && sortOption === 'recent') ? ' active' : '' %>" href="/listings/<%= listing._id %>?sort=recent">Most Recent</a></li>
+                            <li><a class="dropdown-item<%= (typeof sortOption !== 'undefined' && sortOption === 'highest') ? ' active' : '' %>" href="/listings/<%= listing._id %>?sort=highest">Highest Rating</a></li>
+                            <li><a class="dropdown-item<%= (typeof sortOption !== 'undefined' && sortOption === 'lowest') ? ' active' : '' %>" href="/listings/<%= listing._id %>?sort=lowest">Lowest Rating</a></li>
                         </ul>
                     </div>
+                    <% } %>
                     <button type="button" class="btn-close btn-close-white m-0" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1) grayscale(1) brightness(2);"></button>
                 </div>
             </div>
@@ -764,3 +778,15 @@ for (const amenity of allAmenities) {
     }
 })();
 </script>
+
+<% if (typeof showModal !== 'undefined' && showModal) { %>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const reviewModalEl = document.getElementById('allReviewsModal');
+        if (reviewModalEl) {
+            const myModal = new bootstrap.Modal(reviewModalEl);
+            myModal.show();
+        }
+    });
+</script>
+<% } %>

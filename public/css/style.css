@@ -3605,3 +3605,96 @@ img:not([loading]) { opacity: 1; }
   border-color: var(--accent, #00D8FF) !important;
   box-shadow: 0 0 15px rgba(0, 216, 255, 0.6) !important;
 }
+
+/* =================================================================
+   34. REVIEW SORTING DROPDOWN REDESIGN
+   ================================================================= */
+.btn-review-sort {
+  background: rgba(10, 16, 38, 0.8) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  border: 1px solid rgba(0, 216, 255, 0.2) !important;
+  color: #ffffff !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 1rem !important;
+  transition: all 0.25s ease !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 0.5rem !important;
+  cursor: pointer !important;
+  line-height: 1.2 !important;
+}
+
+.btn-review-sort:hover,
+.btn-review-sort:focus-visible {
+  border-color: var(--accent, #00D8FF) !important;
+  box-shadow: 0 0 15px rgba(0, 216, 255, 0.3) !important;
+  transform: translateY(-1px) !important;
+  color: #ffffff !important;
+  outline: none !important;
+}
+
+.glass-dropdown {
+  min-width: 200px !important;
+  background: rgba(13, 20, 45, 0.96) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  border: 1px solid rgba(0, 216, 255, 0.12) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45) !important;
+  padding: 8px !important;
+  margin-top: 6px !important;
+}
+
+.glass-dropdown.show {
+  animation: dropdownFadeIn 220ms ease forwards !important;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.glass-dropdown .dropdown-item {
+  padding: 10px 14px !important;
+  border-radius: 10px !important;
+  color: var(--text-secondary, rgba(244, 248, 255, 0.68)) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.3px !important;
+  transition: all 250ms ease !important;
+  background: transparent !important;
+  border-left: 3px solid transparent !important;
+}
+
+.glass-dropdown .dropdown-item:hover {
+  background: rgba(0, 216, 255, 0.08) !important;
+  color: #ffffff !important;
+  transform: translateX(4px) !important;
+}
+
+.glass-dropdown .dropdown-item.active {
+  background: linear-gradient(135deg, rgba(0, 216, 255, 0.16), rgba(0, 216, 255, 0.08)) !important;
+  border: 1px solid rgba(0, 216, 255, 0.25) !important;
+  border-left: 3px solid var(--accent, #00D8FF) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 16px rgba(0, 216, 255, 0.12) !important;
+  padding-left: 11px !important;
+}
+
+.glass-dropdown li {
+  margin-bottom: 6px !important;
+}
+
+.glass-dropdown li:last-child {
+  margin-bottom: 0 !important;
+}

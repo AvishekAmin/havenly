@@ -86,20 +86,32 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.showListing = async (req, res) => {
     let { id } = req.params;
+    
+    let sortOption = req.query.sort || "recent";
+    let sortObj = { createdAt: -1 };
+    if (sortOption === "highest") {
+        sortObj = { rating: -1, createdAt: -1 };
+    } else if (sortOption === "lowest") {
+        sortObj = { rating: 1, createdAt: -1 };
+    }
+
     const listing = await Listing.findById(id)
         .populate({
             path: "reviews",
+            options: { sort: sortObj },
             populate: {
                 path: "author",
             },
         })
         .populate("owner");
+
     if(!listing) {
         req.flash("error", "Listing does not exist!");
         return res.redirect("/listings");
     }
-    console.log(listing);
-    res.render("listings/show", { listing });
+    
+    const showModal = typeof req.query.sort !== "undefined";
+    res.render("listings/show", { listing, sortOption, showModal });
 };
 
 module.exports.createListing = async (req, res) => { 
