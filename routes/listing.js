@@ -24,7 +24,10 @@ router.get("/new", isLoggedIn, listingController.renderNewForm);
 // Payment Route
 router.get("/:id/payment", isLoggedIn, wrapAsync(async (req, res) => {
     const listing = await Listing.findById(req.params.id).populate("owner");
-    res.render("listings/payment.ejs", { listing });
+    res.render("listings/payment.ejs", {
+        listing,
+        razorpayKeyId: process.env.RAZORPAY_KEY_ID,
+    });
 }));
 
 router

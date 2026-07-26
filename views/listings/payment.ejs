@@ -27,43 +27,65 @@
                 </div>
             </div>
 
-            <!-- Payment Method Card -->
+            <!-- Payment Card -->
             <div class="show-info-card mb-4">
-                <h4><i class="fa-solid fa-credit-card" style="color: #00D8FF;"></i> Payment Method</h4>
+                <h4><i class="fa-solid fa-shield-halved" style="color: #00D8FF;"></i> Payment</h4>
                 
-                <div class="d-flex gap-3 my-3">
-                    <div class="form-check p-3 rounded border border-secondary flex-fill cursor-pointer" style="background: rgba(255,255,255,0.02);">
-                        <input class="form-check-input ms-0 me-2" type="radio" name="paymentMethod" id="payCard" checked>
-                        <label class="form-check-label fw-bold cursor-pointer" for="payCard">Credit / Debit Card</label>
-                    </div>
-                    <div class="form-check p-3 rounded border border-secondary flex-fill cursor-pointer" style="background: rgba(255,255,255,0.02); opacity: 0.6;">
-                        <input class="form-check-input ms-0 me-2" type="radio" name="paymentMethod" id="payUPI" disabled>
-                        <label class="form-check-label fw-bold cursor-pointer" for="payUPI">UPI / Net Banking</label>
+                <div class="my-4 p-3 rounded" style="background: rgba(0, 216, 255, 0.05); border: 1px solid rgba(0, 216, 255, 0.15); display: flex; align-items: center; gap: 10px;">
+                    <i class="fa-solid fa-lock text-primary-glow" style="font-size: 1.1rem;"></i>
+                    <span class="fw-semibold text-primary-glow" style="font-size: 0.95rem;">Secure Payment powered by Razorpay</span>
+                </div>
+
+                <div class="mb-4">
+                    <span class="text-muted d-block mb-3" style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Accepted payment methods:</span>
+                    <div class="row g-2">
+                        <div class="col-6 col-sm-4">
+                            <div class="p-2 rounded border border-secondary text-center" style="background: rgba(255,255,255,0.02); font-size: 0.85rem;">
+                                <i class="fa-solid fa-check text-success me-1"></i> UPI
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4">
+                            <div class="p-2 rounded border border-secondary text-center" style="background: rgba(255,255,255,0.02); font-size: 0.85rem;">
+                                <i class="fa-solid fa-check text-success me-1"></i> Credit & Debit Cards
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4">
+                            <div class="p-2 rounded border border-secondary text-center" style="background: rgba(255,255,255,0.02); font-size: 0.85rem;">
+                                <i class="fa-solid fa-check text-success me-1"></i> Net Banking
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4">
+                            <div class="p-2 rounded border border-secondary text-center" style="background: rgba(255,255,255,0.02); font-size: 0.85rem;">
+                                <i class="fa-solid fa-check text-success me-1"></i> Wallets
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4">
+                            <div class="p-2 rounded border border-secondary text-center" style="background: rgba(255,255,255,0.02); font-size: 0.85rem;">
+                                <i class="fa-solid fa-check text-success me-1"></i> EMI
+                            </div>
+                        </div>
+                        <div class="col-6 col-sm-4">
+                            <div class="p-2 rounded border border-secondary text-center" style="background: rgba(255,255,255,0.02); font-size: 0.85rem;">
+                                <i class="fa-solid fa-check text-success me-1"></i> Pay Later
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Mockup Card Details Form -->
-                <form id="payment-form" class="needs-validation" novalidate>
-                    <div class="mb-3">
-                        <label class="form-label text-muted" style="font-size: 0.82rem; font-weight: 600;">Cardholder Name</label>
-                        <input type="text" class="form-control form-control-dark" required placeholder="Avishek Amin">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label text-muted" style="font-size: 0.82rem; font-weight: 600;">Card Number</label>
-                        <input type="text" class="form-control form-control-dark" required placeholder="4111 2222 3333 4444" pattern="\d{16}" title="16-digit card number">
-                    </div>
-                    <div class="row">
-                        <div class="col-6 mb-3">
-                            <label class="form-label text-muted" style="font-size: 0.82rem; font-weight: 600;">Expiration</label>
-                            <input type="text" class="form-control form-control-dark" required placeholder="MM/YY" pattern="\d{2}/\d{2}" title="MM/YY format">
-                        </div>
-                        <div class="col-6 mb-3">
-                            <label class="form-label text-muted" style="font-size: 0.82rem; font-weight: 600;">CVV</label>
-                            <input type="password" class="form-control form-control-dark" required placeholder="123" pattern="\d{3}" title="3-digit CVV number">
-                        </div>
-                    </div>
+                <div class="p-3 rounded mb-4" style="background: rgba(255,255,255,0.01); border: 1px dashed rgba(255,255,255,0.08);">
+                    <p class="mb-0 text-muted" style="font-size: 0.82rem; line-height: 1.5;">
+                        Your payment details will be collected securely by Razorpay. Havenly never stores your card or UPI information.
+                    </p>
+                </div>
 
-                    <button class="btn btn-reserve-glow w-100 py-3 mt-3 fw-bold" type="submit">Confirm Reservation</button>
+                <form id="payment-form" class="m-0">
+                    <button
+                        id="pay-button"
+                        class="btn btn-reserve-glow w-100 py-3 fw-bold"
+                        type="submit"
+                    >
+                        Pay Securely
+                    </button>
                 </form>
             </div>
         </div>
@@ -118,6 +140,8 @@
     </div>
 </div>
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <!-- ===== PAGE LOGIC AND FORM SUBMISSION ===== -->
 <script>
 (function initPaymentPage() {
@@ -169,23 +193,166 @@
     }
 
     // Form Submission Mockup
-    const form = document.getElementById('payment-form');
-    if (form) {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (!form.checkValidity()) {
-                e.stopPropagation();
-                form.classList.add('was-validated');
-                return;
-            }
+    const form = document.getElementById("payment-form");
+    const payButton = document.getElementById("pay-button");
 
-            // Create and trigger a custom confirmation popup
-            showSuccessNotification("Booking Confirmed! redirecting...");
+    if (form) {
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            let paymentFailed = false;
+            if (payButton.disabled) return;
+
+            payButton.disabled = true;
+            payButton.innerHTML = `
+                <i class="fa-solid fa-spinner fa-spin me-2"></i>
+                Processing...
+            `;
+
+            const bookingData = {
+                listingId: "<%= listing._id %>",
+                checkIn: checkInStr,
+                checkOut: checkOutStr,
+                guests: parseInt(guestsStr),
+            };
+
+            try {
+                const response = await fetch("/bookings/create-order", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(bookingData),
+                });
+
+                const data = await response.json();
             
-            setTimeout(() => {
-                window.location.href = "/listings";
-            }, 3000);
+                if (!response.ok || !data.success) {
+                    resetPayButton();
+
+                    showErrorNotification(
+                        data.message || "Unable to create payment order."
+                    );
+
+                    return;
+                }
+
+                const options = {
+                    key: "<%= razorpayKeyId %>",
+                    amount: data.order.amount,
+                    currency: data.order.currency,
+                    name: "Havenly",
+                    description: "Booking Payment",
+                    order_id: data.order.id,
+
+                    prefill: {
+                        name: "<%= currUser.username %>",
+                        email: "<%= currUser.email %>",
+                    },
+
+                    handler: async function (response) {
+                        console.log("Payment Success!");
+                        console.log(response);
+
+                        try {
+                            const verifyResponse = await fetch("/bookings/verify-payment", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature,
+
+                                    listingId: bookingData.listingId,
+                                    checkIn: bookingData.checkIn,
+                                    checkOut: bookingData.checkOut,
+                                    guests: bookingData.guests,
+                                }),
+                            });
+
+                            const result = await verifyResponse.json();
+
+                            if (!verifyResponse.ok || !result.success) {
+                                resetPayButton();
+
+                                showErrorNotification(
+                                    result.message || "Payment verification failed."
+                                );
+
+                                return;
+                            }
+
+                            showSuccessNotification("Booking Confirmed!");
+
+                            setTimeout(() => {
+                                window.location.href = "/bookings/my-bookings";
+                            }, 1500);
+
+                        } catch (err) {
+                            console.error("Payment Verification Error:", err);
+
+                            resetPayButton();
+
+                            showErrorNotification(
+                                "Payment verification could not be completed. Please check My Bookings before trying again."
+                            );
+                        }
+                    },
+
+                    theme: {
+                        color: "#00D8FF",
+                    },
+
+                    modal: {
+                        ondismiss: function () {
+                            resetPayButton();
+
+                            if (!paymentFailed) {
+                                showErrorNotification(
+                                    "Payment cancelled. You can try again."
+                                );
+                            }
+                        },
+                    },
+                };
+
+                const rzp = new Razorpay(options);
+
+                rzp.on("payment.failed", function (response) {
+                    paymentFailed = true;
+                    console.error("Razorpay Payment Failed:", response.error);
+
+                    resetPayButton();
+
+                    const errorMessage =
+                        response.error?.description ||
+                        response.error?.reason ||
+                        "Payment failed. Please try again.";
+
+                    showErrorNotification(errorMessage);
+                });
+
+                rzp.open();
+
+            } catch (error) {
+                console.error("Create Order Error:", error);
+
+                resetPayButton();
+
+                showErrorNotification(
+                    "Unable to start payment. Please check your connection and try again."
+                );
+            }
         });
+    }
+
+    function resetPayButton() {
+        if (!payButton) return;
+
+        payButton.disabled = false;
+        payButton.innerHTML = "Pay Securely";
     }
 
     function showSuccessNotification(message) {
@@ -218,5 +385,41 @@
             }, 400);
         }, 3000);
     }
+
+    function showErrorNotification(message) {
+        let container = document.getElementById('notification-container');
+
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'notification-container';
+            document.body.appendChild(container);
+        }
+
+        const notification = document.createElement('div');
+        notification.className = 'toast-notification error-toast';
+        
+        notification.innerHTML = `
+            <div class="toast-content">
+                <i class="fa-solid fa-circle-xmark toast-icon"></i>
+                <span class="toast-message">${message}</span>
+            </div>
+        `;
+
+        container.appendChild(notification);
+
+        setTimeout(() => {
+            notification.classList.add('show');
+        }, 10);
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+            notification.classList.add('hide');
+
+            setTimeout(() => {
+                notification.remove();
+            }, 400);
+        }, 4000);
+    }
+
 })();
 </script>

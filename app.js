@@ -20,6 +20,7 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const pagesRouter = require("./routes/pages.js");
+const bookingRouter = require("./routes/booking.js");
 
 const dbUrl = process.env.ATLASDB_URL;
 main()
@@ -37,6 +38,7 @@ async function main() {
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
@@ -98,6 +100,7 @@ app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 app.use("/", pagesRouter);
+app.use("/bookings", bookingRouter);
 
 // Catch-all route for undefined paths
 app.use((req, res, next) => {
@@ -108,7 +111,6 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something went wrong!" } = err;
   res.status(statusCode).render("error.ejs", { message });
-  // res.status(statusCode).send(message);
 });
 
 const port = process.env.PORT || 8080;

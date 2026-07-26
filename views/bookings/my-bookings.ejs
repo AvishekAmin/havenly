@@ -1,0 +1,161 @@
+<% layout("layouts/boilerplate") %>
+
+<!-- ===== MY BOOKINGS PAGE ===== -->
+<div class="container py-5 reveal">
+
+    <!-- Top Section -->
+    <a href="/listings" class="btn btn-glass btn-sm mb-4">
+        <i class="fa-solid fa-chevron-left me-1"></i> Back to Explore
+    </a>
+
+    <h2 class="mb-1 text-primary-glow" style="font-weight: 700;">
+        <i class="fa-solid fa-suitcase me-2" style="color: var(--accent);"></i>My Bookings
+    </h2>
+    <p class="text-muted mb-5" style="font-size: 0.95rem;">View all your confirmed reservations.</p>
+
+    <% if (bookings && bookings.length > 0) { %>
+
+    <!-- Bookings List -->
+    <div class="bookings-list">
+        <% for (let booking of bookings) { %>
+        <div class="booking-card reveal">
+            <div class="booking-card-inner">
+                <!-- Image Section -->
+                <div class="booking-card-image">
+                    <% if (booking.listing && booking.listing.image) { %>
+                    <img src="<%= booking.listing.image.url %>" alt="<%= booking.listing.title %>">
+                    <% } else { %>
+                    <div class="booking-card-image-placeholder">
+                        <i class="fa-solid fa-image"></i>
+                    </div>
+                    <% } %>
+
+                    <!-- Status Badges on Image -->
+                    <div class="booking-badges">
+                        <span class="booking-badge booking-badge-<%= booking.bookingStatus.toLowerCase() %>">
+                            <% if (booking.bookingStatus === "Confirmed") { %>
+                            <i class="fa-solid fa-circle-check me-1"></i>
+                            <% } else if (booking.bookingStatus === "Completed") { %>
+                            <i class="fa-solid fa-flag-checkered me-1"></i>
+                            <% } else { %>
+                            <i class="fa-solid fa-circle-xmark me-1"></i>
+                            <% } %>
+                            <%= booking.bookingStatus %>
+                        </span>
+                        <span class="booking-badge booking-badge-<%= booking.paymentStatus.toLowerCase() %>">
+                            <% if (booking.paymentStatus === "Paid") { %>
+                            <i class="fa-solid fa-indian-rupee-sign me-1"></i>
+                            <% } %>
+                            <%= booking.paymentStatus %>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Details Section -->
+                <div class="booking-card-details">
+
+                    <!-- Title & Location -->
+                    <div class="booking-card-header">
+                        <h4 class="booking-title">
+                            <% if (booking.listing) { %>
+                            <%= booking.listing.title %>
+                            <% } else { %>
+                            Listing Unavailable
+                            <% } %>
+                        </h4>
+                        <% if (booking.listing) { %>
+                        <p class="booking-location text-muted mb-0">
+                            <i class="fa-solid fa-location-dot me-1"></i>
+                            <%= booking.listing.location %>, <%= booking.listing.country %>
+                        </p>
+                        <% } %>
+                    </div>
+
+                    <!-- Meta Grid -->
+                    <div class="booking-meta-grid">
+                        <div class="booking-meta-item">
+                            <span class="booking-meta-label">Booking ID</span>
+                            <span class="booking-meta-value" style="font-size: 0.72rem; letter-spacing: 0.3px;">
+                                #<%= booking._id.toString().slice(-8).toUpperCase() %>
+                            </span>
+                        </div>
+                        <div class="booking-meta-item">
+                            <span class="booking-meta-label">Booked On</span>
+                            <span class="booking-meta-value">
+                                <%= new Date(booking.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) %>
+                            </span>
+                        </div>
+                        <div class="booking-meta-item">
+                            <span class="booking-meta-label">Check-in</span>
+                            <span class="booking-meta-value">
+                                <i class="fa-solid fa-calendar-check me-1" style="color: var(--accent); font-size: 0.7rem;"></i>
+                                <%= new Date(booking.checkIn).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) %>
+                            </span>
+                        </div>
+                        <div class="booking-meta-item">
+                            <span class="booking-meta-label">Check-out</span>
+                            <span class="booking-meta-value">
+                                <i class="fa-solid fa-calendar-xmark me-1" style="color: #ff4757; font-size: 0.7rem;"></i>
+                                <%= new Date(booking.checkOut).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) %>
+                            </span>
+                        </div>
+                        <div class="booking-meta-item">
+                            <span class="booking-meta-label">Guests</span>
+                            <span class="booking-meta-value">
+                                <i class="fa-solid fa-user-group me-1" style="color: var(--accent); font-size: 0.7rem;"></i>
+                                <%= booking.guests %> guest<%= booking.guests > 1 ? "s" : "" %>
+                            </span>
+                        </div>
+                        <div class="booking-meta-item">
+                            <span class="booking-meta-label">Nights</span>
+                            <span class="booking-meta-value">
+                                <i class="fa-solid fa-moon me-1" style="color: var(--accent); font-size: 0.7rem;"></i>
+                                <%= booking.numberOfNights %> night<%= booking.numberOfNights > 1 ? "s" : "" %>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Footer: Price + Actions -->
+                    <div class="booking-card-footer">
+                        <div class="booking-price-section">
+                            <span class="booking-meta-label">Total Paid</span>
+                            <span class="booking-total-price">
+                                &#8377; <%= booking.totalPrice.toLocaleString("en-IN") %>
+                            </span>
+                            <span class="booking-payment-method">
+                                <i class="fa-solid fa-shield-halved me-1"></i> via Razorpay
+                            </span>
+                        </div>
+                        <div class="booking-actions">
+                            <% if (booking.listing) { %>
+                            <a href="/listings/<%= booking.listing._id %>" class="btn btn-glass btn-sm booking-view-btn">
+                                <i class="fa-solid fa-eye me-1"></i> View Listing
+                            </a>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+    </div>
+
+    <% } else { %>
+
+    <!-- Empty State -->
+    <div class="bookings-empty-state reveal">
+        <div class="bookings-empty-icon">
+            <i class="fa-solid fa-suitcase-rolling"></i>
+        </div>
+        <h3 class="bookings-empty-title">No trips planned yet</h3>
+        <p class="bookings-empty-text">
+            Looks like you haven't booked your next stay.<br>
+            Start exploring amazing destinations and create unforgettable memories.
+        </p>
+        <a href="/listings" class="btn btn-reserve-glow bookings-empty-btn">
+            <i class="fa-solid fa-compass me-2"></i> Explore Stays
+        </a>
+    </div>
+
+    <% } %>
+</div>
