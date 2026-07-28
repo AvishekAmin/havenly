@@ -126,7 +126,10 @@
                                 <i class="fa-solid fa-shield-halved me-1"></i> via Razorpay
                             </span>
                         </div>
-                        <div class="booking-actions">
+                        <div class="booking-actions d-flex flex-wrap gap-2">
+                            <a href="/bookings/<%= booking._id %>" class="btn btn-glass btn-sm booking-view-btn">
+                                <i class="fa-solid fa-file-lines me-1"></i> Booking Details
+                            </a>
                             <% if (booking.listing) { %>
                             <a href="/listings/<%= booking.listing._id %>" class="btn btn-glass btn-sm booking-view-btn">
                                 <i class="fa-solid fa-eye me-1"></i> View Listing

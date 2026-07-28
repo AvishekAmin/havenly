@@ -1,0 +1,272 @@
+<% layout("layouts/boilerplate") %>
+
+<!-- ===== BOOKING DETAILS PAGE ===== -->
+<div class="container py-5 reveal">
+
+    <!-- Back Button -->
+    <a href="/bookings/my-bookings" class="btn btn-glass btn-sm mb-4">
+        <i class="fa-solid fa-chevron-left me-1"></i> Back to My Bookings
+    </a>
+
+    <!-- Title & Status Badges -->
+    <div class="d-flex align-items-center flex-wrap gap-3 mb-5">
+        <h2 class="mb-0 text-primary-glow" style="font-weight: 700;">
+            <i class="fa-solid fa-file-lines me-2" style="color: var(--accent);"></i>Reservation #<%= booking._id.toString().slice(-8).toUpperCase() %>
+        </h2>
+        <div class="d-flex gap-2 flex-wrap">
+            <span class="booking-badge booking-badge-<%= booking.bookingStatus.toLowerCase() %>">
+                <% if (booking.bookingStatus === "Confirmed") { %>
+                <i class="fa-solid fa-circle-check me-1"></i>
+                <% } else if (booking.bookingStatus === "Completed") { %>
+                <i class="fa-solid fa-flag-checkered me-1"></i>
+                <% } else { %>
+                <i class="fa-solid fa-circle-xmark me-1"></i>
+                <% } %>
+                <%= booking.bookingStatus %>
+            </span>
+            <span class="booking-badge booking-badge-<%= booking.paymentStatus.toLowerCase() %>">
+                <% if (booking.paymentStatus === "Paid") { %>
+                <i class="fa-solid fa-circle-check me-1"></i>
+                <% } %>
+                <%= booking.paymentStatus %>
+            </span>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- ===== LEFT COLUMN ===== -->
+        <div class="col-lg-7">
+
+            <!-- Property Summary Card -->
+            <div class="show-info-card mb-4">
+                <% if (booking.listing && booking.listing.image) { %>
+                <div class="bd-listing-image-wrap mb-3">
+                    <img src="<%= booking.listing.image.url %>" alt="<%= booking.listing.title %>" class="bd-listing-image">
+                </div>
+                <% } %>
+
+                <% if (booking.listing) { %>
+                <h4 class="mb-2" style="font-weight: 700;"><%= booking.listing.title %></h4>
+                <p class="text-muted mb-2" style="font-size: 0.88rem;">
+                    <i class="fa-solid fa-location-dot me-1" style="color: var(--accent);"></i>
+                    <%= booking.listing.location %>, <%= booking.listing.country %>
+                </p>
+                <% if (booking.listing.owner) { %>
+                <p class="text-muted mb-3" style="font-size: 0.85rem;">
+                    <i class="fa-solid fa-user me-1"></i>
+                    Hosted by <strong><%= booking.listing.owner.username %></strong>
+                </p>
+                <% } %>
+                <a href="/listings/<%= booking.listing._id %>" class="btn btn-glass btn-sm">
+                    <i class="fa-solid fa-eye me-1"></i> View Listing
+                </a>
+                <% } else { %>
+                <h4 class="mb-2 text-muted" style="font-weight: 700;">Listing Unavailable</h4>
+                <p class="text-muted" style="font-size: 0.85rem;">This listing may have been removed by the host.</p>
+                <% } %>
+            </div>
+
+            <!-- Trip Details Card -->
+            <div class="show-info-card mb-4">
+                <h4 class="mb-3">
+                    <i class="fa-solid fa-calendar-check me-2" style="color: var(--accent);"></i>Trip Details
+                </h4>
+
+                <div class="bd-detail-grid">
+                    <div class="bd-detail-item">
+                        <span class="booking-meta-label">Booking ID</span>
+                        <span class="booking-meta-value" style="font-size: 0.75rem; letter-spacing: 0.3px; word-break: break-all;">
+                            <%= booking._id %>
+                        </span>
+                    </div>
+                    <div class="bd-detail-item">
+                        <span class="booking-meta-label">Booked On</span>
+                        <span class="booking-meta-value">
+                            <%= new Date(booking.createdAt).toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "long", year: "numeric" }) %>
+                        </span>
+                    </div>
+                    <div class="bd-detail-item">
+                        <span class="booking-meta-label">Check-in</span>
+                        <span class="booking-meta-value">
+                            <i class="fa-solid fa-calendar-check me-1" style="color: var(--accent); font-size: 0.72rem;"></i>
+                            <%= new Date(booking.checkIn).toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "long", year: "numeric" }) %>
+                        </span>
+                    </div>
+                    <div class="bd-detail-item">
+                        <span class="booking-meta-label">Check-out</span>
+                        <span class="booking-meta-value">
+                            <i class="fa-solid fa-calendar-xmark me-1" style="color: #ff4757; font-size: 0.72rem;"></i>
+                            <%= new Date(booking.checkOut).toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "long", year: "numeric" }) %>
+                        </span>
+                    </div>
+                    <div class="bd-detail-item">
+                        <span class="booking-meta-label">Number of Nights</span>
+                        <span class="booking-meta-value">
+                            <i class="fa-solid fa-moon me-1" style="color: var(--accent); font-size: 0.72rem;"></i>
+                            <%= booking.numberOfNights %> night<%= booking.numberOfNights > 1 ? "s" : "" %>
+                        </span>
+                    </div>
+                    <div class="bd-detail-item">
+                        <span class="booking-meta-label">Guests</span>
+                        <span class="booking-meta-value">
+                            <i class="fa-solid fa-user-group me-1" style="color: var(--accent); font-size: 0.72rem;"></i>
+                            <%= booking.guests %> guest<%= booking.guests > 1 ? "s" : "" %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cancel Booking Option (Eligible bookings only) -->
+            <% if (booking.bookingStatus === "Confirmed" && new Date(booking.checkIn) > new Date()) { %>
+            <div class="show-info-card mb-4" style="border: 1px solid rgba(255, 71, 87, 0.25);">
+                <h4 class="mb-2 text-danger" style="font-weight: 700;">
+                    <i class="fa-solid fa-calendar-xmark me-2"></i>Cancel Reservation
+                </h4>
+                <p class="text-muted mb-3" style="font-size: 0.85rem; line-height: 1.5;">
+                    Need to change your plans? You can cancel your reservation anytime before check-in.
+                </p>
+                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#cancelBookingModal">
+                    <i class="fa-solid fa-xmark me-1"></i> Cancel Booking
+                </button>
+            </div>
+            <% } %>
+
+        </div>
+
+        <!-- ===== RIGHT COLUMN ===== -->
+        <div class="col-lg-5">
+
+            <!-- Price Breakdown Card -->
+            <div class="show-info-card mb-4">
+                <h4 class="mb-3">
+                    <i class="fa-solid fa-receipt me-2" style="color: var(--accent);"></i>Price Breakdown
+                </h4>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">
+                        &#8377; <%= booking.listing ? booking.listing.price.toLocaleString("en-IN") : (booking.basePrice / booking.numberOfNights).toLocaleString("en-IN") %> x <%= booking.numberOfNights %> night<%= booking.numberOfNights > 1 ? "s" : "" %>
+                    </span>
+                    <span class="fw-semibold">&#8377; <%= booking.basePrice.toLocaleString("en-IN") %></span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">GST &amp; Taxes</span>
+                    <span class="fw-semibold">&#8377; <%= taxes.toLocaleString("en-IN") %></span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Service Fee</span>
+                    <span class="fw-semibold text-success">Free</span>
+                </div>
+
+                <hr style="opacity: 0.1;">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <span class="fw-bold" style="font-size: 1.1rem;">Total (INR)</span>
+                    <span class="fw-bold text-primary-glow" style="font-size: 1.35rem; text-shadow: 0 0 12px rgba(0, 216, 255, 0.3);">
+                        &#8377; <%= booking.totalPrice.toLocaleString("en-IN") %>
+                    </span>
+                </div>
+
+                <div class="p-3 rounded" style="background: rgba(0, 216, 255, 0.05); border: 1px solid rgba(0, 216, 255, 0.15);">
+                    <p class="mb-0 text-muted" style="font-size: 0.78rem; line-height: 1.45;">
+                        <i class="fa-solid fa-circle-info text-primary-glow me-1"></i>
+                        <strong>Havenly Guarantee:</strong> Your funds were securely held and transferred to the host after check-in verification.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Payment Information Card -->
+            <div class="show-info-card mb-4">
+                <h4 class="mb-3">
+                    <i class="fa-solid fa-shield-halved me-2" style="color: var(--accent);"></i>Payment Information
+                </h4>
+
+                <div class="bd-detail-grid">
+                    <div class="bd-detail-item">
+                        <span class="booking-meta-label">Payment Status</span>
+                        <span class="booking-meta-value">
+                            <span class="booking-badge booking-badge-<%= booking.paymentStatus.toLowerCase() %>" style="font-size: 0.72rem;">
+                                <% if (booking.paymentStatus === "Paid") { %>
+                                <i class="fa-solid fa-circle-check me-1"></i>
+                                <% } %>
+                                <%= booking.paymentStatus %>
+                            </span>
+                        </span>
+                    </div>
+                    <div class="bd-detail-item">
+                        <span class="booking-meta-label">Payment Gateway</span>
+                        <span class="booking-meta-value">
+                            <i class="fa-solid fa-shield-halved me-1" style="color: var(--accent); font-size: 0.72rem;"></i>
+                            Razorpay
+                        </span>
+                    </div>
+                    <% if (booking.razorpayPaymentId) { %>
+                    <div class="bd-detail-item" style="grid-column: 1 / -1;">
+                        <span class="booking-meta-label">Razorpay Payment ID</span>
+                        <span class="booking-meta-value bd-payment-id">
+                            <%= booking.razorpayPaymentId %>
+                        </span>
+                    </div>
+                    <% } %>
+                </div>
+
+                <div class="mt-3 p-3 rounded" style="background: rgba(255, 255, 255, 0.02); border: 1px dashed rgba(255, 255, 255, 0.08);">
+                    <p class="mb-0 text-muted" style="font-size: 0.78rem; line-height: 1.45;">
+                        <i class="fa-solid fa-lock me-1" style="color: var(--accent);"></i>
+                        Your payment was processed securely by Razorpay. Havenly never stores your card or UPI information.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Download Receipt Button -->
+            <a href="/bookings/<%= booking._id %>/receipt" class="btn btn-glass btn-sm w-100 mb-4">
+                <i class="fa-solid fa-file-pdf me-2"></i> Download Receipt
+            </a>
+
+        </div>
+    </div>
+</div>
+
+<!-- Cancel Booking Confirmation Modal -->
+<% if (booking.bookingStatus === "Confirmed" && new Date(booking.checkIn) > new Date()) { %>
+<div class="modal fade" id="cancelBookingModal" tabindex="-1" aria-labelledby="cancelBookingModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-card border-0" style="background: rgba(13, 20, 45, 0.96); backdrop-filter: blur(18px); border: 1px solid rgba(255, 71, 87, 0.3) !important; border-radius: 16px;">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title text-danger fw-bold" id="cancelBookingModalLabel">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>Cancel Booking
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body py-3">
+                <p class="text-light mb-0" style="font-size: 0.95rem; line-height: 1.5;">
+                    Are you sure you want to cancel this reservation? This action cannot be undone.
+                </p>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-glass btn-sm" data-bs-dismiss="modal">Keep Booking</button>
+                <form id="cancel-booking-form" method="POST" action="/bookings/<%= booking._id %>/cancel" class="m-0">
+                    <button type="submit" id="confirm-cancel-btn" class="btn btn-danger btn-sm px-3">
+                        <i class="fa-solid fa-xmark me-1"></i> Yes, Cancel Booking
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const cancelForm = document.getElementById("cancel-booking-form");
+        const confirmCancelBtn = document.getElementById("confirm-cancel-btn");
+        if (cancelForm && confirmCancelBtn) {
+            cancelForm.addEventListener("submit", function() {
+                confirmCancelBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-1"></i> Cancelling...';
+                setTimeout(function() {
+                    confirmCancelBtn.disabled = true;
+                }, 0);
+            });
+        }
+    });
+</script>
+<% } %>

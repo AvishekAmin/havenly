@@ -1,5 +1,7 @@
+const mongoose = require("mongoose");
 const Listing = require("./models/listing");
 const Review = require("./models/review");
+const Booking = require("./models/booking");
 const ExpressError = require("./utils/ExpressError.js");
 const { listingSchema, reviewSchema } = require("./schema.js");
 
@@ -67,6 +69,24 @@ module.exports.isReviewAuthor = async (req, res, next) => {
     if(!review.author._id.equals(res.locals.currUser._id)) {
         req.flash("error", "You don't have permission");
         return res.redirect(`/listings/${id}`);
+    }
+    next();
+};
+
+module.exports.isBookingOwner = async (req, res, next) => {
+    let { bookingId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(bookingId)) {
+        req.flash("error", "Invalid booking ID!");
+        return res.redirect("/bookings/my-bookings");
+    }
+    let booking = await Booking.findById(bookingId);
+    if (!booking) {
+        req.flash("error", "Booking not found!");
+        return res.redirect("/bookings/my-bookings");
+    }
+    if (!booking.user.equals(req.user._id)) {
+        req.flash("error", "You don't have permission to view this booking!");
+        return res.redirect("/bookings/my-bookings");
     }
     next();
 };

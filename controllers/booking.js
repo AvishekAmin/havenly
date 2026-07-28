@@ -5,6 +5,9 @@ const Listing = require("../models/listing.js");
 const Booking = require("../models/booking.js");
 const wrapAsync = require("../utils/wrapAsync");
 const calculateBookingPrice = require("../utils/bookingCalculator.js");
+const syncBookingStatuses = require("../utils/bookingSync.js");
+const { sendBookingConfirmationEmail } = require("../utils/emailService.js");
+const generateBookingReceipt = require("../utils/receiptGenerator.js");
 
 const razorpay = require("../razorpay.js");
 
@@ -69,11 +72,28 @@ module.exports.createOrder = wrapAsync(async (req,res)=> {
     }
 
     const {
+        checkInDate,
+        checkOutDate,
         numberOfNights,
         basePrice,
         taxes,
         totalPrice,
     } = bookingSummary;
+
+    // Check Date Availability
+    const existingOverlap = await Booking.findOne({
+        listing: listing._id,
+        bookingStatus: "Confirmed",
+        checkIn: { $lt: checkOutDate },
+        checkOut: { $gt: checkInDate },
+    });
+
+    if (existingOverlap) {
+        return res.status(400).json({
+            success: false,
+            message: "The selected dates are no longer available. Please choose different dates.",
+        });
+    }
 
     // Create Razorpay Order
     const options = {
@@ -241,6 +261,15 @@ module.exports.verifyPayment = wrapAsync(async (req,res)=> {
 
     await booking.save();
 
+    // Secondary side effect: Send confirmation email asynchronously (non-blocking)
+    sendBookingConfirmationEmail({
+        booking,
+        user: req.user,
+        listing,
+    }).catch((err) => {
+        console.error("Non-fatal error: Booking confirmation email failed to send:", err.message);
+    });
+
     return res.status(200).json({
         success: true,
         message: "Payment verified and booking confirmed.",
@@ -256,6 +285,8 @@ module.exports.verifyPayment = wrapAsync(async (req,res)=> {
 });
 
 module.exports.myBookings = wrapAsync(async (req, res) => {
+    await syncBookingStatuses({ user: req.user._id });
+
     const bookings = await Booking.find({ user: req.user._id })
         .populate({
             path: "listing",
@@ -266,4 +297,68 @@ module.exports.myBookings = wrapAsync(async (req, res) => {
         .sort({ createdAt: -1 });
 
     res.render("bookings/my-bookings", { bookings });
+});
+
+module.exports.showBooking = wrapAsync(async (req, res) => {
+    await syncBookingStatuses({ _id: req.params.bookingId });
+
+    const booking = await Booking.findById(req.params.bookingId)
+        .populate({
+            path: "listing",
+            populate: {
+                path: "owner",
+            },
+        });
+
+    // Derive historical tax from stored totals — no recalculation
+    const taxes = booking.totalPrice - booking.basePrice;
+
+    res.render("bookings/show", { booking, taxes });
+});
+
+module.exports.cancelBooking = wrapAsync(async (req, res) => {
+    const { bookingId } = req.params;
+
+    const updatedBooking = await Booking.findOneAndUpdate(
+        {
+            _id: bookingId,
+            user: req.user._id,
+            bookingStatus: "Confirmed",
+            checkIn: { $gt: new Date() },
+        },
+        {
+            $set: { bookingStatus: "Cancelled" },
+        },
+        { new: true }
+    );
+
+    if (!updatedBooking) {
+        req.flash(
+            "error",
+            "Booking cannot be cancelled because it is already cancelled, completed, or has already started."
+        );
+        return res.redirect("/bookings/my-bookings");
+    }
+
+    req.flash("success", "Booking cancelled successfully.");
+    res.redirect("/bookings/my-bookings");
+});
+
+module.exports.downloadReceipt = wrapAsync(async (req, res) => {
+    const booking = await Booking.findById(req.params.bookingId)
+        .populate({
+            path: "listing",
+            populate: {
+                path: "owner",
+            },
+        });
+
+    const taxes = booking.totalPrice - booking.basePrice;
+
+    generateBookingReceipt(res, {
+        booking,
+        user: req.user,
+        listing: booking.listing,
+        taxes,
+    });
 });
