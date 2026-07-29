@@ -1,24 +1,42 @@
 # 🏡 Havenly
 
-## A Travel & Accommodation Booking Platform
+## A Full-Stack Travel & Accommodation Booking Platform
 
-Havenly is a modern full-stack travel and accommodation booking platform designed to connect travelers with exceptional places to stay. Users can explore destinations, discover unique properties, create and manage listings, share reviews, and navigate locations through interactive maps.
+**Havenly** is a modern full-stack travel and accommodation booking platform that provides an end-to-end experience for both travelers and property hosts — from discovering destinations and exploring properties to securely booking stays, managing reservations, and tracking hosting activity.
 
-Powered by the MERN stack and modern web technologies, Havenly offers a secure, scalable, and responsive experience with authentication, cloud-based image management, interactive maps, advanced search, review management, and an elegant user interface inspired by contemporary booking platforms.
+Travelers can search and explore properties, view detailed listings and interactive maps, select travel dates and guests, make secure payments through Razorpay, manage their bookings, cancel eligible reservations, receive booking confirmation emails, and download PDF booking receipts. Havenly also validates booking availability and prevents conflicting reservations for the same property.
+
+Property hosts can create, edit, and manage listings, upload property images, manage reviews, and access a dedicated **Host Dashboard** that provides insights into total bookings, revenue, upcoming guests, completed stays, and recent reservations.
+
+The platform integrates **Razorpay** for secure payment processing, **Nodemailer** for automated booking confirmation emails, **PDFKit** for dynamically generated booking receipts, **Cloudinary** for cloud-based image storage, and **Mapbox** for geocoding and interactive property maps.
+
+Built with **Node.js, Express.js, MongoDB, Mongoose, EJS, and JavaScript**, Havenly follows a structured MVC architecture with secure authentication and authorization, server-side validation, session management, booking ownership protection, payment signature verification, error handling, and production-oriented security practices.
+
+With its responsive dark glassmorphism interface and complete booking workflow, Havenly demonstrates the architecture and functionality of a real-world full-stack accommodation marketplace while remaining optimized as a portfolio-ready web application.
 
 ---
 
 # 🌐 Live Demo
 
-🔗 **Website:** https://havenly-z7ym.onrender.com/listings
+🔗 **Website:** https://havenly-avishek.onrender.com/listings
 
 ---
 
 # 🎯 Key Features
 
-- 🔐 Secure Authentication (Passport.js)
+- 🔐 Secure Authentication & Authorization (Passport.js)
 
 - 🏡 Property Listing & Management
+
+- 💳 Razorpay Payment Gateway Integration
+
+- 📅 Complete Booking Management
+
+- 📧 Booking Confirmation Emails
+
+- 📄 Downloadable PDF Booking Receipts
+
+- 👨‍💼 Host Dashboard & Reservation Analytics
 
 - ⭐ Ratings & Reviews
 
@@ -26,13 +44,11 @@ Powered by the MERN stack and modern web technologies, Havenly offers a secure, 
 
 - ☁️ Cloudinary Image Uploads
 
-- 📱 Fully Responsive UI
-
 - 🔍 Smart Property Search
 
-- 💳 Reservation & Payment Flow
+- 📱 Fully Responsive UI
 
-- 🌱 Automated Review Seeder
+- 🛡️ Production Security Hardening
 
 - 🚀 RESTful MVC Architecture
 
@@ -55,17 +71,29 @@ Powered by the MERN stack and modern web technologies, Havenly offers a secure, 
 ## 5. Review Listing
 ![Review Listing](./screenshots/review-listing.png)
 
-## 6. Login Page
+## 6. Review Modal
+![Review Modal](./screenshots/review-modal.png)
+
+## 7. Login Page
 ![Login Page](./screenshots/login-page.png)
 
-## 7. Signup Page
+## 8. Signup Page
 ![Signup Page](./screenshots/signup-page.png)
 
-## 8. Map Location
+## 9. Map Location
 ![Map Location](./screenshots/map-location.png)
 
-## 9. Payment Page
+## 10. Payment Page
 ![Payment Page](./screenshots/payment-page.png)
+
+## 11. My Bookings Page
+![My Bookings Page](./screenshots/my-bookings.png)
+
+## 12. Booking Details Page
+![Booking Details Page](./screenshots/booking-details.png)
+
+## 13. Host Dashboard
+![Host Dashboard](./screenshots/host-dashboard.png)
 
 ---
 
@@ -122,10 +150,27 @@ Powered by the MERN stack and modern web technologies, Havenly offers a secure, 
 
 ## 💳 Booking Experience
 
-- Check-in & Check-out Selection
-- Guest Selection
-- Reservation Summary
-- Payment Page Workflow
+- Booking Confirmation Email
+- PDF Receipt Download
+- Booking Details Page
+- My Bookings Dashboard
+- Booking Cancellation
+
+## 💸 Payment Gateway Integration
+
+- Secure Razorpay Payment Gateway
+- Server-side Price Calculation
+- GST Calculation
+- Booking Availability Validation
+- Overlapping Booking Prevention
+
+## 👨‍💼 Host Dashboard
+
+- Revenue Overview
+- Upcoming Reservations
+- Recent Reservations
+- Booking Analytics
+- Reservation Status Tracking
 
 ## 📄 Informational Pages
 
@@ -138,6 +183,16 @@ Powered by the MERN stack and modern web technologies, Havenly offers a secure, 
 - Press
 - Terms & Privacy
 
+## 🛡️ Security
+
+- Server-side Booking Validation
+- Razorpay HMAC Signature Verification
+- Secure Session Cookies
+- Production Cookie Configuration
+- NoSQL Query Sanitization
+- Role-based Authorization
+- Async Error Handling
+
 ## 💻 User Experience
 
 - Fully Responsive Design
@@ -147,6 +202,15 @@ Powered by the MERN stack and modern web technologies, Havenly offers a secure, 
 - Interactive Animations
 - Server-Side Validation
 - Clean MVC Architecture
+
+# 🚀 Future Enhancements
+
+- Wishlist / Favorites
+- Host Calendar
+- Booking Notifications
+- Admin Dashboard
+- Multi-language Support
+- Advanced Filters
 
 ---
 
@@ -164,6 +228,9 @@ Powered by the MERN stack and modern web technologies, Havenly offers a secure, 
 
 - Node.js
 - Express.js
+- Passport.js
+- Nodemailer
+- PDFKit
 
 ## 🗄️ Database
 
@@ -182,37 +249,53 @@ Powered by the MERN stack and modern web technologies, Havenly offers a secure, 
 - Mapbox Geocoding API
 - Mapbox GL JS
 
+## 💸 Payments
+
+- Razorpay
+
 ---
 
 # 📁 Project Highlights
 
-✅ Full-Stack MERN-Based Web Application
+✅ Full-Stack Travel & Accommodation Platform
 
 ✅ Secure Authentication & Authorization
 
 ✅ Complete CRUD Functionality
 
+✅ Smart Property Search Experience
+
+✅ Reviews, Ratings & Amenities Management
+
+✅ Premium Property Detail Pages
+
+✅ Razorpay Payment Integration
+
+✅ Booking Management System
+
+✅ Host Dashboard & Analytics
+
+✅ Booking Confirmation Emails
+
+✅ PDF Booking Receipts
+
 ✅ Cloudinary Image Upload & Storage
 
 ✅ Interactive Mapbox Maps & Geocoding
 
-✅ Smart Property Search Experience
+✅ Session Management with MongoDB
 
-✅ Premium Property Detail Pages
+✅ Server-side Validation
 
-✅ Reservation & Booking Workflow
-
-✅ Reviews, Ratings & Amenities Management
-
-✅ Automated Demo Review Seeder
-
-✅ RESTful MVC Architecture
+✅ Production Security Hardening
 
 ✅ Responsive & Mobile-First Design
 
-✅ Session Management with MongoDB
+✅ Production Ready Deployment
 
 ✅ Modern Glassmorphism UI/UX
+
+✅ RESTful MVC Architecture
 
 ---
 
@@ -230,37 +313,31 @@ npm run dev
 
 ---
 
-## 🌱 Seed Demo Reviews
-
-Generate realistic demo reviews for all listings.
-
-```bash
-node init/seedReviews.js
-```
-
-This script:
-
-- Deletes all existing reviews
-- Clears review references from listings
-- Generates fresh realistic reviews
-- Automatically links reviews to their listings
-
----
-
 # 🛠️ Environment Variables
 
 Create a `.env` file in the root directory:
 
 ```env
-ATLASDB_URL=your_mongodb_atlas_connection_string
-
-SECRET=your_session_secret
-
 CLOUD_NAME=your_cloudinary_cloud_name
 CLOUD_API_KEY=your_cloudinary_api_key
 CLOUD_API_SECRET=your_cloudinary_api_secret
 
 MAP_TOKEN=your_mapbox_access_token
+
+ATLASDB_URL=your_mongodb_atlas_connection_string
+
+SECRET=your_session_secret
+
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_app_specific_password
+EMAIL_FROM="Havenly" <your_email@gmail.com>
+
+APP_BASE_URL=http://localhost:8080
 ```
 
 ---
@@ -270,7 +347,12 @@ MAP_TOKEN=your_mapbox_access_token
 ```text
 havenly/
 │
+├── constants/
+│   └── categories.js
+│
 ├── controllers/
+│   ├── booking.js
+│   ├── host.js
 │   ├── listing.js
 │   ├── review.js
 │   └── user.js
@@ -278,9 +360,11 @@ havenly/
 ├── init/
 │   ├── data.js
 │   ├── index.js
+│   ├── seedCategories.js
 │   └── seedReviews.js
 │
 ├── models/
+│   ├── booking.js
 │   ├── listing.js
 │   ├── review.js
 │   └── user.js
@@ -288,21 +372,35 @@ havenly/
 ├── public/
 │   ├── css/
 │   │   └── style.css
+│   ├── images/
 │   └── js/
 │       ├── map.js
 │       └── script.js
 │
 ├── routes/
+│   ├── booking.js
+│   ├── host.js
 │   ├── listing.js
 │   ├── pages.js
 │   ├── review.js
 │   └── user.js
 │
 ├── utils/
+│   ├── bookingCalculator.js
+│   ├── bookingSync.js
+│   ├── emailService.js
 │   ├── ExpressError.js
+│   ├── receiptGenerator.js
 │   └── wrapAsync.js
 │
 ├── views/
+│   ├── bookings/
+│   │   ├── my-bookings.ejs
+│   │   └── show.ejs
+│   │
+│   ├── host/
+│   │   └── dashboard.ejs
+│   │
 │   ├── includes/
 │   │   ├── flash.ejs
 │   │   ├── footer.ejs
@@ -335,23 +433,15 @@ havenly/
 │   └── error.ejs
 │
 ├── screenshots/
-│   ├── home-page.png
-│   ├── show-page.png
-│   ├── create-listing.png
-│   ├── edit-listing.png
-│   ├── review-listing.png
-│   ├── login-page.png
-│   ├── signup-page.png
-│   ├── map-location.png
-│   └── payment-page.png
 │
-├── .env
+├── .env.example
 ├── .gitignore
 ├── app.js
 ├── cloudConfig.js
 ├── middleware.js
 ├── package-lock.json
 ├── package.json
+├── razorpay.js
 ├── README.md
 └── schema.js
 ```
