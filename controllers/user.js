@@ -9,13 +9,14 @@ module.exports.signup = async (req, res) => {
         let { username, email, password } = req.body;
         const newUser = new User({email, username});
         const registeredUser = await User.register(newUser, password);
-        console.log(registeredUser);
         req.login(registeredUser, (err) => {
             if (err) {
                 return next(err);
             }
             req.flash("success", "Welcome to Havenly!");
-            let redirectUrl = res.locals.redirectUrl || "/listings";
+            let redirectUrl = res.locals.redirectUrl && res.locals.redirectUrl.startsWith("/") && !res.locals.redirectUrl.startsWith("//")
+                ? res.locals.redirectUrl
+                : "/listings";
             delete req.session.redirectUrl;
             res.redirect(redirectUrl);
         });
@@ -31,7 +32,9 @@ module.exports.renderLoginForm = (req, res) => {
 
 module.exports.login = async (req, res) => {
     req.flash("success", "Welcome back to Havenly!");
-    let redirectUrl = res.locals.redirectUrl || "/listings";
+    let redirectUrl = res.locals.redirectUrl && res.locals.redirectUrl.startsWith("/") && !res.locals.redirectUrl.startsWith("//")
+        ? res.locals.redirectUrl
+        : "/listings";
     delete req.session.redirectUrl;
     res.redirect(redirectUrl);
 };

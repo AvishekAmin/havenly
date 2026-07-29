@@ -38,10 +38,18 @@ module.exports.createOrder = wrapAsync(async (req,res)=> {
     // Fetch listing
     const listing = await Listing.findById(listingId);
 
-    if(!listing) {
+    if (!listing) {
         return res.status(404).json({
             success: false,
             message: "Listing not found.",
+        });
+    }
+
+    // Host Self-Booking Check
+    if (listing.owner && listing.owner.equals(req.user._id)) {
+        return res.status(400).json({
+            success: false,
+            message: "As the host of this property, you cannot book your own listing.",
         });
     }
 

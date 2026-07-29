@@ -287,8 +287,7 @@ havenly/
 │
 ├── public/
 │   ├── css/
-│   │   ├── style.css
-│   │   └── rating.css
+│   │   └── style.css
 │   └── js/
 │       ├── map.js
 │       └── script.js

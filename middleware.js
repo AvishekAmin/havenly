@@ -3,6 +3,7 @@ const Listing = require("./models/listing");
 const Review = require("./models/review");
 const Booking = require("./models/booking");
 const ExpressError = require("./utils/ExpressError.js");
+const wrapAsync = require("./utils/wrapAsync.js");
 const { listingSchema, reviewSchema } = require("./schema.js");
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -30,15 +31,19 @@ module.exports.saveRedirectUrl = (req, res, next) => {
     next();
 };
 
-module.exports.isOwner = async (req, res, next) => {
+module.exports.isOwner = wrapAsync(async (req, res, next) => {
     let { id } = req.params;
     let listing = await Listing.findById(id);
-    if(!listing.owner._id.equals(res.locals.currUser._id)) {
+    if (!listing) {
+        req.flash("error", "Listing does not exist!");
+        return res.redirect("/listings");
+    }
+    if (!listing.owner._id.equals(res.locals.currUser._id)) {
         req.flash("error", "You don't have permission");
         return res.redirect(`/listings/${id}`);
     }
     next();
-};
+});
 
 module.exports.validateListing = (req, res, next) => {
     if (req.body.listing && !req.body.listing.categories) {
@@ -63,17 +68,21 @@ module.exports.validateReview = (req, res, next) => {
     }
 };
 
-module.exports.isReviewAuthor = async (req, res, next) => {
+module.exports.isReviewAuthor = wrapAsync(async (req, res, next) => {
     let { id, reviewId } = req.params;
     let review = await Review.findById(reviewId);
-    if(!review.author._id.equals(res.locals.currUser._id)) {
+    if (!review) {
+        req.flash("error", "Review does not exist!");
+        return res.redirect(`/listings/${id}`);
+    }
+    if (!review.author._id.equals(res.locals.currUser._id)) {
         req.flash("error", "You don't have permission");
         return res.redirect(`/listings/${id}`);
     }
     next();
-};
+});
 
-module.exports.isBookingOwner = async (req, res, next) => {
+module.exports.isBookingOwner = wrapAsync(async (req, res, next) => {
     let { bookingId } = req.params;
     if (!mongoose.Types.ObjectId.isValid(bookingId)) {
         req.flash("error", "Invalid booking ID!");
@@ -91,4 +100,4 @@ module.exports.isBookingOwner = async (req, res, next) => {
         return res.redirect("/bookings/my-bookings");
     }
     next();
-};
+});

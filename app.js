@@ -42,6 +42,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
+
 app.use(express.static(path.join(__dirname, "/public")));
 
 const store = MongoStore.default.create({
@@ -65,6 +69,7 @@ const sessionOptions = {
   cookie: {
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days, evaluated per-request
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
   },
 };
 
@@ -84,15 +89,6 @@ app.use((req, res, next) => {
   res.locals.currUser = req.user;
   res.locals.pendingReview = req.session.pendingReview || null;
   delete req.session.pendingReview;
-
-  console.log("==========");
-  console.log("req.user:", req.user);
-  console.log(
-    "isAuthenticated:",
-    req.isAuthenticated ? req.isAuthenticated() : "N/A",
-  );
-  console.log("sessionID:", req.sessionID);
-  console.log("==========");
 
   next();
 });
