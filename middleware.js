@@ -79,12 +79,14 @@ module.exports.isBookingOwner = async (req, res, next) => {
         req.flash("error", "Invalid booking ID!");
         return res.redirect("/bookings/my-bookings");
     }
-    let booking = await Booking.findById(bookingId);
+    let booking = await Booking.findById(bookingId).populate("listing");
     if (!booking) {
         req.flash("error", "Booking not found!");
         return res.redirect("/bookings/my-bookings");
     }
-    if (!booking.user.equals(req.user._id)) {
+    const isGuest = booking.user.equals(req.user._id);
+    const isHost = booking.listing && booking.listing.owner && booking.listing.owner.equals(req.user._id);
+    if (!isGuest && !isHost) {
         req.flash("error", "You don't have permission to view this booking!");
         return res.redirect("/bookings/my-bookings");
     }

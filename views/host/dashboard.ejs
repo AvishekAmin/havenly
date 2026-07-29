@@ -1,0 +1,317 @@
+<% layout("layouts/boilerplate") %>
+
+<!-- ===== HOST DASHBOARD PAGE ===== -->
+<div class="container py-5 reveal">
+
+    <!-- Top Section -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+        <div>
+            <h2 class="mb-1 text-primary-glow" style="font-weight: 700;">
+                <i class="fa-solid fa-chart-line me-2" style="color: var(--accent);"></i>Host Dashboard
+            </h2>
+            <p class="text-muted mb-0" style="font-size: 0.95rem;">
+                Overview of your listings, reservations, and revenue.
+            </p>
+        </div>
+        <div>
+            <a href="/listings/new" class="btn btn-reserve-glow btn-sm">
+                <i class="fa-solid fa-plus me-1"></i> Add New Listing
+            </a>
+        </div>
+    </div>
+
+    <% if (!hasListings) { %>
+
+    <!-- Empty State: Host Has No Listings -->
+    <div class="bookings-empty-state reveal my-5">
+        <div class="bookings-empty-icon">
+            <i class="fa-solid fa-house-user"></i>
+        </div>
+        <h3 class="bookings-empty-title">You haven't listed any properties yet</h3>
+        <p class="bookings-empty-text">
+            Become a host on Havenly and start welcoming guests from around the world.<br>
+            List your unique space and start earning today.
+        </p>
+        <a href="/listings/new" class="btn btn-reserve-glow bookings-empty-btn">
+            <i class="fa-solid fa-house-medical me-2"></i> List Your Property
+        </a>
+    </div>
+
+    <% } else { %>
+
+    <!-- Summary Stat Cards Grid -->
+    <div class="row g-4 mb-5 reveal">
+
+        <!-- Total Revenue Card -->
+        <div class="col-6 col-md-3">
+            <div class="show-info-card text-center py-4 h-100 position-relative overflow-hidden" style="border: 1px solid rgba(0, 216, 255, 0.2); background: linear-gradient(135deg, rgba(13, 20, 45, 0.85), rgba(0, 216, 255, 0.05));">
+                <div class="mb-2" style="color: var(--accent); font-size: 1.5rem;">
+                    <i class="fa-solid fa-indian-rupee-sign"></i>
+                </div>
+                <div class="text-muted text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 1px; font-weight: 600;">
+                    Total Revenue
+                </div>
+                <h3 class="mb-0 text-primary-glow" style="font-weight: 700; color: #ffffff;">
+                    &#8377; <%= totalRevenue.toLocaleString("en-IN") %>
+                </h3>
+            </div>
+        </div>
+
+        <!-- Total Bookings Card -->
+        <div class="col-6 col-md-3">
+            <div class="show-info-card text-center py-4 h-100">
+                <div class="mb-2 text-muted" style="font-size: 1.5rem;">
+                    <i class="fa-solid fa-suitcase"></i>
+                </div>
+                <div class="text-muted text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 1px; font-weight: 600;">
+                    Total Bookings
+                </div>
+                <h3 class="mb-0" style="font-weight: 700; color: #ffffff;">
+                    <%= totalBookingsCount %>
+                </h3>
+            </div>
+        </div>
+
+        <!-- Upcoming Reservations Card -->
+        <div class="col-6 col-md-3">
+            <div class="show-info-card text-center py-4 h-100">
+                <div class="mb-2" style="color: var(--success); font-size: 1.5rem;">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div class="text-muted text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 1px; font-weight: 600;">
+                    Upcoming Stays
+                </div>
+                <h3 class="mb-0" style="font-weight: 700; color: #ffffff;">
+                    <%= upcomingCount %>
+                </h3>
+            </div>
+        </div>
+
+        <!-- Completed Reservations Card -->
+        <div class="col-6 col-md-3">
+            <div class="show-info-card text-center py-4 h-100">
+                <div class="mb-2 text-muted" style="font-size: 1.5rem;">
+                    <i class="fa-solid fa-flag-checkered"></i>
+                </div>
+                <div class="text-muted text-uppercase mb-1" style="font-size: 0.72rem; letter-spacing: 1px; font-weight: 600;">
+                    Completed Stays
+                </div>
+                <h3 class="mb-0" style="font-weight: 700; color: #ffffff;">
+                    <%= completedCount %>
+                </h3>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Section 1: Upcoming Reservations -->
+    <div class="mb-5 reveal">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h4 class="mb-0" style="font-weight: 700;">
+                <i class="fa-solid fa-user-clock me-2" style="color: var(--accent);"></i>Upcoming Guests & Reservations
+            </h4>
+            <span class="badge rounded-pill bg-primary-glow" style="font-size: 0.8rem;">
+                <%= upcomingReservations.length %> reservation<%= upcomingReservations.length !== 1 ? 's' : '' %>
+            </span>
+        </div>
+
+        <% if (upcomingReservations && upcomingReservations.length > 0) { %>
+
+        <div class="show-info-card p-0 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0 align-middle" style="background: transparent;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">
+                            <th class="ps-4 py-3">Guest</th>
+                            <th class="py-3">Listing</th>
+                            <th class="py-3">Check-in</th>
+                            <th class="py-3">Check-out</th>
+                            <th class="py-3">Guests</th>
+                            <th class="py-3">Total Paid</th>
+                            <th class="py-3">Status</th>
+                            <th class="pe-4 py-3 text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody style="border-top: none;">
+                        <% for (let res of upcomingReservations) { %>
+                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04);">
+                            <!-- Guest -->
+                            <td class="ps-4 py-3">
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="user-avatar-circle" style="width: 32px; height: 32px; font-size: 0.8rem;">
+                                        <%= res.user ? res.user.username.charAt(0).toUpperCase() : 'G' %>
+                                    </span>
+                                    <div>
+                                        <div style="font-size: 0.88rem; font-weight: 600;"><%= res.user ? res.user.username : 'Guest' %></div>
+                                        <div class="text-muted" style="font-size: 0.75rem;"><%= res.user ? res.user.email : '' %></div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- Listing -->
+                            <td class="py-3">
+                                <% if (res.listing) { %>
+                                <div style="font-size: 0.88rem; font-weight: 600;"><%= res.listing.title %></div>
+                                <div class="text-muted" style="font-size: 0.75rem;"><%= res.listing.location %>, <%= res.listing.country %></div>
+                                <% } else { %>
+                                <span class="text-muted">Listing Unavailable</span>
+                                <% } %>
+                            </td>
+
+                            <!-- Check-in -->
+                            <td class="py-3" style="font-size: 0.85rem;">
+                                <i class="fa-solid fa-calendar-check me-1" style="color: var(--accent); font-size: 0.72rem;"></i>
+                                <%= new Date(res.checkIn).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) %>
+                            </td>
+
+                            <!-- Check-out -->
+                            <td class="py-3" style="font-size: 0.85rem;">
+                                <i class="fa-solid fa-calendar-xmark me-1" style="color: #ff4757; font-size: 0.72rem;"></i>
+                                <%= new Date(res.checkOut).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) %>
+                            </td>
+
+                            <!-- Guests -->
+                            <td class="py-3" style="font-size: 0.85rem;">
+                                <%= res.guests %> guest<%= res.guests > 1 ? 's' : '' %>
+                            </td>
+
+                            <!-- Total Paid -->
+                            <td class="py-3" style="font-weight: 600; color: var(--accent); font-size: 0.88rem;">
+                                &#8377; <%= res.totalPrice.toLocaleString("en-IN") %>
+                            </td>
+
+                            <!-- Status -->
+                            <td class="py-3">
+                                <span class="booking-badge booking-badge-confirmed">
+                                    <i class="fa-solid fa-circle-check me-1"></i> Confirmed
+                                </span>
+                            </td>
+
+                            <!-- Action -->
+                            <td class="pe-4 py-3 text-end">
+                                <a href="/bookings/<%= res._id %>" class="btn btn-glass btn-sm" style="padding: 4px 12px; font-size: 0.8rem;">
+                                    <i class="fa-solid fa-eye me-1"></i> View Booking
+                                </a>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <% } else { %>
+
+        <!-- No Upcoming Reservations Empty State -->
+        <div class="show-info-card text-center py-4">
+            <div class="text-muted mb-2" style="font-size: 1.8rem;">
+                <i class="fa-solid fa-calendar-minus"></i>
+            </div>
+            <p class="text-muted mb-0" style="font-size: 0.9rem;">
+                No upcoming guest reservations scheduled right now.
+            </p>
+        </div>
+
+        <% } %>
+    </div>
+
+    <!-- Section 2: Recent Reservations -->
+    <div class="mb-4 reveal">
+        <h4 class="mb-3" style="font-weight: 700;">
+            <i class="fa-solid fa-clock-rotate-left me-2" style="color: var(--accent);"></i>Recent Reservations
+        </h4>
+
+        <% if (recentReservations && recentReservations.length > 0) { %>
+
+        <div class="show-info-card p-0 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0 align-middle" style="background: transparent;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">
+                            <th class="ps-4 py-3">Booking ID</th>
+                            <th class="py-3">Guest</th>
+                            <th class="py-3">Listing</th>
+                            <th class="py-3">Check-in</th>
+                            <th class="py-3">Total Paid</th>
+                            <th class="py-3">Payment Status</th>
+                            <th class="py-3">Booking Status</th>
+                            <th class="pe-4 py-3 text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody style="border-top: none;">
+                        <% for (let res of recentReservations) { %>
+                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.04);">
+                            <!-- Booking ID -->
+                            <td class="ps-4 py-3" style="font-size: 0.78rem; font-family: monospace; color: var(--accent);">
+                                #<%= res._id.toString().slice(-8).toUpperCase() %>
+                            </td>
+
+                            <!-- Guest -->
+                            <td class="py-3" style="font-size: 0.88rem; font-weight: 500;">
+                                <%= res.user ? res.user.username : 'Guest' %>
+                            </td>
+
+                            <!-- Listing -->
+                            <td class="py-3" style="font-size: 0.88rem;">
+                                <%= res.listing ? res.listing.title : 'Listing Unavailable' %>
+                            </td>
+
+                            <!-- Check-in -->
+                            <td class="py-3" style="font-size: 0.85rem;">
+                                <%= new Date(res.checkIn).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }) %>
+                            </td>
+
+                            <!-- Total Paid -->
+                            <td class="py-3" style="font-weight: 600; font-size: 0.88rem;">
+                                &#8377; <%= res.totalPrice.toLocaleString("en-IN") %>
+                            </td>
+
+                            <!-- Payment Status -->
+                            <td class="py-3">
+                                <span class="booking-badge booking-badge-<%= res.paymentStatus.toLowerCase() %>">
+                                    <% if (res.paymentStatus === "Paid") { %>
+                                    <i class="fa-solid fa-indian-rupee-sign me-1"></i>
+                                    <% } %>
+                                    <%= res.paymentStatus %>
+                                </span>
+                            </td>
+
+                            <!-- Booking Status -->
+                            <td class="py-3">
+                                <span class="booking-badge booking-badge-<%= res.bookingStatus.toLowerCase() %>">
+                                    <% if (res.bookingStatus === "Confirmed") { %>
+                                    <i class="fa-solid fa-circle-check me-1"></i>
+                                    <% } else if (res.bookingStatus === "Completed") { %>
+                                    <i class="fa-solid fa-flag-checkered me-1"></i>
+                                    <% } else { %>
+                                    <i class="fa-solid fa-circle-xmark me-1"></i>
+                                    <% } %>
+                                    <%= res.bookingStatus %>
+                                </span>
+                            </td>
+
+                            <!-- Action -->
+                            <td class="pe-4 py-3 text-end">
+                                <a href="/bookings/<%= res._id %>" class="btn btn-glass btn-sm" style="padding: 4px 12px; font-size: 0.8rem;">
+                                    <i class="fa-solid fa-file-lines me-1"></i> View Booking
+                                </a>
+                            </td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <% } else { %>
+
+        <div class="show-info-card text-center py-4">
+            <p class="text-muted mb-0">No booking history recorded yet.</p>
+        </div>
+
+        <% } %>
+    </div>
+
+    <% } %>
+
+</div>

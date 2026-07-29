@@ -15,10 +15,43 @@
 
     <% if (bookings && bookings.length > 0) { %>
 
+    <!-- Search & Filter Controls Bar -->
+    <div class="booking-controls-bar reveal">
+        <!-- Search Input -->
+        <div class="booking-search-wrap">
+            <i class="fa-solid fa-magnifying-glass booking-search-icon"></i>
+            <input type="text" id="bookingSearchInput" class="booking-search-input" placeholder="Search by title, location, or booking ID..." autocomplete="off">
+            <button type="button" id="clearSearchBtn" class="booking-search-clear d-none" aria-label="Clear search">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Status Filter Pills -->
+        <div class="booking-filter-pills">
+            <button type="button" class="booking-filter-btn active" data-filter="All">
+                All <span class="filter-count" id="countAll">0</span>
+            </button>
+            <button type="button" class="booking-filter-btn" data-filter="Confirmed">
+                Upcoming <span class="filter-count" id="countConfirmed">0</span>
+            </button>
+            <button type="button" class="booking-filter-btn" data-filter="Completed">
+                Completed <span class="filter-count" id="countCompleted">0</span>
+            </button>
+            <button type="button" class="booking-filter-btn" data-filter="Cancelled">
+                Cancelled <span class="filter-count" id="countCancelled">0</span>
+            </button>
+        </div>
+    </div>
+
     <!-- Bookings List -->
-    <div class="bookings-list">
+    <div class="bookings-list" id="bookingsList">
         <% for (let booking of bookings) { %>
-        <div class="booking-card reveal">
+        <div class="booking-card reveal"
+             data-status="<%= booking.bookingStatus %>"
+             data-title="<%= booking.listing ? booking.listing.title.toLowerCase() : '' %>"
+             data-location="<%= booking.listing ? (booking.listing.location + ' ' + booking.listing.country).toLowerCase() : '' %>"
+             data-id="<%= booking._id.toString().toLowerCase() %>"
+             data-short-id="<%= booking._id.toString().slice(-8).toLowerCase() %>">
             <div class="booking-card-inner">
                 <!-- Image Section -->
                 <div class="booking-card-image">
@@ -143,9 +176,140 @@
         <% } %>
     </div>
 
+    <!-- No Match Empty State -->
+    <div id="noMatchState" class="bookings-empty-state d-none reveal">
+        <div class="bookings-empty-icon">
+            <i class="fa-solid fa-filter-circle-xmark"></i>
+        </div>
+        <h3 class="bookings-empty-title">No matching bookings found</h3>
+        <p class="bookings-empty-text">
+            No reservations matched your current search or filter criteria.
+        </p>
+        <button type="button" id="resetFiltersBtn" class="btn btn-glass btn-sm mt-2">
+            <i class="fa-solid fa-rotate-left me-1"></i> Reset Search & Filters
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const bookingCards = document.querySelectorAll(".booking-card");
+            const searchInput = document.getElementById("bookingSearchInput");
+            const clearSearchBtn = document.getElementById("clearSearchBtn");
+            const filterBtns = document.querySelectorAll(".booking-filter-btn");
+            const bookingsList = document.getElementById("bookingsList");
+            const noMatchState = document.getElementById("noMatchState");
+            const resetFiltersBtn = document.getElementById("resetFiltersBtn");
+
+            let activeFilter = "All";
+
+            // Compute counts
+            let counts = { All: bookingCards.length, Confirmed: 0, Completed: 0, Cancelled: 0 };
+            bookingCards.forEach(card => {
+                const status = card.dataset.status;
+                if (counts[status] !== undefined) counts[status]++;
+            });
+
+            document.getElementById("countAll").textContent = counts.All;
+            document.getElementById("countConfirmed").textContent = counts.Confirmed;
+            document.getElementById("countCompleted").textContent = counts.Completed;
+            document.getElementById("countCancelled").textContent = counts.Cancelled;
+
+            function updateVisibility() {
+                const query = searchInput.value.trim().toLowerCase();
+                let visibleCount = 0;
+
+                bookingCards.forEach(card => {
+                    const status = card.dataset.status;
+                    const title = card.dataset.title;
+                    const location = card.dataset.location;
+                    const id = card.dataset.id;
+                    const shortId = card.dataset.shortId;
+
+                    let matches = false;
+
+                    if (query.length > 0) {
+                        // SEARCH MODE: Search is active, ignore filter pill selection
+                        const cleanQuery = query.replace(/^#/, "");
+                        matches = title.includes(query) ||
+                                  location.includes(query) ||
+                                  id.includes(cleanQuery) ||
+                                  shortId.includes(cleanQuery);
+                    } else {
+                        // FILTER MODE: Search is empty, apply selected status pill filter
+                        matches = (activeFilter === "All" || status === activeFilter);
+                    }
+
+                    if (matches) {
+                        card.style.display = "block";
+                        visibleCount++;
+                    } else {
+                        card.style.display = "none";
+                    }
+                });
+
+                if (visibleCount === 0) {
+                    bookingsList.style.display = "none";
+                    noMatchState.classList.remove("d-none");
+                } else {
+                    bookingsList.style.display = "flex";
+                    noMatchState.classList.add("d-none");
+                }
+            }
+
+            // Search input event listener
+            searchInput.addEventListener("input", () => {
+                const query = searchInput.value.trim();
+                if (query.length > 0) {
+                    clearSearchBtn.classList.remove("d-none");
+                    // Reset filter pill visual active state to "All" when search is active
+                    filterBtns.forEach(btn => {
+                        btn.classList.toggle("active", btn.dataset.filter === "All");
+                    });
+                    activeFilter = "All";
+                } else {
+                    clearSearchBtn.classList.add("d-none");
+                }
+                updateVisibility();
+            });
+
+            // Clear search button
+            clearSearchBtn.addEventListener("click", () => {
+                searchInput.value = "";
+                clearSearchBtn.classList.add("d-none");
+                updateVisibility();
+            });
+
+            // Filter button click event listener
+            filterBtns.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    // Activate filter mode: Clear search input value
+                    searchInput.value = "";
+                    clearSearchBtn.classList.add("d-none");
+
+                    filterBtns.forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    activeFilter = btn.dataset.filter;
+
+                    updateVisibility();
+                });
+            });
+
+            // Reset button event listener
+            resetFiltersBtn.addEventListener("click", () => {
+                searchInput.value = "";
+                clearSearchBtn.classList.add("d-none");
+                activeFilter = "All";
+                filterBtns.forEach(btn => {
+                    btn.classList.toggle("active", btn.dataset.filter === "All");
+                });
+                updateVisibility();
+            });
+        });
+    </script>
+
     <% } else { %>
 
-    <!-- Empty State -->
+    <!-- Empty State (Zero Total Bookings) -->
     <div class="bookings-empty-state reveal">
         <div class="bookings-empty-icon">
             <i class="fa-solid fa-suitcase-rolling"></i>

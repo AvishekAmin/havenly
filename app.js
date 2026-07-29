@@ -21,6 +21,7 @@ const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const pagesRouter = require("./routes/pages.js");
 const bookingRouter = require("./routes/booking.js");
+const hostRouter = require("./routes/host.js");
 
 const dbUrl = process.env.ATLASDB_URL;
 main()
@@ -101,6 +102,7 @@ app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 app.use("/", pagesRouter);
 app.use("/bookings", bookingRouter);
+app.use("/host", hostRouter);
 
 // Catch-all route for undefined paths
 app.use((req, res, next) => {
