@@ -363,8 +363,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
     const searchState = {
         destination: '',
-        checkIn: '7 Jul 2026',
-        checkOut: '18 Jul 2026',
+        checkIn: null,
+        checkOut: null,
         guests: {
             adults: 1,
             children: 0,
@@ -376,8 +376,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
     function resetDropdownSearchUI() {
         searchState.destination = '';
-        searchState.checkIn = '7 Jul 2026';
-        searchState.checkOut = '18 Jul 2026';
+        searchState.checkIn = null;
+        searchState.checkOut = null;
         searchState.guests = {
             adults: 1,
             children: 0,
@@ -392,13 +392,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         const destInput = document.getElementById('dest-input');
         if (destInput) destInput.value = '';
 
-        const calDays = wrapper.querySelectorAll('.calendar-day:not(.empty)');
-        calDays.forEach(d => d.classList.remove('selected', 'range-start', 'range-end', 'range-between'));
-
         const calCheckinVal = document.getElementById('cal-checkin-val');
         const calCheckoutVal = document.getElementById('cal-checkout-val');
-        if (calCheckinVal) calCheckinVal.textContent = '7 Jul 2026';
-        if (calCheckoutVal) calCheckoutVal.textContent = '18 Jul 2026';
+        if (calCheckinVal) calCheckinVal.textContent = 'Add dates';
+        if (calCheckoutVal) calCheckoutVal.textContent = 'Add dates';
+
+        // Reset calendar to current month with no selection
+        if (window._searchCalendar) window._searchCalendar.reset();
 
         const cntAdults = document.getElementById('count-adults');
         const cntChildren = document.getElementById('count-children');
@@ -583,56 +583,77 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         });
     }
 
-    // 2. DATES CALENDAR SELECTION (Simulation)
-    const calDays = wrapper.querySelectorAll('.calendar-day:not(.empty)');
+    // 2. DATES CALENDAR SELECTION (Dynamic Calendar)
     const calCheckinVal = document.getElementById('cal-checkin-val');
     const calCheckoutVal = document.getElementById('cal-checkout-val');
     let dateSelectionStep = 1; // 1 = selecting checkin, 2 = selecting checkout
 
-    calDays.forEach(day => {
-        day.addEventListener('click', () => {
-            const dayNum = parseInt(day.getAttribute('data-day'));
-            if (isNaN(dayNum)) return;
+    const searchCalGrid = document.getElementById('search-calendar-grid');
+    const searchCalTitle = document.getElementById('search-cal-month-title');
+    const searchCalPrev = document.getElementById('cal-prev');
+    const searchCalNext = document.getElementById('cal-next');
 
-            if (dateSelectionStep === 1) {
-                // Remove all selections
-                calDays.forEach(d => d.classList.remove('selected', 'range-start', 'range-end', 'range-between'));
-                
-                day.classList.add('selected', 'range-start');
-                searchState.checkIn = `${dayNum} Jul 2026`;
-                if (calCheckinVal) calCheckinVal.textContent = searchState.checkIn;
-                dateSelectionStep = 2;
-            } else {
-                const checkInDay = parseInt(searchState.checkIn.split(' ')[0]);
-                if (dayNum < checkInDay) {
-                    // Reset to checkin if checkout is before checkin
-                    calDays.forEach(d => d.classList.remove('selected', 'range-start', 'range-end', 'range-between'));
-                    day.classList.add('selected', 'range-start');
-                    searchState.checkIn = `${dayNum} Jul 2026`;
-                    if (calCheckinVal) calCheckinVal.textContent = searchState.checkIn;
-                    dateSelectionStep = 2;
-                } else {
-                    day.classList.add('selected', 'range-end');
-                    searchState.checkOut = `${dayNum} Jul 2026`;
-                    if (calCheckoutVal) calCheckoutVal.textContent = searchState.checkOut;
-                    
-                    // Highlight days in between
-                    calDays.forEach(d => {
-                        const dNum = parseInt(d.getAttribute('data-day'));
-                        if (dNum > checkInDay && dNum < dayNum) {
-                            d.classList.add('range-between');
-                        }
-                    });
+    if (searchCalGrid && searchCalTitle) {
+        // Helper: normalize a Date to midnight for comparisons
+        function normDate(d) {
+            const n = new Date(d.getTime());
+            n.setHours(0, 0, 0, 0);
+            return n;
+        }
 
-                    if (valDates) valDates.textContent = `${searchState.checkIn.split(' ')[0]} - ${searchState.checkOut}`;
-                    dateSelectionStep = 1;
-                    
-                    // Close panel automatically after selection complete
-                    setTimeout(closeAllPanels, 400);
-                }
+        // Range highlighting callback
+        function searchCalRange(cellDate) {
+            if (!searchState.checkIn) return null;
+            const ci = normDate(searchState.checkIn).getTime();
+            const ct = cellDate.getTime();
+            if (!searchState.checkOut) {
+                return ct === ci ? 'start' : null;
             }
+            const co = normDate(searchState.checkOut).getTime();
+            if (ct === ci) return 'start';
+            if (ct === co) return 'end';
+            if (ct > ci && ct < co) return 'between';
+            return null;
+        }
+
+        window._searchCalendar = initCalendar({
+            container: searchCalGrid,
+            monthTitle: searchCalTitle,
+            prevBtn: searchCalPrev,
+            nextBtn: searchCalNext,
+            onDayClick: function(dateObj) {
+                if (dateSelectionStep === 1) {
+                    searchState.checkIn = dateObj;
+                    searchState.checkOut = null;
+                    if (calCheckinVal) calCheckinVal.textContent = formatDateForDisplay(dateObj);
+                    if (calCheckoutVal) calCheckoutVal.textContent = 'Add dates';
+                    dateSelectionStep = 2;
+                    window._searchCalendar.renderMonth();
+                } else {
+                    const ci = normDate(searchState.checkIn).getTime();
+                    const clicked = normDate(dateObj).getTime();
+                    if (clicked <= ci) {
+                        // Reset — clicked date is before or same as check-in
+                        searchState.checkIn = dateObj;
+                        searchState.checkOut = null;
+                        if (calCheckinVal) calCheckinVal.textContent = formatDateForDisplay(dateObj);
+                        if (calCheckoutVal) calCheckoutVal.textContent = 'Add dates';
+                        dateSelectionStep = 2;
+                        window._searchCalendar.renderMonth();
+                    } else {
+                        // Valid checkout
+                        searchState.checkOut = dateObj;
+                        if (calCheckoutVal) calCheckoutVal.textContent = formatDateForDisplay(dateObj);
+                        if (valDates) valDates.textContent = `${formatDateForDisplay(searchState.checkIn)} – ${formatDateForDisplay(dateObj)}`;
+                        dateSelectionStep = 1;
+                        window._searchCalendar.renderMonth();
+                        setTimeout(closeAllPanels, 400);
+                    }
+                }
+            },
+            isInRange: searchCalRange
         });
-    });
+    }
 
     // 3. GUESTS SELECTION
     const counters = {

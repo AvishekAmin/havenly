@@ -224,62 +224,14 @@ for (const amenity of allAmenities) {
             <div class="booking-dropdown-panel dates-dropdown" id="booking-dates-panel">
                 <div class="calendar-wrapper">
                     <div class="calendar-nav">
-                        <span class="calendar-month-title">July 2026</span>
+                        <span class="calendar-month-title" id="booking-cal-month-title"></span>
                         <div class="cal-nav-buttons">
-                            <button class="cal-nav-btn prev" type="button"><i class="fa-solid fa-chevron-left"></i></button>
-                            <button class="cal-nav-btn next" type="button"><i class="fa-solid fa-chevron-right"></i></button>
+                            <button class="cal-nav-btn prev" id="booking-cal-prev" type="button"><i class="fa-solid fa-chevron-left"></i></button>
+                            <button class="cal-nav-btn next" id="booking-cal-next" type="button"><i class="fa-solid fa-chevron-right"></i></button>
                         </div>
                     </div>
 
-                    <div class="calendar-grid">
-                        <div class="calendar-day-label">Sun</div>
-                        <div class="calendar-day-label">Mon</div>
-                        <div class="calendar-day-label">Tue</div>
-                        <div class="calendar-day-label">Wed</div>
-                        <div class="calendar-day-label">Thu</div>
-                        <div class="calendar-day-label">Fri</div>
-                        <div class="calendar-day-label">Sat</div>
-
-                        <div class="calendar-day empty">29</div>
-                        <div class="calendar-day empty">30</div>
-                        <div class="calendar-day" data-day="1">1</div>
-                        <div class="calendar-day" data-day="2">2</div>
-                        <div class="calendar-day" data-day="3">3</div>
-                        <div class="calendar-day" data-day="4">4</div>
-                        <div class="calendar-day" data-day="5">5</div>
-
-                        <div class="calendar-day" data-day="6">6</div>
-                        <div class="calendar-day" data-day="7">7</div>
-                        <div class="calendar-day" data-day="8">8</div>
-                        <div class="calendar-day" data-day="9">9</div>
-                        <div class="calendar-day" data-day="10">10</div>
-                        <div class="calendar-day" data-day="11">11</div>
-                        <div class="calendar-day" data-day="12">12</div>
-
-                        <div class="calendar-day" data-day="13">13</div>
-                        <div class="calendar-day" data-day="14">14</div>
-                        <div class="calendar-day" data-day="15">15</div>
-                        <div class="calendar-day" data-day="16">16</div>
-                        <div class="calendar-day" data-day="17">17</div>
-                        <div class="calendar-day" data-day="18">18</div>
-                        <div class="calendar-day" data-day="19">19</div>
-
-                        <div class="calendar-day" data-day="20">20</div>
-                        <div class="calendar-day" data-day="21">21</div>
-                        <div class="calendar-day" data-day="22">22</div>
-                        <div class="calendar-day" data-day="23">23</div>
-                        <div class="calendar-day" data-day="24">24</div>
-                        <div class="calendar-day" data-day="25">25</div>
-                        <div class="calendar-day" data-day="26">26</div>
-
-                        <div class="calendar-day" data-day="27">27</div>
-                        <div class="calendar-day" data-day="28">28</div>
-                        <div class="calendar-day" data-day="29">29</div>
-                        <div class="calendar-day" data-day="30">30</div>
-                        <div class="calendar-day" data-day="31">31</div>
-                        <div class="calendar-day empty">1</div>
-                        <div class="calendar-day empty">2</div>
-                    </div>
+                    <div class="calendar-grid" id="booking-calendar-grid"></div>
                 </div>
             </div>
 
@@ -534,7 +486,7 @@ for (const amenity of allAmenities) {
 
 <!-- ===== INTERACTIVE BOOKING LOGIC ===== -->
 <script>
-(function initBookingCard() {
+document.addEventListener("DOMContentLoaded", function initBookingCard() {
     const datesTrigger = document.getElementById('booking-dates-trigger');
     const guestsTrigger = document.getElementById('booking-guests-trigger');
     const datesPanel = document.getElementById('booking-dates-panel');
@@ -554,8 +506,8 @@ for (const amenity of allAmenities) {
 
     // Booking state
     const bookingState = {
-        checkIn: '',
-        checkOut: '',
+        checkIn: null,
+        checkOut: null,
         guests: {
             adults: 1,
             children: 0,
@@ -599,62 +551,80 @@ for (const amenity of allAmenities) {
         }
     });
 
-    // Calendar selection (Simulation)
-    const calDays = document.querySelectorAll('#booking-dates-panel .calendar-day:not(.empty)');
+    // Calendar selection (Dynamic Calendar)
+    const bookingCalGrid = document.getElementById('booking-calendar-grid');
+    const bookingCalTitle = document.getElementById('booking-cal-month-title');
+    const bookingCalPrev = document.getElementById('booking-cal-prev');
+    const bookingCalNext = document.getElementById('booking-cal-next');
+
     let selectionStep = 1; // 1 = checkin, 2 = checkout
 
-    calDays.forEach(day => {
-        day.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const dayNum = parseInt(day.getAttribute('data-day'));
-            if (isNaN(dayNum)) return;
+    if (bookingCalGrid && bookingCalTitle) {
+        function normDate(d) {
+            const n = new Date(d.getTime());
+            n.setHours(0, 0, 0, 0);
+            return n;
+        }
 
-            if (selectionStep === 1) {
-                // Reset selections
-                calDays.forEach(d => d.classList.remove('selected', 'range-start', 'range-end', 'range-between'));
-                
-                day.classList.add('selected', 'range-start');
-                bookingState.checkIn = `${dayNum} Jul 2026`;
-                if (checkinVal) checkinVal.textContent = bookingState.checkIn;
-                if (checkoutVal) checkoutVal.textContent = 'Select date';
-                bookingState.checkOut = '';
-                if (totalSection) totalSection.style.display = 'none';
-                selectionStep = 2;
-            } else {
-                const checkInDay = parseInt(bookingState.checkIn.split(' ')[0]);
-                if (dayNum <= checkInDay) {
-                    // Reset to checkin if checkout is before/on checkin
-                    calDays.forEach(d => d.classList.remove('selected', 'range-start', 'range-end', 'range-between'));
-                    day.classList.add('selected', 'range-start');
-                    bookingState.checkIn = `${dayNum} Jul 2026`;
-                    if (checkinVal) checkinVal.textContent = bookingState.checkIn;
+        function bookingCalRange(cellDate) {
+            if (!bookingState.checkIn) return null;
+            const ci = normDate(bookingState.checkIn).getTime();
+            const ct = cellDate.getTime();
+            if (!bookingState.checkOut) {
+                return ct === ci ? 'start' : null;
+            }
+            const co = normDate(bookingState.checkOut).getTime();
+            if (ct === ci) return 'start';
+            if (ct === co) return 'end';
+            if (ct > ci && ct < co) return 'between';
+            return null;
+        }
+
+        window._bookingCalendar = initCalendar({
+            container: bookingCalGrid,
+            monthTitle: bookingCalTitle,
+            prevBtn: bookingCalPrev,
+            nextBtn: bookingCalNext,
+            onDayClick: function(dateObj) {
+                if (selectionStep === 1) {
+                    bookingState.checkIn = dateObj;
+                    bookingState.checkOut = null;
+                    if (checkinVal) checkinVal.textContent = formatDateForDisplay(dateObj);
                     if (checkoutVal) checkoutVal.textContent = 'Select date';
-                    bookingState.checkOut = '';
                     if (totalSection) totalSection.style.display = 'none';
                     selectionStep = 2;
+                    window._bookingCalendar.renderMonth();
                 } else {
-                    day.classList.add('selected', 'range-end');
-                    bookingState.checkOut = `${dayNum} Jul 2026`;
-                    if (checkoutVal) checkoutVal.textContent = bookingState.checkOut;
-                    
-                    // Highlight days in between
-                    calDays.forEach(d => {
-                        const dNum = parseInt(d.getAttribute('data-day'));
-                        if (dNum > checkInDay && dNum < dayNum) {
-                            d.classList.add('range-between');
-                        }
-                    });
-
-                    selectionStep = 1;
-                    calculateTotal(checkInDay, dayNum);
-                    setTimeout(closeAllPanels, 300);
+                    const ci = normDate(bookingState.checkIn).getTime();
+                    const clicked = normDate(dateObj).getTime();
+                    if (clicked <= ci) {
+                        // Reset — clicked date is before or same as check-in
+                        bookingState.checkIn = dateObj;
+                        bookingState.checkOut = null;
+                        if (checkinVal) checkinVal.textContent = formatDateForDisplay(dateObj);
+                        if (checkoutVal) checkoutVal.textContent = 'Select date';
+                        if (totalSection) totalSection.style.display = 'none';
+                        selectionStep = 2;
+                        window._bookingCalendar.renderMonth();
+                    } else {
+                        // Valid checkout
+                        bookingState.checkOut = dateObj;
+                        if (checkoutVal) checkoutVal.textContent = formatDateForDisplay(dateObj);
+                        selectionStep = 1;
+                        calculateTotal(bookingState.checkIn, bookingState.checkOut);
+                        window._bookingCalendar.renderMonth();
+                        setTimeout(closeAllPanels, 300);
+                    }
                 }
-            }
+            },
+            isInRange: bookingCalRange
         });
-    });
+    }
 
-    function calculateTotal(startDay, endDay) {
-        const nights = endDay - startDay;
+    function calculateTotal(checkInDate, checkOutDate) {
+        if (!checkInDate || !checkOutDate) return;
+        const msPerDay = 1000 * 60 * 60 * 24;
+        const nights = Math.ceil((checkOutDate - checkInDate) / msPerDay);
         if (nights <= 0) return;
 
         const baseTotal = listingPrice * nights;
@@ -740,8 +710,11 @@ for (const amenity of allAmenities) {
                 return;
             }
 
+            const checkInStr = formatDateForDisplay(bookingState.checkIn);
+            const checkOutStr = formatDateForDisplay(bookingState.checkOut);
+
             // Redirect to payment page
-            const url = `/listings/${listing._id}/payment?checkIn=${encodeURIComponent(bookingState.checkIn)}&checkOut=${encodeURIComponent(bookingState.checkOut)}&guests=${encodeURIComponent(guestsVal.textContent)}`;
+            const url = `/listings/${listing._id}/payment?checkIn=${encodeURIComponent(checkInStr)}&checkOut=${encodeURIComponent(checkOutStr)}&guests=${encodeURIComponent(guestsVal.textContent)}`;
             window.location.href = url;
         });
     }
@@ -776,7 +749,7 @@ for (const amenity of allAmenities) {
             }, 400);
         }, 3000);
     }
-})();
+});
 </script>
 
 <% if (typeof showModal !== 'undefined' && showModal) { %>

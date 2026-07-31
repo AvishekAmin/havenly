@@ -67,7 +67,7 @@ async function sendBookingConfirmationEmail({ booking, user, listing }) {
 
         const { transporter, from: fromSender, isTestAccount } = transportConfig;
 
-        const baseUrl = process.env.APP_BASE_URL || "http://localhost:8080";
+        const baseUrl = process.env.APP_BASE_URL || "https://havenly-avishek.onrender.com";
         const taxes = booking.totalPrice - booking.basePrice;
         const bookingIdShort = booking._id.toString().slice(-8).toUpperCase();
 

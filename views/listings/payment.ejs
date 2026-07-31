@@ -164,10 +164,11 @@
         if (datesVal) datesVal.textContent = `${checkInStr} – ${checkOutStr}`;
         if (guestsVal) guestsVal.textContent = guestsStr;
 
-        // Parse days to calculate nights
-        const startDay = parseInt(checkInStr.split(' ')[0]);
-        const endDay = parseInt(checkOutStr.split(' ')[0]);
-        const nights = endDay - startDay;
+        // Parse dates to calculate nights accurately (including cross-month stays)
+        const d1 = new Date(checkInStr);
+        const d2 = new Date(checkOutStr);
+        const msPerDay = 1000 * 60 * 60 * 24;
+        const nights = (!isNaN(d1) && !isNaN(d2)) ? Math.ceil((d2 - d1) / msPerDay) : 0;
 
         if (nights > 0) {
             const baseTotal = listingPrice * nights;

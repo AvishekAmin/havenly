@@ -2811,6 +2811,13 @@ img:not([loading]) { opacity: 1; }
   border-radius: 0 50% 50% 0 !important;
 }
 
+.calendar-day.disabled {
+  color: var(--text-muted);
+  opacity: 0.25;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
 .flexible-dates-row {
   display: flex;
   align-items: center;
@@ -3044,6 +3051,7 @@ img:not([loading]) { opacity: 1; }
 }
 .grid-area-reviews {
   grid-area: reviews;
+  margin-top: 1.75rem;
 }
 .grid-area-map {
   grid-area: map;
