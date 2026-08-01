@@ -75,16 +75,16 @@
             </div>
         </div>
 
-        <!-- Search Submit Button -->
-        <button class="search-submit-btn" id="search-bar-submit" aria-label="Search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </button>
+        <!-- Search Submit & Clear Button Wrapper -->
+        <div class="search-submit-wrapper">
+            <button class="search-submit-btn" id="search-bar-submit" aria-label="Search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <button class="search-clear-btn" id="search-bar-clear" aria-label="Clear Filters">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
     </div>
-
-    <!-- Clear Filters Button -->
-    <button class="search-clear-btn" id="search-bar-clear" aria-label="Clear Filters">
-        <i class="fa-solid fa-xmark"></i>
-    </button>
 
     <!-- ===== DROPDOWN PANELS ===== -->
     <!-- Destination Dropdown -->
@@ -304,5 +304,13 @@
         </a>
     </div>
     <% } %>
+</div>
+
+<!-- ===== MOBILE SHOW MORE BUTTON ===== -->
+<div class="show-more-container d-lg-none text-center my-4">
+    <button type="button" class="btn btn-show-more" id="mobile-show-more-btn">
+        <span>Show More Stays</span>
+        <i class="fa-solid fa-chevron-down ms-2"></i>
+    </button>
 </div>
 <% } %>

@@ -52,10 +52,10 @@
 </head>
 <body class="page-transition">
     <%
-    const currUser = locals.currUser;
+    const currentUser = (typeof currUser !== 'undefined' && currUser) ? currUser : ((typeof locals !== 'undefined' && locals.currUser) ? locals.currUser : null);
     %>
     
-    <%- include("../includes/navbar.ejs") %>
+    <%- include("../includes/navbar.ejs", { currUser: currentUser }) %>
 
     <main class="main-content">
         <div class="container-fluid px-4">

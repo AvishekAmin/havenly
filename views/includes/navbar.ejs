@@ -1,95 +1,121 @@
+<% 
+const currentUser = (typeof currUser !== 'undefined' && currUser) ? currUser : ((typeof locals !== 'undefined' && locals.currUser) ? locals.currUser : null);
+%>
 <nav class="navbar navbar-expand-lg glass-navbar">
-    <div class="container-fluid">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
 
-        <!-- Logo -->
+        <!-- Logo (Left) -->
         <a class="navbar-brand logo" href="/listings">
-            <i class="fa-solid fa-house-chimney me-2" style="color: var(--accent); filter: drop-shadow(0 0 6px rgba(0, 216, 255, 0.45));"></i>Havenly
+            <i class="fa-solid fa-house-chimney logo-icon" style="color: var(--accent); filter: drop-shadow(0 0 6px rgba(0, 216, 255, 0.45));"></i><span class="logo-text">Havenly</span>
         </a>
 
-        <!-- Mobile Toggle -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navOffcanvas" aria-controls="navOffcanvas" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <!-- Desktop Nav Links (Hidden on Mobile) -->
+        <div class="desktop-nav-links d-none d-lg-flex align-items-center me-auto ms-3">
+            <a class="nav-link" href="/listings">Explore</a>
+            <a class="nav-link" href="/listings/new">Add Your Home</a>
+        </div>
 
-        <!-- Offcanvas / Collapse -->
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="navOffcanvas" aria-labelledby="navOffcanvasLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="navOffcanvasLabel">
-                    <i class="fa-solid fa-house-chimney me-2" style="color: var(--accent); filter: drop-shadow(0 0 6px rgba(0, 216, 255, 0.45));"></i>Havenly
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
+        <!-- Search Form (Center on Mobile, Flex on Desktop) -->
+        <form class="d-flex align-items-center nav-search-form me-lg-3" role="search">
+            <input class="form-control me-2 search-inp" type="search" placeholder="Search destinations..." aria-label="Search" id="nav-search-input">
+            <button class="btn search-btn" type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i><span class="search-btn-text"> Search</span>
+            </button>
+        </form>
 
-            <div class="offcanvas-body">
-                <!-- Nav Links -->
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/listings">Explore</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/listings/new">Add Your Home</a>
-                    </li>
-                </ul>
-
-                <!-- Search Form -->
-                <form class="d-flex me-3" role="search">
-                    <input class="form-control me-2 search-inp" type="search" placeholder="Search destinations..." aria-label="Search">
-                    <button class="btn search-btn" type="submit">
-                        <i class="fa-solid fa-magnifying-glass"></i> Search
-                    </button>
-                </form>
-
-                <!-- Auth Section -->
-                <div class="d-flex align-items-center gap-2">
-                    <% if (!currUser) { %>
-                        <a href="/signup" class="nav-auth-btn signup">Sign Up</a>
-                        <a href="/login" class="nav-auth-btn login">Log In</a>
-                    <% } else { %>
-                        <div class="dropdown">
-                            <button class="btn user-avatar-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="user-avatar-circle">
-                                    <%= currUser.username.charAt(0).toUpperCase() %>
-                                </span>
-                            </button>
-
-                            <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
-                                <li>
-                                    <span class="dropdown-item-text fw-semibold">
-                                        <i class="fa-solid fa-user me-2"></i>
-                                        <%= currUser.username %>
-                                    </span>
-                                </li>
-
-                                <li><hr class="dropdown-divider"></li>
-
-                                <li>
-                                    <a class="dropdown-item" href="/bookings/my-bookings">
-                                        <i class="fa-solid fa-suitcase me-2"></i>
-                                        My Bookings
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <a class="dropdown-item" href="/host/dashboard">
-                                        <i class="fa-solid fa-chart-line me-2"></i>
-                                        Host Dashboard
-                                    </a>
-                                </li>
-
-                                <li><hr class="dropdown-divider"></li>
-
-                                <li>
-                                    <a class="dropdown-item" href="/logout">
-                                        <i class="fa-solid fa-right-from-bracket me-2"></i>
-                                        Log Out
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    <% } %>
+        <!-- Right Side: Auth / Hamburger / Avatar Dropdown -->
+        <div class="d-flex align-items-center nav-right-section">
+            <% if (!currentUser) { %>
+                <!-- Desktop Auth Buttons (Hidden on Mobile) -->
+                <div class="d-none d-lg-flex align-items-center gap-2">
+                    <a href="/signup" class="nav-auth-btn signup">Sign Up</a>
+                    <a href="/login" class="nav-auth-btn login">Log In</a>
                 </div>
 
-            </div>
+                <!-- Mobile Hamburger Dropdown (Shown only on Mobile when not logged in) -->
+                <div class="dropdown d-lg-none">
+                    <button class="btn mobile-hamburger-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
+                        <li>
+                            <a class="dropdown-item" href="/signup">
+                                <i class="fa-solid fa-user-plus me-2"></i>Sign Up
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/login">
+                                <i class="fa-solid fa-right-to-bracket me-2"></i>Log In
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="/listings">
+                                <i class="fa-solid fa-compass me-2"></i>Explore
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/listings/new">
+                                <i class="fa-solid fa-plus me-2"></i>Add Your Home
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            <% } else { %>
+                <!-- Logged In User Avatar Dropdown (Replaces Hamburger on Mobile & standard on Desktop) -->
+                <div class="dropdown">
+                    <button class="btn user-avatar-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User menu">
+                        <span class="user-avatar-circle">
+                            <%= currentUser.username.charAt(0).toUpperCase() %>
+                        </span>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
+                        <li>
+                            <span class="dropdown-item-text fw-semibold">
+                                <i class="fa-solid fa-user me-2"></i>
+                                <%= currentUser.username %>
+                            </span>
+                        </li>
+
+                        <!-- Mobile-only links in logged-in dropdown -->
+                        <li class="d-lg-none"><hr class="dropdown-divider"></li>
+                        <li class="d-lg-none">
+                            <a class="dropdown-item" href="/listings">
+                                <i class="fa-solid fa-compass me-2"></i>Explore
+                            </a>
+                        </li>
+                        <li class="d-lg-none">
+                            <a class="dropdown-item" href="/listings/new">
+                                <i class="fa-solid fa-plus me-2"></i>Add Your Home
+                            </a>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <a class="dropdown-item" href="/bookings/my-bookings">
+                                <i class="fa-solid fa-suitcase me-2"></i>My Bookings
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item" href="/host/dashboard">
+                                <i class="fa-solid fa-chart-line me-2"></i>Host Dashboard
+                            </a>
+                        </li>
+
+                        <li><hr class="dropdown-divider"></li>
+
+                        <li>
+                            <a class="dropdown-item" href="/logout">
+                                <i class="fa-solid fa-right-from-bracket me-2"></i>Log Out
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            <% } %>
         </div>
 
     </div>

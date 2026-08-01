@@ -61,7 +61,13 @@ for (const amenity of allAmenities) {
 </script>
 
 <!-- ===== MAIN CONTENT ===== -->
-<div class="show-layout mt-4">
+<div class="show-layout pt-3 pb-5">
+    
+    <div class="mb-3">
+        <a href="/listings" class="btn btn-glass btn-sm">
+            <i class="fa-solid fa-chevron-left me-1"></i> Back to Explore
+        </a>
+    </div>
     
     <div class="show-grid-container">
         
@@ -516,9 +522,12 @@ document.addEventListener("DOMContentLoaded", function initBookingCard() {
         }
     };
 
+    const bookingPriceCard = document.getElementById('booking-price-card');
+
     function closeAllPanels() {
         if (datesPanel) datesPanel.classList.remove('open');
         if (guestsPanel) guestsPanel.classList.remove('open');
+        if (bookingPriceCard) bookingPriceCard.classList.remove('panel-active');
     }
 
     // Toggle Dates Panel
@@ -527,7 +536,10 @@ document.addEventListener("DOMContentLoaded", function initBookingCard() {
             e.stopPropagation();
             const isOpen = datesPanel.classList.contains('open');
             closeAllPanels();
-            if (!isOpen) datesPanel.classList.add('open');
+            if (!isOpen) {
+                datesPanel.classList.add('open');
+                if (bookingPriceCard) bookingPriceCard.classList.add('panel-active');
+            }
         });
     }
 
@@ -537,7 +549,10 @@ document.addEventListener("DOMContentLoaded", function initBookingCard() {
             e.stopPropagation();
             const isOpen = guestsPanel.classList.contains('open');
             closeAllPanels();
-            if (!isOpen) guestsPanel.classList.add('open');
+            if (!isOpen) {
+                guestsPanel.classList.add('open');
+                if (bookingPriceCard) bookingPriceCard.classList.add('panel-active');
+            }
         });
     }
 
@@ -548,6 +563,9 @@ document.addEventListener("DOMContentLoaded", function initBookingCard() {
         }
         if (guestsPanel && !guestsPanel.contains(e.target) && !guestsTrigger.contains(e.target)) {
             guestsPanel.classList.remove('open');
+        }
+        if (bookingPriceCard && datesPanel && !datesPanel.classList.contains('open') && guestsPanel && !guestsPanel.classList.contains('open')) {
+            bookingPriceCard.classList.remove('panel-active');
         }
     });
 

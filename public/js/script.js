@@ -727,8 +727,14 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         const listingCols = document.querySelectorAll('.listings-grid .col');
         const emptyState = document.querySelector('.empty-state');
         
-        listingCols.forEach(col => col.classList.remove('d-none'));
+        listingCols.forEach(col => {
+            delete col.dataset.filteredOut;
+            col.classList.remove('d-none');
+        });
         if (emptyState) emptyState.classList.add('d-none');
+        if (window.updateMobilePagination) {
+            window.updateMobilePagination(true);
+        }
     }
 
     function filterListings() {
@@ -778,12 +784,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             const locationText = locationEl ? locationEl.textContent.toLowerCase() : '';
 
             if (titleText.includes(destinationLower) || locationText.includes(destinationLower)) {
-                col.classList.remove('d-none');
+                delete col.dataset.filteredOut;
                 matchedCount++;
             } else {
-                col.classList.add('d-none');
+                col.dataset.filteredOut = 'true';
             }
         });
+
+        if (window.updateMobilePagination) {
+            window.updateMobilePagination(true);
+        }
 
         // Show/hide empty state based on matches
         if (emptyState) {
@@ -840,7 +850,18 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     if (submitBtn) {
         submitBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            if (!validateSearchInputs()) return;
+            if (!validateSearchInputs()) {
+                closeAllPanels();
+                const datesSection = document.getElementById('search-dates-section');
+                const datesPanel = document.getElementById('panel-dates');
+                if (datesSection && datesPanel) {
+                    datesPanel.classList.add('open');
+                    datesSection.classList.add('active');
+                    const container = wrapper.querySelector('.premium-search-container');
+                    if (container) container.classList.add('active');
+                }
+                return;
+            }
             closeAllPanels();
             filterListings();
         });
@@ -905,12 +926,16 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             const locationText = locationEl ? locationEl.textContent.toLowerCase() : '';
 
             if (titleText.includes(cleanQueryLower) || locationText.includes(cleanQueryLower)) {
-                col.classList.remove('d-none');
+                delete col.dataset.filteredOut;
                 matchedCount++;
             } else {
-                col.classList.add('d-none');
+                col.dataset.filteredOut = 'true';
             }
         });
+
+        if (window.updateMobilePagination) {
+            window.updateMobilePagination(true);
+        }
 
         // Update or show empty state if nothing matched
         if (emptyState) {
@@ -1027,4 +1052,122 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
         }
     }
+})();
+
+// 16. DYNAMIC NAVBAR SEARCH PLACEHOLDER ON MOBILE
+(function initNavPlaceholder() {
+    function updateNavPlaceholder() {
+        const navInput = document.getElementById('nav-search-input');
+        if (navInput) {
+            if (window.innerWidth <= 991) {
+                navInput.placeholder = 'Search';
+            } else {
+                navInput.placeholder = 'Search destinations...';
+            }
+        }
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', updateNavPlaceholder);
+    } else {
+        updateNavPlaceholder();
+    }
+    window.addEventListener('resize', updateNavPlaceholder);
+})();
+
+// 17. HORIZONTAL WHEEL SCROLL FOR MOBILE FILTER BAR
+(function initMobileFilterWheel() {
+    const filterBar = document.getElementById('filters');
+    if (!filterBar) return;
+
+    function resetFilterScroll() {
+        filterBar.scrollLeft = 0;
+    }
+    resetFilterScroll();
+    window.addEventListener('load', resetFilterScroll);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', resetFilterScroll);
+    }
+
+    filterBar.addEventListener('wheel', (e) => {
+        if (window.innerWidth <= 991 && e.deltaY !== 0) {
+            e.preventDefault();
+            filterBar.scrollLeft += e.deltaY * 1.5;
+        }
+    }, { passive: false });
+})();
+
+// 18. MOBILE LISTINGS PAGINATION ("SHOW MORE" BUTTON)
+(function initMobilePagination() {
+    const BATCH_SIZE = 10;
+    let currentLimit = BATCH_SIZE;
+
+    function applyMobilePagination(reset = false) {
+        const isMobile = window.innerWidth <= 991;
+        const showMoreBtn = document.getElementById('mobile-show-more-btn');
+        const showMoreContainer = document.querySelector('.show-more-container');
+        const listingCols = Array.from(document.querySelectorAll('.listings-grid .col'));
+
+        if (listingCols.length === 0) return;
+
+        if (reset) {
+            currentLimit = BATCH_SIZE;
+        }
+
+        if (!isMobile) {
+            // Laptop View: Ensure all matched items are shown without pagination truncation
+            listingCols.forEach(col => {
+                if (col.dataset.filteredOut === 'true') {
+                    col.classList.add('d-none');
+                } else {
+                    col.classList.remove('d-none');
+                }
+            });
+            if (showMoreContainer) showMoreContainer.classList.remove('show');
+            return;
+        }
+
+        // Mobile View: Find all items that are NOT filtered out by search/category
+        const matchedCols = listingCols.filter(col => col.dataset.filteredOut !== 'true');
+
+        matchedCols.forEach((col, index) => {
+            if (index < currentLimit) {
+                col.classList.remove('d-none');
+            } else {
+                col.classList.add('d-none');
+            }
+        });
+
+        // Hide all filtered out cols explicitly
+        listingCols.forEach(col => {
+            if (col.dataset.filteredOut === 'true') {
+                col.classList.add('d-none');
+            }
+        });
+
+        // Show/hide "Show More" button based on matchedCols.length vs currentLimit
+        if (showMoreContainer) {
+            if (matchedCols.length > currentLimit) {
+                showMoreContainer.classList.add('show');
+            } else {
+                showMoreContainer.classList.remove('show');
+            }
+        }
+    }
+    window.updateMobilePagination = applyMobilePagination;
+
+    const showMoreBtn = document.getElementById('mobile-show-more-btn');
+    if (showMoreBtn) {
+        showMoreBtn.addEventListener('click', () => {
+            currentLimit += BATCH_SIZE;
+            applyMobilePagination(false);
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => applyMobilePagination(true));
+    } else {
+        applyMobilePagination(true);
+    }
+
+    window.addEventListener('resize', () => applyMobilePagination(false));
 })();
