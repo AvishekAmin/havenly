@@ -361,6 +361,38 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         return true;
     }
 
+    function openNextMissingPanel() {
+        closeAllPanels();
+        const dest = searchState.destination.trim();
+        const hasDates = valDates && valDates.textContent !== "Add dates";
+        const hasGuests = valGuests && valGuests.textContent !== "Add guests";
+
+        let targetSectionId = null;
+        let targetPanelId = null;
+
+        if (!dest) {
+            targetSectionId = 'search-dest-section';
+            targetPanelId = 'panel-dest';
+        } else if (!hasDates) {
+            targetSectionId = 'search-dates-section';
+            targetPanelId = 'panel-dates';
+        } else if (!hasGuests) {
+            targetSectionId = 'search-guests-section';
+            targetPanelId = 'panel-guests';
+        }
+
+        if (targetSectionId && targetPanelId) {
+            const section = document.getElementById(targetSectionId);
+            const panel = document.getElementById(targetPanelId);
+            if (section && panel) {
+                panel.classList.add('open');
+                section.classList.add('active');
+                const container = wrapper.querySelector('.premium-search-container');
+                if (container) container.classList.add('active');
+            }
+        }
+    }
+
     const searchState = {
         destination: '',
         checkIn: null,
@@ -543,16 +575,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             const val = item.getAttribute('data-value');
             setDestination(val);
             if (!validateSearchInputs()) {
-                closeAllPanels();
-                // Open dates panel to prompt the user
-                const datesSection = document.getElementById('search-dates-section');
-                const datesPanel = document.getElementById('panel-dates');
-                if (datesSection && datesPanel) {
-                    datesPanel.classList.add('open');
-                    datesSection.classList.add('active');
-                    const container = wrapper.querySelector('.premium-search-container');
-                    if (container) container.classList.add('active');
-                }
+                openNextMissingPanel();
                 return;
             }
             closeAllPanels();
@@ -647,7 +670,21 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                         if (valDates) valDates.textContent = `${formatDateForDisplay(searchState.checkIn)} – ${formatDateForDisplay(dateObj)}`;
                         dateSelectionStep = 1;
                         window._searchCalendar.renderMonth();
-                        setTimeout(closeAllPanels, 400);
+                        setTimeout(() => {
+                            closeAllPanels();
+                            const hasGuests = valGuests && valGuests.textContent !== "Add guests";
+                            if (!hasGuests) {
+                                const guestsSection = document.getElementById('search-guests-section');
+                                const guestsPanel = document.getElementById('panel-guests');
+                                if (guestsSection && guestsPanel) {
+                                    guestsPanel.classList.add('open');
+                                    guestsSection.classList.add('active');
+                                    const container = wrapper.querySelector('.premium-search-container');
+                                    if (container) container.classList.add('active');
+                                    showValidationToast("Please add guests.");
+                                }
+                            }
+                        }, 300);
                     }
                 }
             },
@@ -851,15 +888,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         submitBtn.addEventListener('click', (e) => {
             e.preventDefault();
             if (!validateSearchInputs()) {
-                closeAllPanels();
-                const datesSection = document.getElementById('search-dates-section');
-                const datesPanel = document.getElementById('panel-dates');
-                if (datesSection && datesPanel) {
-                    datesPanel.classList.add('open');
-                    datesSection.classList.add('active');
-                    const container = wrapper.querySelector('.premium-search-container');
-                    if (container) container.classList.add('active');
-                }
+                openNextMissingPanel();
                 return;
             }
             closeAllPanels();

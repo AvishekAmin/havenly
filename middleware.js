@@ -18,7 +18,7 @@ module.exports.isLoggedIn = (req, res, next) => {
             req.session.pendingReview = req.body.review;
         }
 
-        req.flash("error", "You should log in or sign up first to submit a review.");
+        req.flash("error", "You should log in or sign up first.");
         return res.redirect("/login");
     }
     next();

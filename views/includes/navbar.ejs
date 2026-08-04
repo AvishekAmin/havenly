@@ -27,37 +27,52 @@ const currentUser = (typeof currUser !== 'undefined' && currUser) ? currUser : (
         <div class="d-flex align-items-center nav-right-section">
             <% if (!currentUser) { %>
                 <!-- Desktop Auth Buttons (Hidden on Mobile) -->
-                <div class="d-none d-lg-flex align-items-center gap-2">
+                <div class="d-none d-lg-flex align-items-center gap-2 me-2">
                     <a href="/signup" class="nav-auth-btn signup">Sign Up</a>
                     <a href="/login" class="nav-auth-btn login">Log In</a>
                 </div>
 
-                <!-- Mobile Hamburger Dropdown (Shown only on Mobile when not logged in) -->
-                <div class="dropdown d-lg-none">
+                <!-- Hamburger Dropdown Menu (Available on both Laptop & Mobile when logged out) -->
+                <div class="dropdown">
                     <button class="btn mobile-hamburger-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <i class="fa-solid fa-bars"></i>
                     </button>
 
                     <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
-                        <li>
+                        <!-- Mobile-only Auth & Navigation Links -->
+                        <li class="d-lg-none">
                             <a class="dropdown-item" href="/signup">
                                 <i class="fa-solid fa-user-plus me-2"></i>Sign Up
                             </a>
                         </li>
-                        <li>
+                        <li class="d-lg-none">
                             <a class="dropdown-item" href="/login">
                                 <i class="fa-solid fa-right-to-bracket me-2"></i>Log In
                             </a>
                         </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
+                        <li class="d-lg-none"><hr class="dropdown-divider"></li>
+
+                        <li class="d-lg-none">
                             <a class="dropdown-item" href="/listings">
                                 <i class="fa-solid fa-compass me-2"></i>Explore
                             </a>
                         </li>
-                        <li>
+                        <li class="d-lg-none">
                             <a class="dropdown-item" href="/listings/new">
                                 <i class="fa-solid fa-plus me-2"></i>Add Your Home
+                            </a>
+                        </li>
+                        <li class="d-lg-none"><hr class="dropdown-divider"></li>
+
+                        <!-- Reusable Links (Shown on BOTH Laptop & Mobile when logged out) -->
+                        <li>
+                            <a class="dropdown-item" href="/bookings/my-bookings">
+                                <i class="fa-solid fa-suitcase me-2"></i>My Bookings
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/host/dashboard">
+                                <i class="fa-solid fa-chart-line me-2"></i>Host Dashboard
                             </a>
                         </li>
                     </ul>
