@@ -210,43 +210,43 @@ Traveler (Browser)                 Havenly Server                     Razorpay G
 ## 📷 Screenshots
 
 ### 1. Home Page & Category Navigation
-![Home Page](./screenshots/home-page.png)
+![Home Page](./screenshots/home_page.png)
 
 ### 2. Property Showcase & Reservation Widget
-![Show Page](./screenshots/show-page.png)
+![Show Page](./screenshots/show_page.png)
 
 ### 3. Interactive Mapbox Location Pin
-![Map Location](./screenshots/map-location.png)
+![Map Location](./screenshots/map_location.png)
 
 ### 4. Create New Listing
-![Create Listing](./screenshots/create-listing.png)
+![Create Listing](./screenshots/create_listing.png)
 
 ### 5. Edit Existing Listing
-![Edit Listing](./screenshots/edit-listing.png)
+![Edit Listing](./screenshots/edit_listing.png)
 
 ### 6. Ratings & Property Reviews
-![Review Listing](./screenshots/review-listing.png)
+![Review Listing](./screenshots/review_listing.png)
 
 ### 7. Filtered Reviews Overview Modal
-![Review Modal](./screenshots/review-modal.png)
+![Review Modal](./screenshots/review_modal.png)
 
 ### 8. Razorpay Payment Gateway Checkout
-![Payment Page](./screenshots/payment-page.png)
+![Payment Page](./screenshots/payment_page.png)
 
 ### 9. Traveler Bookings Hub (My Bookings)
-![My Bookings Page](./screenshots/my-bookings.png)
+![My Bookings Page](./screenshots/my_bookings.png)
 
 ### 10. Booking Details & PDF Receipt Download
-![Booking Details](./screenshots/booking-details.png)
+![Booking Details](./screenshots/booking_details.png)
 
 ### 11. Host Revenue & Reservation Dashboard
-![Host Dashboard](./screenshots/host-dashboard.png)
+![Host Dashboard](./screenshots/host_dashboard.png)
 
 ### 12. User Authentication (Login)
-![Login Page](./screenshots/login-page.png)
+![Login Page](./screenshots/login_page.png)
 
 ### 13. New Account Registration (Signup)
-![Signup Page](./screenshots/signup-page.png)
+![Signup Page](./screenshots/signup_page.png)
 
 ---
 
