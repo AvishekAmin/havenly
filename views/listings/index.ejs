@@ -1,6 +1,5 @@
 <% layout("layouts/boilerplate") %>
 
-<!-- ===== FILTER BAR ===== -->
 <div id="filters" class="<%= (typeof selectedCategory !== 'undefined' && selectedCategory) ? 'has-active-category' : '' %>">
     <% 
     const filterBarItems = [
@@ -35,10 +34,8 @@
     <% }) %>
 </div>
 
-<!-- ===== PREMIUM SEARCH & FILTERS BAR ===== -->
 <div class="premium-search-wrapper reveal">
     <div class="premium-search-container">
-        <!-- Section 1: Where to -->
         <div class="search-section" id="search-dest-section">
             <div class="search-icon-circle">
                 <i class="fa-solid fa-location-dot"></i>
@@ -51,7 +48,6 @@
 
         <div class="search-section-divider"></div>
 
-        <!-- Section 2: Dates -->
         <div class="search-section" id="search-dates-section">
             <div class="search-icon-circle">
                 <i class="fa-solid fa-calendar-days"></i>
@@ -64,7 +60,6 @@
 
         <div class="search-section-divider"></div>
 
-        <!-- Section 3: Guests -->
         <div class="search-section" id="search-guests-section">
             <div class="search-icon-circle">
                 <i class="fa-solid fa-user-group"></i>
@@ -75,7 +70,6 @@
             </div>
         </div>
 
-        <!-- Search Submit & Clear Button Wrapper -->
         <div class="search-submit-wrapper">
             <button class="search-submit-btn" id="search-bar-submit" aria-label="Search">
                 <i class="fa-solid fa-magnifying-glass"></i>
@@ -86,8 +80,6 @@
         </div>
     </div>
 
-    <!-- ===== DROPDOWN PANELS ===== -->
-    <!-- Destination Dropdown -->
     <div class="search-panel destination-panel" id="panel-destination">
         <div class="destination-search-box">
             <i class="fa-solid fa-magnifying-glass search-box-icon"></i>
@@ -133,7 +125,6 @@
         </div>
     </div>
 
-    <!-- Dates Calendar -->
     <div class="search-panel dates-panel" id="panel-dates">
         <div class="dates-panel-header">
             <div class="date-header-col">
@@ -173,11 +164,9 @@
         </div>
     </div>
 
-    <!-- Guests Panel -->
     <div class="search-panel guests-panel" id="panel-guests">
         <div class="guests-title">Who's coming?</div>
         
-        <!-- Adults -->
         <div class="guest-counter-row">
             <div class="guest-counter-info">
                 <i class="fa-solid fa-user counter-icon"></i>
@@ -193,7 +182,6 @@
             </div>
         </div>
 
-        <!-- Children -->
         <div class="guest-counter-row">
             <div class="guest-counter-info">
                 <i class="fa-solid fa-child counter-icon"></i>
@@ -209,7 +197,6 @@
             </div>
         </div>
 
-        <!-- Infants -->
         <div class="guest-counter-row">
             <div class="guest-counter-info">
                 <i class="fa-solid fa-baby counter-icon"></i>
@@ -225,7 +212,6 @@
             </div>
         </div>
 
-        <!-- Pets -->
         <div class="guest-counter-row">
             <div class="guest-counter-info">
                 <i class="fa-solid fa-paw counter-icon"></i>
@@ -245,13 +231,11 @@
     </div>
 </div>
 
-<!-- ===== SECTION HEADER ===== -->
 <div class="section-header reveal">
     <h2 class="section-title"><%- hero.title %></h2>
     <p class="section-subtitle"><%- hero.subtitle %></p>
 </div>
 
-<!-- ===== EMPTY STATE ===== -->
 <% if(allListings.length === 0) { %>
 <div class="empty-state reveal">
     <div class="empty-state-icon"><i class="fa-solid fa-compass"></i></div>
@@ -266,7 +250,6 @@
 </div>
 <% } %>
 
-<!-- ===== LISTING CARDS GRID ===== -->
 <% if(allListings.length > 0) { %>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mt-0 listings-grid">
     <% for (let listing of allListings) { %>
@@ -306,7 +289,6 @@
     <% } %>
 </div>
 
-<!-- ===== MOBILE SHOW MORE BUTTON ===== -->
 <div class="show-more-container d-lg-none text-center my-4">
     <button type="button" class="btn btn-show-more" id="mobile-show-more-btn">
         <span>Show More Stays</span>

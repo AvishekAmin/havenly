@@ -1,14 +1,11 @@
 <% layout("layouts/boilerplate") %>
 
-<!-- ===== BOOKING DETAILS PAGE ===== -->
 <div class="container pt-3 pb-5 reveal">
 
-    <!-- Back Button -->
     <a href="/bookings/my-bookings" class="btn btn-glass btn-sm mb-4">
         <i class="fa-solid fa-chevron-left me-1"></i> Back to My Bookings
     </a>
 
-    <!-- Title & Status Badges -->
     <div class="d-flex align-items-center flex-wrap gap-3 mb-5">
         <h2 class="mb-0 text-primary-glow" style="font-weight: 700;">
             <i class="fa-solid fa-file-lines me-2" style="color: var(--accent);"></i>Reservation #<%= booking._id.toString().slice(-8).toUpperCase() %>
@@ -35,10 +32,8 @@
 
     <div class="row g-4">
 
-        <!-- ===== LEFT COLUMN ===== -->
         <div class="col-lg-7">
 
-            <!-- Property Summary Card -->
             <div class="show-info-card mb-4">
                 <% if (booking.listing && booking.listing.image) { %>
                 <div class="bd-listing-image-wrap mb-3">
@@ -67,7 +62,6 @@
                 <% } %>
             </div>
 
-            <!-- Trip Details Card -->
             <div class="show-info-card mb-4">
                 <h4 class="mb-3">
                     <i class="fa-solid fa-calendar-check me-2" style="color: var(--accent);"></i>Trip Details
@@ -117,7 +111,6 @@
                 </div>
             </div>
 
-            <!-- Cancel Booking Option (Eligible bookings only) -->
             <% if (booking.bookingStatus === "Confirmed" && new Date(booking.checkIn) > new Date()) { %>
             <div class="show-info-card mb-4" style="border: 1px solid rgba(255, 71, 87, 0.25);">
                 <h4 class="mb-2 text-danger" style="font-weight: 700;">
@@ -134,10 +127,8 @@
 
         </div>
 
-        <!-- ===== RIGHT COLUMN ===== -->
         <div class="col-lg-5">
 
-            <!-- Price Breakdown Card -->
             <div class="show-info-card mb-4">
                 <h4 class="mb-3">
                     <i class="fa-solid fa-receipt me-2" style="color: var(--accent);"></i>Price Breakdown
@@ -175,7 +166,6 @@
                 </div>
             </div>
 
-            <!-- Payment Information Card -->
             <div class="show-info-card mb-4">
                 <h4 class="mb-3">
                     <i class="fa-solid fa-shield-halved me-2" style="color: var(--accent);"></i>Payment Information
@@ -218,7 +208,6 @@
                 </div>
             </div>
 
-            <!-- Download Receipt Button -->
             <a href="/bookings/<%= booking._id %>/receipt" class="btn btn-download-receipt w-100 mb-4">
                 <i class="fa-solid fa-download me-2"></i> Download Receipt
             </a>
@@ -227,7 +216,6 @@
     </div>
 </div>
 
-<!-- Cancel Booking Confirmation Modal -->
 <% if (booking.bookingStatus === "Confirmed" && new Date(booking.checkIn) > new Date()) { %>
 <div class="modal fade" id="cancelBookingModal" tabindex="-1" aria-labelledby="cancelBookingModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">

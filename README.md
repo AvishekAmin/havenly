@@ -310,10 +310,15 @@ havenly/
 ├── public/
 │   ├── css/
 │   │   └── style.css             # Unified dark glassmorphism stylesheet & responsive media queries
-│   ├── images/                   # Static branding logos & fallback assets
+│   ├── images/
+│   │   └── favicon/
+│   │       ├── apple-touch-icon.png  # Apple touch icon asset
+│   │       ├── favicon.ico           # Legacy multi-resolution browser icon
+│   │       └── favicon.svg           # Scalable vector favicon
 │   └── js/
-│       ├── map.js                # Mapbox GL JS map initialization & pin render logic
-│       └── script.js             # Bootstrap form validation & client interactions
+│       ├── calendar.js           # Interactive reservation date range selection logic
+│       ├── map.js                # Mapbox GL JS map rendering & coordinates marker logic
+│       └── script.js             # Bootstrap validation & client-side UI interactions
 │
 ├── routes/
 │   ├── booking.js                # Routes for /bookings (create-order, verify-payment, receipt, cancel)
@@ -322,6 +327,21 @@ havenly/
 │   ├── pages.js                  # Routes for informational & legal pages
 │   ├── review.js                 # Nested routes for /listings/:id/reviews
 │   └── user.js                   # Routes for /signup, /login, and /logout
+│
+├── screenshots/
+│   ├── booking_details.png       # Booking confirmation, host info & PDF receipt link
+│   ├── create_listing.png        # New listing creation form with category selectors
+│   ├── edit_listing.png          # Property update form with image replacement preview
+│   ├── home_page.png             # Home catalog with dynamic category navigation
+│   ├── host_dashboard.png        # Host revenue analytics & reservation activity tables
+│   ├── login_page.png            # User login interface
+│   ├── map_location.png          # Interactive Mapbox GL JS map integration
+│   ├── my_bookings.png           # User reservation management (upcoming & completed)
+│   ├── payment_page.png          # Razorpay checkout modal & price breakdown
+│   ├── review_listing.png        # Star rating submission & review section
+│   ├── review_modal.png          # Full review modal with dynamic sorting options
+│   ├── show_page.png             # Property showcase with sticky booking widget
+│   └── signup_page.png           # User registration interface
 │
 ├── utils/
 │   ├── bookingCalculator.js      # Night count, base price, and 18% GST calculation logic
@@ -363,16 +383,16 @@ havenly/
 │   │   └── signup.ejs            # New account registration page
 │   └── error.ejs                 # Graceful error display page
 │
-├── screenshots/                  # 13 Production UI screenshot assets
-├── .env.example                  # Environment configuration template
-├── .gitignore                    # Git tracking ignore definitions
-├── app.js                        # Express server entry point & middleware bootstrap
-├── cloudConfig.js                # Cloudinary SDK & Multer storage configuration
+├── .env.example                  # Environment variables template
+├── .gitignore                    # Git tracking ignore patterns
+├── app.js                        # Express application entry point & middleware pipeline
+├── cloudConfig.js                # Cloudinary SDK & Multer cloud storage configuration
 ├── middleware.js                 # Authentication, authorization, and Joi validation guards
-├── package.json                  # Dependencies, engine declarations, and package metadata
-├── razorpay.js                   # Razorpay client instance instantiation
+├── package.json                  # Project dependencies, engines & scripts
+├── package-lock.json             # Pinned dependency lockfile
+├── razorpay.js                   # Razorpay payment gateway client instance
 ├── README.md                     # Comprehensive platform documentation
-└── schema.js                     # Joi schemas for listing and review payload verification
+└── schema.js                     # Joi validation schemas for listings & reviews
 ```
 
 ---
@@ -416,10 +436,11 @@ havenly/
 | `POST` | `/listings/:id/reviews` | Logged In | Submit a 1-5 star review with comment (validated via Joi) |
 | `DELETE` | `/listings/:id/reviews/:reviewId`| Review Author | Remove a review from both the collection and listing references |
 
-### Authentication (`/`)
+### General & Authentication (`/`)
 
 | Method | Endpoint | Access | Description |
 | :--- | :--- | :--- | :--- |
+| `GET` | `/` | Public | Automatic redirect to `/listings` |
 | `GET` | `/signup` | Public | Render registration form |
 | `POST` | `/signup` | Public | Register new user via Passport and auto-login |
 | `GET` | `/login` | Public | Render login form |
@@ -433,10 +454,6 @@ havenly/
 Create a `.env` file in the root directory of the project:
 
 ```env
-# ================================================================
-# HAVENLY — Environment Variables
-# ================================================================
-
 # Application Configuration
 PORT=8080
 NODE_ENV=development

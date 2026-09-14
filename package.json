@@ -36,5 +36,8 @@
     "passport-local-mongoose": "^9.1.0",
     "pdfkit": "^0.19.1",
     "razorpay": "^2.9.8"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6"
   }
 }

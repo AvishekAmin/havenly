@@ -4,18 +4,15 @@ const currentUser = (typeof currUser !== 'undefined' && currUser) ? currUser : (
 <nav class="navbar navbar-expand-lg glass-navbar">
     <div class="container-fluid d-flex align-items-center justify-content-between">
 
-        <!-- Logo (Left) -->
         <a class="navbar-brand logo" href="/listings">
             <i class="fa-solid fa-house-chimney logo-icon" style="color: var(--accent); filter: drop-shadow(0 0 6px rgba(0, 216, 255, 0.45));"></i><span class="logo-text">Havenly</span>
         </a>
 
-        <!-- Desktop Nav Links (Hidden on Mobile) -->
         <div class="desktop-nav-links d-none d-lg-flex align-items-center me-auto ms-3">
             <a class="nav-link" href="/listings">Explore</a>
             <a class="nav-link" href="/listings/new">Add Your Home</a>
         </div>
 
-        <!-- Search Form (Center on Mobile, Flex on Desktop) -->
         <form class="d-flex align-items-center nav-search-form me-lg-3" role="search">
             <input class="form-control me-2 search-inp" type="search" placeholder="Search destinations..." aria-label="Search" id="nav-search-input">
             <button class="btn search-btn" type="submit">
@@ -23,23 +20,19 @@ const currentUser = (typeof currUser !== 'undefined' && currUser) ? currUser : (
             </button>
         </form>
 
-        <!-- Right Side: Auth / Hamburger / Avatar Dropdown -->
         <div class="d-flex align-items-center nav-right-section">
             <% if (!currentUser) { %>
-                <!-- Desktop Auth Buttons (Hidden on Mobile) -->
                 <div class="d-none d-lg-flex align-items-center gap-2 me-2">
                     <a href="/signup" class="nav-auth-btn signup">Sign Up</a>
                     <a href="/login" class="nav-auth-btn login">Log In</a>
                 </div>
 
-                <!-- Hamburger Dropdown Menu (Available on both Laptop & Mobile when logged out) -->
                 <div class="dropdown">
                     <button class="btn mobile-hamburger-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle navigation">
                         <i class="fa-solid fa-bars"></i>
                     </button>
 
                     <ul class="dropdown-menu dropdown-menu-end glass-dropdown">
-                        <!-- Mobile-only Auth & Navigation Links -->
                         <li class="d-lg-none">
                             <a class="dropdown-item" href="/signup">
                                 <i class="fa-solid fa-user-plus me-2"></i>Sign Up
@@ -64,7 +57,6 @@ const currentUser = (typeof currUser !== 'undefined' && currUser) ? currUser : (
                         </li>
                         <li class="d-lg-none"><hr class="dropdown-divider"></li>
 
-                        <!-- Reusable Links (Shown on BOTH Laptop & Mobile when logged out) -->
                         <li>
                             <a class="dropdown-item" href="/bookings/my-bookings">
                                 <i class="fa-solid fa-suitcase me-2"></i>My Bookings
@@ -78,7 +70,6 @@ const currentUser = (typeof currUser !== 'undefined' && currUser) ? currUser : (
                     </ul>
                 </div>
             <% } else { %>
-                <!-- Logged In User Avatar Dropdown (Replaces Hamburger on Mobile & standard on Desktop) -->
                 <div class="dropdown">
                     <button class="btn user-avatar-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="User menu">
                         <span class="user-avatar-circle">
@@ -94,7 +85,6 @@ const currentUser = (typeof currUser !== 'undefined' && currUser) ? currUser : (
                             </span>
                         </li>
 
-                        <!-- Mobile-only links in logged-in dropdown -->
                         <li class="d-lg-none"><hr class="dropdown-divider"></li>
                         <li class="d-lg-none">
                             <a class="dropdown-item" href="/listings">

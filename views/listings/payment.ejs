@@ -1,6 +1,5 @@
 <% layout("/layouts/boilerplate") %>
 
-<!-- ===== BOOKING CONFIRMATION & PAYMENT MOCKUP ===== -->
 <div class="container pt-3 pb-5 reveal">
     <a href="/listings/<%= listing._id %>" class="btn btn-glass btn-sm mb-4 d-inline-flex align-items-center">
         <i class="fa-solid fa-chevron-left me-1"></i> Back to Listing
@@ -10,10 +9,8 @@
 
     <div class="row g-5 payment-layout-row">
         
-        <!-- ===== LEFT COLUMN: PAYMENT FORM ===== -->
         <div class="col-lg-7 payment-left-col">
 
-            <!-- Trip summary (Selected from query params) -->
             <div class="show-info-card mb-4 payment-trip-card">
                 <h4><i class="fa-solid fa-calendar-check" style="color: #00D8FF;"></i> Trip Details</h4>
                 <div class="row mt-3">
@@ -28,7 +25,6 @@
                 </div>
             </div>
 
-            <!-- Payment Card -->
             <div class="show-info-card mb-4 payment-method-card">
                 <h4><i class="fa-solid fa-shield-halved" style="color: #00D8FF;"></i> Payment</h4>
                 
@@ -91,11 +87,9 @@
             </div>
         </div>
 
-        <!-- ===== RIGHT COLUMN: BILL BREAKDOWN ===== -->
         <div class="col-lg-5 payment-price-col">
             <div class="show-info-card sticky-top" style="top: 5.8rem;">
                 
-                <!-- Listing summary card -->
                 <div class="d-flex gap-3 align-items-center mb-4 payment-summary-item">
                     <img src="<%= listing.image.url %>" alt="<%= listing.title %>" style="width: 100px; height: 75px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid rgba(0, 216, 255, 0.15); flex-shrink: 0;">
                     <div class="payment-summary-info">
@@ -107,7 +101,6 @@
 
                 <hr style="opacity: 0.1;">
 
-                <!-- Price Details -->
                 <h4 class="mb-3">Price Details</h4>
                 <div class="d-flex justify-content-between mb-2">
                     <span id="rate-breakdown-text" class="text-muted">&#8377; <%= listing.price.toLocaleString("en-IN") %> x 0 nights</span>
@@ -124,7 +117,6 @@
 
                 <hr style="opacity: 0.1;">
 
-                <!-- Total Amount -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <span class="fw-bold" style="font-size: 1.1rem;">Total (INR)</span>
                     <span id="total-amount-val" class="fw-bold text-primary-glow" style="font-size: 1.3rem;">&#8377; 0</span>
@@ -143,7 +135,6 @@
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-<!-- ===== PAGE LOGIC AND FORM SUBMISSION ===== -->
 <script>
 (function initPaymentPage() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -165,7 +156,6 @@
         if (datesVal) datesVal.textContent = `${checkInStr} – ${checkOutStr}`;
         if (guestsVal) guestsVal.textContent = guestsStr;
 
-        // Parse dates to calculate nights accurately (including cross-month stays)
         const d1 = new Date(checkInStr);
         const d2 = new Date(checkOutStr);
         const msPerDay = 1000 * 60 * 60 * 24;
@@ -182,7 +172,6 @@
             if (totalVal) totalVal.innerHTML = `&#8377; ${grandTotal.toLocaleString("en-IN")}`;
         }
     } else {
-        // Default to 1 night if no query params passed
         if (datesVal) datesVal.textContent = "Dates not selected";
         const baseTotal = listingPrice;
         const gst = baseTotal * 0.18;
@@ -194,7 +183,6 @@
         if (totalVal) totalVal.innerHTML = `&#8377; ${grandTotal.toLocaleString("en-IN")}`;
     }
 
-    // Form Submission Mockup
     const form = document.getElementById("payment-form");
     const payButton = document.getElementById("pay-button");
 

@@ -1,9 +1,7 @@
 <% layout("layouts/boilerplate") %>
 
-<!-- ===== MY BOOKINGS PAGE ===== -->
 <div class="container pt-3 pb-5 reveal">
 
-    <!-- Top Section -->
     <a href="/listings" class="btn btn-glass btn-sm mb-4">
         <i class="fa-solid fa-chevron-left me-1"></i> Back to Explore
     </a>
@@ -15,9 +13,7 @@
 
     <% if (bookings && bookings.length > 0) { %>
 
-    <!-- Search & Filter Controls Bar -->
     <div class="booking-controls-bar reveal">
-        <!-- Search Input -->
         <div class="booking-search-wrap">
             <i class="fa-solid fa-magnifying-glass booking-search-icon"></i>
             <input type="text" id="bookingSearchInput" class="booking-search-input" placeholder="Search by title, location, or booking ID..." autocomplete="off">
@@ -26,7 +22,6 @@
             </button>
         </div>
 
-        <!-- Status Filter Pills -->
         <div class="booking-filter-pills">
             <button type="button" class="booking-filter-btn active" data-filter="All">
                 All <span class="filter-count" id="countAll">0</span>
@@ -43,7 +38,6 @@
         </div>
     </div>
 
-    <!-- Bookings List -->
     <div class="bookings-list" id="bookingsList">
         <% for (let booking of bookings) { %>
         <div class="booking-card reveal"
@@ -53,7 +47,6 @@
              data-id="<%= booking._id.toString().toLowerCase() %>"
              data-short-id="<%= booking._id.toString().slice(-8).toLowerCase() %>">
             <div class="booking-card-inner">
-                <!-- Image Section -->
                 <div class="booking-card-image">
                     <% if (booking.listing && booking.listing.image) { %>
                     <img src="<%= booking.listing.image.url %>" alt="<%= booking.listing.title %>">
@@ -63,7 +56,6 @@
                     </div>
                     <% } %>
 
-                    <!-- Status Badges on Image -->
                     <div class="booking-badges">
                         <span class="booking-badge booking-badge-<%= booking.bookingStatus.toLowerCase() %>">
                             <% if (booking.bookingStatus === "Confirmed") { %>
@@ -84,10 +76,8 @@
                     </div>
                 </div>
 
-                <!-- Details Section -->
                 <div class="booking-card-details">
 
-                    <!-- Title & Location -->
                     <div class="booking-card-header">
                         <h4 class="booking-title">
                             <% if (booking.listing) { %>
@@ -104,7 +94,6 @@
                         <% } %>
                     </div>
 
-                    <!-- Meta Grid -->
                     <div class="booking-meta-grid">
                         <div class="booking-meta-item">
                             <span class="booking-meta-label">Booking ID</span>
@@ -148,7 +137,6 @@
                         </div>
                     </div>
 
-                    <!-- Footer: Price + Actions -->
                     <div class="booking-card-footer">
                         <div class="booking-price-section">
                             <span class="booking-meta-label">Total Paid</span>
@@ -176,7 +164,6 @@
         <% } %>
     </div>
 
-    <!-- No Match Empty State -->
     <div id="noMatchState" class="bookings-empty-state d-none reveal">
         <div class="bookings-empty-icon">
             <i class="fa-solid fa-filter-circle-xmark"></i>
@@ -202,7 +189,6 @@
 
             let activeFilter = "All";
 
-            // Compute counts
             let counts = { All: bookingCards.length, Confirmed: 0, Completed: 0, Cancelled: 0 };
             bookingCards.forEach(card => {
                 const status = card.dataset.status;
@@ -228,14 +214,12 @@
                     let matches = false;
 
                     if (query.length > 0) {
-                        // SEARCH MODE: Search is active, ignore filter pill selection
                         const cleanQuery = query.replace(/^#/, "");
                         matches = title.includes(query) ||
                                   location.includes(query) ||
                                   id.includes(cleanQuery) ||
                                   shortId.includes(cleanQuery);
                     } else {
-                        // FILTER MODE: Search is empty, apply selected status pill filter
                         matches = (activeFilter === "All" || status === activeFilter);
                     }
 
@@ -256,12 +240,10 @@
                 }
             }
 
-            // Search input event listener
             searchInput.addEventListener("input", () => {
                 const query = searchInput.value.trim();
                 if (query.length > 0) {
                     clearSearchBtn.classList.remove("d-none");
-                    // Reset filter pill visual active state to "All" when search is active
                     filterBtns.forEach(btn => {
                         btn.classList.toggle("active", btn.dataset.filter === "All");
                     });
@@ -272,17 +254,14 @@
                 updateVisibility();
             });
 
-            // Clear search button
             clearSearchBtn.addEventListener("click", () => {
                 searchInput.value = "";
                 clearSearchBtn.classList.add("d-none");
                 updateVisibility();
             });
 
-            // Filter button click event listener
             filterBtns.forEach(btn => {
                 btn.addEventListener("click", () => {
-                    // Activate filter mode: Clear search input value
                     searchInput.value = "";
                     clearSearchBtn.classList.add("d-none");
 
@@ -294,7 +273,6 @@
                 });
             });
 
-            // Reset button event listener
             resetFiltersBtn.addEventListener("click", () => {
                 searchInput.value = "";
                 clearSearchBtn.classList.add("d-none");
@@ -309,7 +287,6 @@
 
     <% } else { %>
 
-    <!-- Empty State (Zero Total Bookings) -->
     <div class="bookings-empty-state reveal">
         <div class="bookings-empty-icon">
             <i class="fa-solid fa-suitcase-rolling"></i>

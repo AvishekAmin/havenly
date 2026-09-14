@@ -1,91 +1,91 @@
 const nodemailer = require("nodemailer");
 
-/**
- * Creates and configures the Nodemailer transporter.
- * Uses process.env settings if available; otherwise falls back to Ethereal test account for instant local testing.
- */
 async function getTransporter() {
-    if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
-        return {
-            transporter: nodemailer.createTransport({
-                host: process.env.EMAIL_HOST || "smtp.gmail.com",
-                port: parseInt(process.env.EMAIL_PORT || "587"),
-                secure: process.env.EMAIL_PORT === "465",
-                auth: {
-                    user: process.env.EMAIL_USER,
-                    pass: process.env.EMAIL_PASS,
-                },
-            }),
-            from: process.env.EMAIL_FROM || `"Havenly" <${process.env.EMAIL_USER}>`,
-            isTestAccount: false,
-        };
-    }
+  if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+    return {
+      transporter: nodemailer.createTransport({
+        host: process.env.EMAIL_HOST || "smtp.gmail.com",
+        port: parseInt(process.env.EMAIL_PORT || "587"),
+        secure: process.env.EMAIL_PORT === "465",
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      }),
+      from: process.env.EMAIL_FROM || `"Havenly" <${process.env.EMAIL_USER}>`,
+      isTestAccount: false,
+    };
+  }
 
-    // Fallback: Create Ethereal test account for instant testing without SMTP configuration
-    try {
-        const testAccount = await nodemailer.createTestAccount();
-        return {
-            transporter: nodemailer.createTransport({
-                host: testAccount.smtp.host,
-                port: testAccount.smtp.port,
-                secure: testAccount.smtp.secure,
-                auth: {
-                    user: testAccount.user,
-                    pass: testAccount.pass,
-                },
-            }),
-            from: `"Havenly" <${testAccount.user}>`,
-            isTestAccount: true,
-        };
-    } catch (err) {
-        console.error("Email Service: Unable to create Ethereal test account:", err.message);
-        return null;
-    }
+  try {
+    const testAccount = await nodemailer.createTestAccount();
+    return {
+      transporter: nodemailer.createTransport({
+        host: testAccount.smtp.host,
+        port: testAccount.smtp.port,
+        secure: testAccount.smtp.secure,
+        auth: {
+          user: testAccount.user,
+          pass: testAccount.pass,
+        },
+      }),
+      from: `"Havenly" <${testAccount.user}>`,
+      isTestAccount: true,
+    };
+  } catch (err) {
+    console.error(
+      "Email Service: Unable to create Ethereal test account:",
+      err.message,
+    );
+    return null;
+  }
 }
 
-/**
- * Sends a booking confirmation email asynchronously.
- * Non-blocking secondary side effect — never throws or halts application flow.
- *
- * @param {Object} params
- * @param {Object} params.booking - The saved Booking document
- * @param {Object} params.user - The logged-in User document (containing username and email)
- * @param {Object} params.listing - The Listing document (containing title, location, country)
- */
 async function sendBookingConfirmationEmail({ booking, user, listing }) {
-    try {
-        if (!user || !user.email) {
-            console.log("Email Service: No recipient email address provided. Skipping confirmation email.");
-            return;
-        }
+  try {
+    if (!user || !user.email) {
+      console.log(
+        "Email Service: No recipient email address provided. Skipping confirmation email.",
+      );
+      return;
+    }
 
-        const transportConfig = await getTransporter();
-        if (!transportConfig) {
-            console.log("Email Service: Transporter unavailable. Skipping confirmation email.");
-            return;
-        }
+    const transportConfig = await getTransporter();
+    if (!transportConfig) {
+      console.log(
+        "Email Service: Transporter unavailable. Skipping confirmation email.",
+      );
+      return;
+    }
 
-        const { transporter, from: fromSender, isTestAccount } = transportConfig;
+    const { transporter, from: fromSender, isTestAccount } = transportConfig;
 
-        const baseUrl = process.env.APP_BASE_URL || "https://havenly-avishek.onrender.com";
-        const taxes = booking.totalPrice - booking.basePrice;
-        const bookingIdShort = booking._id.toString().slice(-8).toUpperCase();
+    const baseUrl =
+      process.env.APP_BASE_URL || "https://havenly-avishek.onrender.com";
+    const taxes = booking.totalPrice - booking.basePrice;
+    const bookingIdShort = booking._id.toString().slice(-8).toUpperCase();
 
-        const checkInFormatted = new Date(booking.checkIn).toLocaleDateString("en-IN", {
-            weekday: "short",
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-        });
+    const checkInFormatted = new Date(booking.checkIn).toLocaleDateString(
+      "en-IN",
+      {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      },
+    );
 
-        const checkOutFormatted = new Date(booking.checkOut).toLocaleDateString("en-IN", {
-            weekday: "short",
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-        });
+    const checkOutFormatted = new Date(booking.checkOut).toLocaleDateString(
+      "en-IN",
+      {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      },
+    );
 
-        const htmlContent = `
+    const htmlContent = `
         <!DOCTYPE html>
         <html>
         <head>
@@ -319,28 +319,37 @@ async function sendBookingConfirmationEmail({ booking, user, listing }) {
         </html>
         `;
 
-        const mailOptions = {
-            from: fromSender,
-            to: user.email,
-            subject: `Booking Confirmed: ${listing.title} — Havenly`,
-            html: htmlContent,
-        };
+    const mailOptions = {
+      from: fromSender,
+      to: user.email,
+      subject: `Booking Confirmed: ${listing.title} — Havenly`,
+      html: htmlContent,
+    };
 
-        const info = await transporter.sendMail(mailOptions);
-        console.log(`Email Service: Confirmation email processed for ${user.email} (Message ID: ${info.messageId})`);
+    const info = await transporter.sendMail(mailOptions);
+    console.log(
+      `Email Service: Confirmation email processed for ${user.email} (Message ID: ${info.messageId})`,
+    );
 
-        if (isTestAccount) {
-            const previewUrl = nodemailer.getTestMessageUrl(info);
-            console.log("\n========================================================================");
-            console.log("✉️ EMAIL PREVIEW URL (Ethereal Test Account):");
-            console.log(`👉 ${previewUrl}`);
-            console.log("========================================================================\n");
-        }
-    } catch (error) {
-        console.error("Email Service: Non-fatal error sending booking confirmation email:", error.message);
+    if (isTestAccount) {
+      const previewUrl = nodemailer.getTestMessageUrl(info);
+      console.log(
+        "\n========================================================================",
+      );
+      console.log("✉️ EMAIL PREVIEW URL (Ethereal Test Account):");
+      console.log(`👉 ${previewUrl}`);
+      console.log(
+        "========================================================================\n",
+      );
     }
+  } catch (error) {
+    console.error(
+      "Email Service: Non-fatal error sending booking confirmation email:",
+      error.message,
+    );
+  }
 }
 
 module.exports = {
-    sendBookingConfirmationEmail,
+  sendBookingConfirmationEmail,
 };

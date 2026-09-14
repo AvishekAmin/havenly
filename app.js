@@ -67,7 +67,7 @@ const sessionOptions = {
   saveUninitialized: false,
   rolling: true,
   cookie: {
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days, evaluated per-request
+    maxAge: 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
   },
@@ -93,6 +93,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
+
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
@@ -100,12 +104,10 @@ app.use("/", pagesRouter);
 app.use("/bookings", bookingRouter);
 app.use("/host", hostRouter);
 
-// Catch-all route for undefined paths
 app.use((req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something went wrong!" } = err;
   res.status(statusCode).render("error.ejs", { message });
