@@ -4,14 +4,14 @@
   .cancel-hero {
     text-align: center;
     padding: 100px 20px 60px;
-    background: linear-gradient(180deg, rgba(0, 216, 255, 0.07) 0%, transparent 70%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
     position: relative;
   }
   .cancel-hero::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(0, 216, 255, 0.10) 0%, transparent 65%);
+    background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 65%);
     pointer-events: none;
   }
   .cancel-hero .hero-icon {
@@ -24,14 +24,14 @@
     font-family: 'Poppins', sans-serif;
     font-size: clamp(2.2rem, 5vw, 3.6rem);
     font-weight: 700;
-    color: var(--text-primary, #f4f8ff);
+    color: var(--text-primary, #ededed);
     margin: 0 0 14px;
     letter-spacing: -0.5px;
   }
   .cancel-hero p {
     font-family: 'Inter', sans-serif;
     font-size: 1.15rem;
-    color: rgba(244, 248, 255, 0.68);
+    color: var(--text-secondary, #a1a1aa);
     max-width: 620px;
     margin: 0 auto;
     line-height: 1.7;
@@ -44,25 +44,25 @@
   }
 
   .cancel-glass-card {
-    background: rgba(13, 20, 45, 0.72);
+    background: rgba(20, 20, 20, 0.85);
     backdrop-filter: blur(22px);
     -webkit-backdrop-filter: blur(22px);
-    border: 1px solid rgba(0, 216, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 18px;
-    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.5);
     padding: 40px;
     margin-bottom: 32px;
     transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .cancel-glass-card:hover {
-    border-color: rgba(0, 216, 255, 0.18);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45), 0 0 30px rgba(0, 216, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
     transform: translateY(-2px);
   }
   .cancel-glass-card h2 {
     font-family: 'Poppins', sans-serif;
     font-size: 1.65rem;
-    color: var(--text-primary, #f4f8ff);
+    color: var(--text-primary, #ededed);
     margin: 0 0 20px;
     display: flex;
     align-items: center;
@@ -75,7 +75,7 @@
   .cancel-glass-card p {
     font-family: 'Inter', sans-serif;
     font-size: 1.02rem;
-    color: rgba(244, 248, 255, 0.68);
+    color: var(--text-secondary, #a1a1aa);
     line-height: 1.75;
     margin: 0 0 16px;
   }
@@ -88,19 +88,19 @@
     margin-bottom: 32px;
   }
   .cancel-policy-card {
-    background: rgba(13, 20, 45, 0.72);
+    background: rgba(20, 20, 20, 0.85);
     backdrop-filter: blur(22px);
     -webkit-backdrop-filter: blur(22px);
     border-radius: 18px;
-    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.5);
     padding: 36px 28px;
     text-align: center;
     transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     position: relative;
     overflow: hidden;
-    border-bottom: 1px solid rgba(0, 216, 255, 0.09);
-    border-left: 1px solid rgba(0, 216, 255, 0.09);
-    border-right: 1px solid rgba(0, 216, 255, 0.09);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
   }
   .cancel-policy-card.flexible-policy {
     border-top: 4px solid var(--success, #2ed573);
@@ -113,7 +113,7 @@
   }
   .cancel-policy-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45), 0 0 40px rgba(0, 216, 255, 0.05);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
   }
   .cancel-policy-card.flexible-policy:hover {
     border-color: rgba(46, 213, 115, 0.3);

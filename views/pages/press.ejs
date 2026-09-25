@@ -4,14 +4,14 @@
   .press-hero {
     text-align: center;
     padding: 100px 20px 60px;
-    background: linear-gradient(180deg, rgba(0, 216, 255, 0.07) 0%, transparent 70%);
+    background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
     position: relative;
   }
   .press-hero::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(0, 216, 255, 0.10) 0%, transparent 65%);
+    background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.04) 0%, transparent 65%);
     pointer-events: none;
   }
   .press-hero .hero-icon {
@@ -24,14 +24,14 @@
     font-family: 'Poppins', sans-serif;
     font-size: clamp(2.2rem, 5vw, 3.6rem);
     font-weight: 700;
-    color: var(--text-primary, #f4f8ff);
+    color: var(--text-primary, #ededed);
     margin: 0 0 14px;
     letter-spacing: -0.5px;
   }
   .press-hero p {
     font-family: 'Inter', sans-serif;
     font-size: 1.15rem;
-    color: rgba(244, 248, 255, 0.68);
+    color: var(--text-secondary, #a1a1aa);
     max-width: 620px;
     margin: 0 auto;
     line-height: 1.7;
@@ -44,25 +44,25 @@
   }
 
   .glass-card {
-    background: rgba(13, 20, 45, 0.72);
-    backdrop-filter: blur(22px);
-    -webkit-backdrop-filter: blur(22px);
-    border: 1px solid rgba(0, 216, 255, 0.09);
+    background: rgba(20, 20, 20, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 18px;
-    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.38);
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.5);
     padding: 40px;
     margin-bottom: 32px;
     transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .glass-card:hover {
-    border-color: rgba(0, 216, 255, 0.18);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45), 0 0 30px rgba(0, 216, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
     transform: translateY(-2px);
   }
   .glass-card h2 {
     font-family: 'Poppins', sans-serif;
     font-size: 1.65rem;
-    color: var(--text-primary, #f4f8ff);
+    color: var(--text-primary, #ededed);
     margin: 0 0 20px;
     display: flex;
     align-items: center;
@@ -75,7 +75,7 @@
   .glass-card p {
     font-family: 'Inter', sans-serif;
     font-size: 1.02rem;
-    color: rgba(244, 248, 255, 0.68);
+    color: var(--text-secondary, #a1a1aa);
     line-height: 1.75;
     margin: 0 0 16px;
   }
@@ -83,7 +83,7 @@
 
   .press-mention {
     padding: 28px 0;
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
   }
   .press-mention:first-of-type {
     padding-top: 8px;
@@ -102,21 +102,21 @@
   .press-mention .press-date {
     font-family: 'Inter', sans-serif;
     font-size: 0.82rem;
-    color: rgba(244, 248, 255, 0.40);
+    color: var(--text-secondary, #a1a1aa);
     margin-bottom: 10px;
     display: block;
   }
   .press-mention h4 {
     font-family: 'Poppins', sans-serif;
     font-size: 1.15rem;
-    color: var(--text-primary, #f4f8ff);
+    color: var(--text-primary, #ededed);
     margin: 0 0 10px;
     font-weight: 600;
   }
   .press-mention p {
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
-    color: rgba(244, 248, 255, 0.58);
+    color: var(--text-secondary, #a1a1aa);
     line-height: 1.7;
     margin: 0;
   }
@@ -128,17 +128,17 @@
     margin-top: 24px;
   }
   .press-kit-card {
-    background: rgba(13, 20, 45, 0.55);
-    border: 1px solid rgba(0, 216, 255, 0.07);
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     padding: 32px 24px;
     text-align: center;
     transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .press-kit-card:hover {
-    border-color: rgba(0, 216, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.16);
     transform: translateY(-3px);
-    background: rgba(13, 20, 45, 0.68);
+    background: #171717;
   }
   .press-kit-card .value-icon {
     width: 56px; height: 56px;
@@ -159,7 +159,7 @@
   .press-kit-card h3 {
     font-family: 'Poppins', sans-serif;
     font-size: 1.1rem;
-    color: var(--text-primary, #f4f8ff);
+    color: var(--text-primary, #ededed);
     margin: 0 0 10px;
   }
   .press-kit-card .press-download-link {
@@ -180,7 +180,7 @@
     align-items: center;
     gap: 12px;
     padding: 14px 0;
-    border-bottom: 1px solid rgba(0, 216, 255, 0.06);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
   .press-contact-detail:last-of-type {
     border-bottom: none;
@@ -194,7 +194,7 @@
   .press-contact-detail span {
     font-family: 'Inter', sans-serif;
     font-size: 1rem;
-    color: rgba(244, 248, 255, 0.78);
+    color: var(--text-primary, #ededed);
   }
   .press-contact-detail a {
     color: var(--accent, #00D8FF);
@@ -207,7 +207,7 @@
   .press-response-note {
     font-family: 'Inter', sans-serif;
     font-size: 0.88rem;
-    color: rgba(244, 248, 255, 0.45);
+    color: var(--text-secondary, #a1a1aa);
     margin-top: 18px;
     font-style: italic;
   }
@@ -219,17 +219,17 @@
     margin-top: 8px;
   }
   .press-award-card {
-    background: rgba(13, 20, 45, 0.55);
-    border: 1px solid rgba(0, 216, 255, 0.07);
+    background: #141414;
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     padding: 32px 24px;
     text-align: center;
     transition: all 0.30s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
   .press-award-card:hover {
-    border-color: rgba(0, 216, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.16);
     transform: translateY(-3px);
-    background: rgba(13, 20, 45, 0.68);
+    background: #171717;
   }
   .press-award-card .value-icon {
     width: 56px; height: 56px;
@@ -250,13 +250,13 @@
   .press-award-card h3 {
     font-family: 'Poppins', sans-serif;
     font-size: 1.05rem;
-    color: var(--text-primary, #f4f8ff);
+    color: var(--text-primary, #ededed);
     margin: 0 0 6px;
   }
   .press-award-card span {
     font-family: 'Inter', sans-serif;
     font-size: 0.88rem;
-    color: rgba(244, 248, 255, 0.50);
+    color: var(--text-secondary, #a1a1aa);
   }
 
   @media (max-width: 600px) {

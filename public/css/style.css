@@ -1,11 +1,11 @@
 :root {
-  --bg-primary: #050816;
-  --bg-secondary: #080d1f;
-  --bg-surface: rgba(13, 20, 45, 0.72);
-  --bg-surface-strong: rgba(13, 20, 45, 0.92);
-  --bg-input: rgba(255, 255, 255, 0.05);
-  --bg-input-focus: rgba(255, 255, 255, 0.08);
-  --bg-card: rgba(10, 16, 38, 0.82);
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #121212;
+  --bg-surface: rgba(20, 20, 20, 0.85);
+  --bg-surface-strong: rgba(24, 24, 24, 0.95);
+  --bg-input: #1a1a1a;
+  --bg-input-focus: #222222;
+  --bg-card: rgba(18, 18, 18, 0.92);
 
   --accent: #00d8ff;
   --accent-hover: #00b4d8;
@@ -19,10 +19,10 @@
   --accent-border: rgba(0, 216, 255, 0.12);
   --accent-border-hover: rgba(0, 216, 255, 0.38);
 
-  --text-primary: #f4f8ff;
-  --text-secondary: rgba(244, 248, 255, 0.68);
-  --text-muted: rgba(244, 248, 255, 0.38);
-  --text-placeholder: rgba(244, 248, 255, 0.3);
+  --text-primary: #ededed;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --text-placeholder: #52525b;
 
   --danger: #ff4757;
   --danger-rgb: 255, 71, 87;
@@ -57,17 +57,17 @@
   --radius-btn: 50px;
   --radius-pill: 50px;
 
-  --border-card: 1px solid rgba(0, 216, 255, 0.09);
+  --border-card: 1px solid rgba(255, 255, 255, 0.08);
   --border-subtle: 1px solid rgba(255, 255, 255, 0.06);
-  --border-glow: 1px solid rgba(0, 216, 255, 0.32);
-  --border-dim: 1px solid rgba(255, 255, 255, 0.03);
+  --border-glow: 1px solid rgba(255, 255, 255, 0.15);
+  --border-dim: 1px solid rgba(255, 255, 255, 0.04);
 
-  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.22);
-  --shadow-card: 0 8px 36px rgba(0, 0, 0, 0.38);
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.6);
   --shadow-card-hover:
-    0 22px 54px rgba(0, 216, 255, 0.14), 0 8px 32px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 28px 70px rgba(0, 0, 0, 0.55);
-  --shadow-glow-cyan: 0 0 44px rgba(0, 216, 255, 0.1);
+    0 16px 40px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.12);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.75);
+  --shadow-glow-cyan: 0 8px 32px rgba(0, 0, 0, 0.5);
 
   --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --transition-fast: all 0.18s ease;
@@ -77,9 +77,9 @@
   --navbar-height: 4.8rem;
   --max-width: 1280px;
 
-  --bs-body-bg: #050816;
-  --bs-body-color: #f4f8ff;
-  --bs-border-color: rgba(255, 255, 255, 0.07);
+  --bs-body-bg: #0a0a0a;
+  --bs-body-color: #ededed;
+  --bs-border-color: rgba(255, 255, 255, 0.08);
   --bs-primary: #00d8ff;
   --bs-link-color: #00d8ff;
   --bs-link-hover-color: #00b4d8;
@@ -164,22 +164,22 @@ button {
 }
 
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 216, 255, 0.25);
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 216, 255, 0.48);
+  background: rgba(255, 255, 255, 0.28);
 }
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 216, 255, 0.25) var(--bg-primary);
+  scrollbar-color: rgba(255, 255, 255, 0.15) var(--bg-primary);
 }
 
 ::selection {
@@ -251,7 +251,7 @@ main,
   box-shadow: 0 0 0 3px rgba(0, 216, 255, 0.11) !important;
 }
 .form-select option {
-  background-color: #0d1526;
+  background-color: #141414;
   color: var(--text-primary);
 }
 
@@ -368,10 +368,10 @@ textarea.form-control {
 }
 
 .dropdown-menu {
-  background: rgba(9, 15, 36, 0.97);
+  background: rgba(20, 20, 20, 0.98);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: var(--border-card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   padding: 0.4rem;
@@ -812,10 +812,10 @@ textarea.form-control {
   right: 0;
   width: 100%;
   height: var(--navbar-height);
-  background: rgba(5, 8, 22, 0.82) !important;
+  background: rgba(12, 12, 12, 0.90) !important;
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
-  border-bottom: 1px solid rgba(0, 216, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   z-index: 1030;
   transition:
     background 0.32s ease,
@@ -825,9 +825,9 @@ textarea.form-control {
 }
 .navbar.navbar-scrolled,
 .glass-navbar.navbar-scrolled {
-  background: rgba(5, 8, 22, 0.97) !important;
-  border-bottom-color: rgba(0, 216, 255, 0.13);
-  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.45);
+  background: rgba(10, 10, 10, 0.98) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.6);
 }
 
 .navbar-brand.logo {
@@ -1024,12 +1024,12 @@ textarea.form-control {
 }
 
 .glass-dropdown {
-  background: rgba(7, 12, 30, 0.97) !important;
+  background: rgba(20, 20, 20, 0.98) !important;
   backdrop-filter: blur(24px) !important;
   -webkit-backdrop-filter: blur(24px) !important;
-  border: var(--border-card) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
   border-radius: var(--radius-md) !important;
-  box-shadow: var(--shadow-lg), var(--shadow-glow-cyan) !important;
+  box-shadow: var(--shadow-lg) !important;
   min-width: 210px;
   padding: 0.4rem;
 }
@@ -1085,12 +1085,12 @@ textarea.form-control {
   background:
     radial-gradient(
       ellipse 72% 58% at 50% -5%,
-      rgba(0, 216, 255, 0.08) 0%,
+      rgba(255, 255, 255, 0.03) 0%,
       transparent 65%
     ),
     radial-gradient(
       ellipse 52% 42% at 82% 62%,
-      rgba(123, 97, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0.015) 0%,
       transparent 55%
     );
   pointer-events: none;
@@ -1286,7 +1286,7 @@ textarea.form-control {
   -webkit-backdrop-filter: blur(14px);
   border-radius: var(--radius-card) !important;
   overflow: hidden;
-  border: 1px solid rgba(0, 216, 255, 0.06);
+  border: var(--border-card);
   transition:
     transform 0.38s var(--ease-spring),
     box-shadow 0.38s ease,
@@ -1298,7 +1298,7 @@ textarea.form-control {
 .listing-card:hover {
   transform: translateY(-10px);
   box-shadow: var(--shadow-card-hover);
-  border-color: rgba(0, 216, 255, 0.26);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .card-img-wrapper {
@@ -1322,8 +1322,8 @@ textarea.form-control {
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(5, 8, 22, 0.8) 0%,
-    rgba(5, 8, 22, 0.2) 45%,
+    rgba(10, 10, 10, 0.85) 0%,
+    rgba(10, 10, 10, 0.2) 45%,
     transparent 100%
   );
   opacity: 0;
@@ -2177,16 +2177,8 @@ textarea.form-control {
 
 footer,
 .site-footer {
-  background: #0b0f1a;
-  border-top: 1px solid;
-  border-image: linear-gradient(
-      90deg,
-      transparent,
-      rgba(0, 216, 255, 0.35),
-      rgba(123, 97, 255, 0.35),
-      transparent
-    )
-    1;
+  background: #0a0a0a;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
   margin-top: auto;
 }
 
@@ -3451,12 +3443,12 @@ img:not([loading]) {
 .search-panel {
   position: absolute;
   top: calc(100% + 32px);
-  background: rgba(10, 16, 38, 0.98);
+  background: rgba(20, 20, 20, 0.98);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(0, 216, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-lg), var(--shadow-glow-cyan);
+  box-shadow: var(--shadow-lg);
   padding: 1.5rem;
   display: none;
   z-index: 100;
@@ -4204,12 +4196,12 @@ img:not([loading]) {
   top: 102%;
   left: 0;
   right: 0;
-  background: rgba(10, 16, 38, 0.98);
+  background: rgba(20, 20, 20, 0.98);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(0, 216, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius-card);
-  box-shadow: var(--shadow-lg), var(--shadow-glow-cyan);
+  box-shadow: var(--shadow-lg);
   padding: 1.25rem;
   display: none;
   z-index: 100;
@@ -4315,14 +4307,12 @@ img:not([loading]) {
 }
 
 .glass-modal-content {
-  background: rgba(10, 16, 38, 0.94) !important;
+  background: rgba(20, 20, 20, 0.96) !important;
   backdrop-filter: blur(24px) !important;
   -webkit-backdrop-filter: blur(24px) !important;
-  border: 1px solid rgba(0, 216, 255, 0.16) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   border-radius: 24px !important;
-  box-shadow:
-    0 10px 40px rgba(0, 0, 0, 0.6),
-    0 0 35px rgba(0, 216, 255, 0.15) !important;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.75) !important;
 }
 
 .modal-reviews-body {
@@ -4469,16 +4459,14 @@ img:not([loading]) {
   right: 0;
   max-height: 220px;
   overflow-y: auto;
-  background: rgba(10, 16, 38, 0.98);
+  background: rgba(20, 20, 20, 0.98);
   backdrop-filter: blur(24px);
-  border: 1px solid rgba(0, 216, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
   margin-top: 6px;
   z-index: 1000;
   display: none;
-  box-shadow:
-    0 10px 25px rgba(0, 0, 0, 0.5),
-    0 0 15px rgba(0, 216, 255, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
   padding: 6px 0;
 }
 
@@ -4539,7 +4527,7 @@ img:not([loading]) {
   width: 100%;
   height: 30px;
   border-radius: 8px;
-  background: rgba(10, 16, 38, 0.94) !important;
+  background: rgba(20, 20, 20, 0.94) !important;
   backdrop-filter: blur(12px) !important;
   -webkit-backdrop-filter: blur(12px) !important;
   border: 1px solid var(--accent, #00d8ff) !important;
@@ -4587,10 +4575,10 @@ img:not([loading]) {
 }
 
 .btn-review-sort {
-  background: rgba(10, 16, 38, 0.8) !important;
+  background: rgba(20, 20, 20, 0.85) !important;
   backdrop-filter: blur(8px) !important;
   -webkit-backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(0, 216, 255, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   color: #ffffff !important;
   font-size: 0.85rem !important;
   font-weight: 500 !important;
@@ -4616,12 +4604,12 @@ img:not([loading]) {
 
 .glass-dropdown {
   min-width: 200px !important;
-  background: rgba(13, 20, 45, 0.96) !important;
+  background: rgba(20, 20, 20, 0.98) !important;
   backdrop-filter: blur(18px) !important;
   -webkit-backdrop-filter: blur(18px) !important;
-  border: 1px solid rgba(0, 216, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   border-radius: 16px !important;
-  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45) !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6) !important;
   padding: 8px !important;
   margin-top: 6px !important;
 }
